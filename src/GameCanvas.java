@@ -20,26 +20,19 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
     @Override
     public void paint(Graphics g) {
         render();
+        render();
+
+
     }
 
     public void render() {
-        if(this.getBufferStrategy() ==null) {
-            this.createBufferStrategy(3);
-            return;
-        }
-
-        BufferStrategy bufferStrategy = this.getBufferStrategy();
-
-        Graphics graphics = bufferStrategy.getDrawGraphics();
+        Graphics graphics = this.getGraphics();
 
         drawBackground(graphics);
 
         drawCells(graphics);
 
         graphics.dispose();
-
-        bufferStrategy.show();
-
     }
 
     private void drawBackground(Graphics graphics) {

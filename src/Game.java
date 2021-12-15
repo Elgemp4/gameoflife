@@ -54,7 +54,9 @@ public class Game {
         }
 
         cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
-        render();
+
+        gameCanvas.render();
+
     }
 
     public void setExecutionSpeed(ChangeEvent changeEvent) {
