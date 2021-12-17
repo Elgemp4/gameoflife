@@ -1,9 +1,12 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferStrategy;
 
 public class GameCanvas extends Canvas implements MouseMotionListener {
     final private Game game;
+
+    private Camera camera;
 
     public GameCanvas(int width, int height) {
         super();
@@ -12,41 +15,69 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
 
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(width, height));
+    }
 
+    public void postWindowCreationLoading() {
+        this.createBufferStrategy(2);
+        this.camera = new Camera(50, 0, 2, this);
+        this.render();
     }
 
     @Override
     public void paint(Graphics g) {
         render();
-        render();
-
-
     }
 
     public void render() {
-        Graphics graphics = this.getGraphics();
+        BufferStrategy bufferStrategy = this.getBufferStrategy();
+
+        Graphics graphics = bufferStrategy.getDrawGraphics();
 
         drawBackground(graphics);
+
+        drawGrid(graphics);
 
         drawCells(graphics);
 
         graphics.dispose();
+
+        bufferStrategy.show();
     }
 
     private void drawBackground(Graphics graphics) {
         graphics.setColor(Color.BLACK);
 
-        graphics.fillRect(0,0,getWidth(), getHeight());
+        graphics.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+    private void drawGrid(Graphics graphics) {
+        graphics.setColor(Color.lightGray);
+
+        for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY(); yIndex++) {
+            int yPos = camera.getPositionFromIndex(new Index(0, yIndex)).getYPos();
+
+            graphics.drawLine(0, yPos, getHeight(), yPos);
+        }
+
+        for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX(); xIndex++) {
+            int xPos = camera.getPositionFromIndex(new Index(xIndex, 0)).getXPos();
+
+            graphics.drawLine(xPos, 0, xPos, getWidth());
+        }
     }
 
     private void drawCells(Graphics graphics) {
         boolean[][] cellsArray = game.getCellGrid();
         graphics.setColor(Color.WHITE);
 
-        for(int y = 0; y<Game.NUMBER_ROW; y++) {
-            for(int x =0; x<Game.NUMBER_COL; x++){
-                if(cellsArray[y][x]){
-                    graphics.fillRect(x*(getWidth()/Game.NUMBER_COL), y*(getHeight() / Game.NUMBER_ROW), (getWidth()/Game.NUMBER_COL), (getHeight() / Game.NUMBER_ROW));
+        for (int y = 0; y < this.getHeight(); y += camera.getCellSize()) {
+            for (int x = 0; x < this.getWidth(); x += camera.getCellSize()) {
+                Index index = camera.getCellIndexFromPosition(new Position(x, y));
+                if(index==null){
+                    continue;
+                }
+                if (cellsArray[index.getYIndex()][index.getXIndex()]) {
+                    graphics.fillRect(x - camera.getX() , y + camera.getY(), camera.getCellSize(), camera.getCellSize());
                 }
             }
         }
@@ -65,7 +96,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+    }
 
     public Game getGame() {
         return game;

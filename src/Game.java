@@ -6,7 +6,6 @@ public class Game {
     final static public int NUMBER_ROW = 50;
     final static public int NUMBER_COL = 50;
 
-
     final private GameLoop gameLoop;
 
     final private GameCanvas gameCanvas;
@@ -21,6 +20,14 @@ public class Game {
         this.gameLoop = new GameLoop(gameSpeed, this);
 
         cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
+
+        cellGrid[2][0] = true;
+        cellGrid[2][1] = true;
+        cellGrid[2][2] = true;
+
+        cellGrid[2][30] = true;
+
+        cellGrid[2][31] = true;
     }
 
     public void putCell(int x, int y) {
@@ -135,9 +142,9 @@ public class Game {
 
     }
 
-    private boolean isInGrid(int x, int y) {
-        boolean yCorrect = x >= 0 && x < cellGrid.length;
-        boolean xCorrect = y >= 0 && y < cellGrid[0].length;
+    public static boolean isInGrid(int x, int y) {
+        boolean yCorrect = x >= 0 && x < Game.NUMBER_COL;
+        boolean xCorrect = y >= 0 && y < Game.NUMBER_ROW;
 
         return xCorrect && yCorrect;
     }
