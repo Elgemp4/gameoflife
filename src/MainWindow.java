@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferStrategy;
 
 public class MainWindow extends JFrame {
     private OptionPanel optionPanel;

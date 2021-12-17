@@ -1,4 +1,3 @@
-import javax.accessibility.AccessibleIcon;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
@@ -8,14 +7,13 @@ public class Game {
     final static public int NUMBER_COL = 50;
 
 
-    private GameLoop gameLoop;
+    final private GameLoop gameLoop;
 
-    private GameCanvas gameCanvas;
+    final private GameCanvas gameCanvas;
 
     private boolean[][] cellGrid;
 
     private int gameSpeed = 1;
-    private int yOffset;
 
     public Game(GameCanvas gameCanvas) {
         this.gameCanvas = gameCanvas;
@@ -23,9 +21,6 @@ public class Game {
         this.gameLoop = new GameLoop(gameSpeed, this);
 
         cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
-        cellGrid[5][5] = true;
-        cellGrid[5][6] = true;
-        cellGrid[5][7] = true;
     }
 
     public void putCell(int x, int y) {
@@ -46,12 +41,12 @@ public class Game {
         }
     }
 
-    public void step(ActionEvent event) {
+    public void step(ActionEvent ignoredEvent) {
         update();
         render();
     }
 
-    public void reset(ActionEvent event) {
+    public void reset(ActionEvent ignoredEvent) {
         if (gameLoop.isRunning()) {
             gameLoop.stop();
         }
@@ -68,7 +63,7 @@ public class Game {
     }
 
     public void update() {
-        //checkCells();
+        checkCells();
         System.out.println(countSurroundingCells(6, 4));
     }
 
@@ -80,31 +75,41 @@ public class Game {
         return gameSpeed;
     }
 
-    public void setGameSpeed(int gameSpeed) {
-        this.gameSpeed = gameSpeed;
-    }
-
     public boolean[][] getCellGrid() {
         return cellGrid;
     }
 
+
     private void checkCells() {
+        boolean[][] cellGridCopy = cloneCellGrid();
+
         for (int y = 0; y < cellGrid.length; y++) {
             for (int x = 0; x < cellGrid[0].length; x++) {
                 int numberCells = countSurroundingCells(x, y);
-                System.out.println(numberCells);
+
                 if (isAlive(x, y)) {
                     if (numberCells != 2 && numberCells != 3) {
-                        cellGrid[y][x] = false;
+                        cellGridCopy[y][x] = false;
                     }
                 } else {
                     if (numberCells == 3) {
-                        cellGrid[y][x] = true;
+                        cellGridCopy[y][x] = true;
                     }
                 }
             }
-
         }
+
+        this.cellGrid = cellGridCopy.clone();
+    }
+
+    private boolean[][] cloneCellGrid() {
+        boolean[][] copiedCellGrid = new boolean[cellGrid.length][cellGrid[0].length];
+
+        for (int y = 0; y < copiedCellGrid.length; y++) {
+            copiedCellGrid[y] = cellGrid[y].clone();
+        }
+
+        return  copiedCellGrid;
     }
 
     private int countSurroundingCells(int x, int y) {
@@ -112,8 +117,7 @@ public class Game {
 
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
-
-                if (xOffset != 0 && yOffset != 0) {
+                if (xOffset != 0 || yOffset != 0) {
                     int searchX = x + xOffset;
                     int searchY = y + yOffset;
 

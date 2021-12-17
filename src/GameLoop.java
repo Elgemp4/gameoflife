@@ -14,7 +14,7 @@ public class GameLoop implements Runnable{
 
     private Thread worker;
 
-    private Game game;
+    final private Game game;
 
     public GameLoop(int updateRate, Game game) {
         setUpdateRate(updateRate);
@@ -83,7 +83,7 @@ public class GameLoop implements Runnable{
 
     private void debugFPS() {
         if(System.currentTimeMillis()>=timeForNextDebug) {
-            System.out.println(String.format("FPS : %d", fps));
+            System.out.printf("FPS : %d%n", fps);
 
             fps = 0;
             timeForNextDebug = System.currentTimeMillis() + 1000;

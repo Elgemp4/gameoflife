@@ -1,11 +1,9 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 public class GameCanvas extends Canvas implements MouseMotionListener {
-    private Game game;
+    final private Game game;
 
     public GameCanvas(int width, int height) {
         super();
@@ -58,12 +56,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         switch (e.getButton()) {
-            case MouseEvent.BUTTON1:
-                game.putCell(e.getX(), e.getY());
-                break;
-            case MouseEvent.BUTTON2:
-                game.removeCell(e.getX(), e.getY());
-                break;
+            case MouseEvent.BUTTON1 -> game.putCell(e.getX(), e.getY());
+            case MouseEvent.BUTTON2 -> game.removeCell(e.getX(), e.getY());
         }
 
         render();

@@ -1,10 +1,9 @@
 import javax.swing.*;
-import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class OptionPanel extends JPanel {
-    private Game game;
+    final private Game game;
 
     public OptionPanel(Game game, int width, int height) {
         super();
