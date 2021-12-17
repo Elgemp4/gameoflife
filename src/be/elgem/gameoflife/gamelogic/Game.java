@@ -20,10 +20,8 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        cellGrid = new CellGrid(1000, 1000);
+        cellGrid = new CellGrid(2000, 2000);
     }
-
-
 
     public void toggleExecution(ActionEvent event) {
         if (gameLoop.isRunning()) {

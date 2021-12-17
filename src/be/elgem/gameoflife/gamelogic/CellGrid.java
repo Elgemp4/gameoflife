@@ -15,11 +15,11 @@ public class CellGrid {
     }
 
     public void putCell(int x, int y) {
-        cellGrid[y / NUMBER_ROW][x / NUMBER_COL] = true;
+        cellGrid[y][x] = true;
     }
 
     public void removeCell(int x, int y) {
-        cellGrid[y / NUMBER_ROW][x / NUMBER_COL] = false;
+        cellGrid[y][x] = false;
     }
 
     public void reset() {
@@ -81,7 +81,7 @@ public class CellGrid {
 
     }
 
-    public static boolean isInGrid(int x, int y) {
+    public static boolean isInGrid(double x, double y) {
         boolean yCorrect = x >= 0 && x < NUMBER_COL;
         boolean xCorrect = y >= 0 && y < NUMBER_ROW;
 

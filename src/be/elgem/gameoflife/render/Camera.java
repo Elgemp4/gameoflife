@@ -12,7 +12,7 @@ public class Camera {
 
     private GameCanvas canvas;
 
-    private int cellSize;
+    private double cellSize;
     private int numberDisplayedCellsY;
     private int numberDisplayedCellsX;
 
@@ -29,18 +29,18 @@ public class Camera {
     }
 
     public int getXOffset() {
-        return x % cellSize;
+        return (int)(x % cellSize);
     }
 
     public int getYOffset() {
-        return y % cellSize;
+        return (int)(y % cellSize);
     }
 
 
     public Index getCellIndexFromPosition(Position position) {
 
-        int xIndex = (position.getXPos() + x) / cellSize;
-        int yIndex = (position.getYPos() + y) / cellSize;
+        int xIndex = (int)((position.getXPos() + x) / cellSize);
+        int yIndex = (int)((position.getYPos() + y) / cellSize);
 
         if(!CellGrid.isInGrid(xIndex, yIndex)){
             return null;
@@ -50,8 +50,8 @@ public class Camera {
     }
 
     public Position getPositionFromIndex(Index index) {
-        int xPos = (index.getXIndex() + x / cellSize) * cellSize;
-        int yPos = (index.getYIndex() + y / cellSize) * cellSize;
+        int xPos = (int) ((index.getXIndex() + x / cellSize) * cellSize);
+        int yPos = (int) ((index.getYIndex() + y / cellSize) * cellSize);
 
         return new Position(xPos, yPos);
     }
@@ -60,9 +60,9 @@ public class Camera {
     private void actualizePracticalData() {
         cellSize = canvas.getWidth() / (CellGrid.getNumberCol() / zoomLevel);
 
-        numberDisplayedCellsX = canvas.getHeight() / cellSize + 1;
+        numberDisplayedCellsX = (int) (canvas.getHeight() / cellSize + 1);
 
-        numberDisplayedCellsY = canvas.getWidth() / cellSize + 1;
+        numberDisplayedCellsY = (int) (canvas.getWidth() / cellSize + 1);
     }
 
     public int getX() {
@@ -95,15 +95,15 @@ public class Camera {
         actualizePracticalData();
     }
 
-    public int getCellSize() {
+    public double getCellSize() {
         return cellSize;
     }
 
-    public int getNumberDisplayedCellsY() {
+    public double getNumberDisplayedCellsY() {
         return numberDisplayedCellsY;
     }
 
-    public int getNumberDisplayedCellsX() {
+    public double getNumberDisplayedCellsX() {
         return numberDisplayedCellsX;
     }
 }

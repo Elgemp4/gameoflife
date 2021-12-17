@@ -43,13 +43,13 @@ public class Renderer {
         int test = 0;
 
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY(); yIndex++) {
-            int yPos = camera.getCellSize() * yIndex - camera.getYOffset();
+            int yPos = (int)(camera.getCellSize() * yIndex - camera.getYOffset());
 
             graphics.drawLine(0, yPos, gameCanvas.getHeight(), yPos);
         }
 
         for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX(); xIndex++) {
-            int xPos = camera.getCellSize() * xIndex - camera.getXOffset();
+            int xPos = (int)(camera.getCellSize() * xIndex - camera.getXOffset());
 
             graphics.drawLine(xPos, 0, xPos, gameCanvas.getWidth());
         }
@@ -66,7 +66,7 @@ public class Renderer {
                     continue;
                 }
                 if (cellsArray[index.getYIndex()][index.getXIndex()]) {
-                    graphics.fillRect(x - camera.getXOffset() , y - camera.getYOffset(), camera.getCellSize(), camera.getCellSize());
+                    graphics.fillRect(x - camera.getXOffset() , y - camera.getYOffset(), (int)camera.getCellSize(), (int)camera.getCellSize());
                 }
             }
         }
