@@ -1,3 +1,9 @@
+package be.elgem.gameoflife.render;
+
+import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.Game;
+import be.elgem.gameoflife.gui.GameCanvas;
+
 public class Camera {
     private int x;
     private int y;
@@ -36,7 +42,7 @@ public class Camera {
         int xIndex = (position.getXPos() + x) / cellSize;
         int yIndex = (position.getYPos() + y) / cellSize;
 
-        if(!Game.isInGrid(xIndex, yIndex)){
+        if(!CellGrid.isInGrid(xIndex, yIndex)){
             return null;
         }
 
@@ -52,7 +58,7 @@ public class Camera {
 
 
     private void actualizePracticalData() {
-        cellSize = canvas.getWidth() / (Game.NUMBER_COL / zoomLevel);
+        cellSize = canvas.getWidth() / (CellGrid.getNumberCol() / zoomLevel);
 
         numberDisplayedCellsX = canvas.getHeight() / cellSize + 1;
 

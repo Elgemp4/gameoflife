@@ -1,3 +1,5 @@
+package be.elgem.gameoflife.gamelogic;
+
 public class GameLoop implements Runnable{
 
     private boolean running;

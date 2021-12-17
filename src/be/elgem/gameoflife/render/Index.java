@@ -1,3 +1,5 @@
+package be.elgem.gameoflife.render;
+
 public class Index {
     private int xIndex;
     private int yIndex;

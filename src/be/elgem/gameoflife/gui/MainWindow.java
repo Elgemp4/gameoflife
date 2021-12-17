@@ -1,5 +1,9 @@
+package be.elgem.gameoflife.gui;
+
 import javax.swing.*;
 import java.awt.*;
+import be.elgem.gameoflife.gui.GameCanvas;
+import be.elgem.gameoflife.gamelogic.Game;
 
 public class MainWindow extends JFrame {
     private OptionPanel optionPanel;
@@ -19,7 +23,7 @@ public class MainWindow extends JFrame {
     }
 
     public MainWindow(int width, int height){
-        super("Conway's Game Of Life");
+        super("Conway's GameLogic.Game Of Life");
 
         initializeWindow(width, height);
     }

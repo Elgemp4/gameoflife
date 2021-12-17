@@ -1,3 +1,5 @@
+package be.elgem.gameoflife.render;
+
 public class Position {
     private int xPos;
     private int yPos;

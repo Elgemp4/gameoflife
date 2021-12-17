@@ -1,25 +1,17 @@
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import java.awt.event.ActionEvent;
+package be.elgem.gameoflife.gamelogic;
 
-public class Game {
-    final static public int NUMBER_ROW = 10000;
-    final static public int NUMBER_COL = 10000;
+public class CellGrid {
 
-    final private GameLoop gameLoop;
-
-    final private GameCanvas gameCanvas;
+    private static int NUMBER_ROW = 50;
+    private static int NUMBER_COL = 50;
 
     private boolean[][] cellGrid;
 
-    private int gameSpeed = 1;
+    public CellGrid(int numberRow, int numberCol) {
+        CellGrid.NUMBER_ROW = numberRow;
+        CellGrid.NUMBER_COL = numberCol;
 
-    public Game(GameCanvas gameCanvas) {
-        this.gameCanvas = gameCanvas;
-
-        this.gameLoop = new GameLoop(gameSpeed, this);
-
-        cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
+        cellGrid = new boolean[numberCol][numberRow];
     }
 
     public void putCell(int x, int y) {
@@ -30,56 +22,11 @@ public class Game {
         cellGrid[y / NUMBER_ROW][x / NUMBER_COL] = false;
     }
 
-    public void toggleExecution(ActionEvent event) {
-        if (gameLoop.isRunning()) {
-            gameLoop.stop();
-            ((JButton) event.getSource()).setText("Start");
-        } else {
-            gameLoop.start();
-            ((JButton) event.getSource()).setText("Stop");
-        }
+    public void reset() {
+        cellGrid = new boolean[NUMBER_COL][NUMBER_ROW];
     }
 
-    public void step(ActionEvent ignoredEvent) {
-        update();
-        render();
-    }
-
-    public void reset(ActionEvent ignoredEvent) {
-        if (gameLoop.isRunning()) {
-            gameLoop.stop();
-        }
-
-        cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
-
-        gameCanvas.render();
-
-    }
-
-    public void setExecutionSpeed(ChangeEvent changeEvent) {
-        gameSpeed = ((JSlider) changeEvent.getSource()).getValue();
-        gameLoop.setUpdateRate(gameSpeed);
-    }
-
-    public void update() {
-        checkCells();
-        System.out.println(countSurroundingCells(6, 4));
-    }
-
-    public void render() {
-        gameCanvas.render();
-    }
-
-    public int getGameSpeed() {
-        return gameSpeed;
-    }
-
-    public boolean[][] getCellGrid() {
-        return cellGrid;
-    }
-
-
-    private void checkCells() {
+    public void checkCells() {
         boolean[][] cellGridCopy = cloneCellGrid();
 
         for (int y = 0; y < cellGrid.length; y++) {
@@ -135,13 +82,25 @@ public class Game {
     }
 
     public static boolean isInGrid(int x, int y) {
-        boolean yCorrect = x >= 0 && x < Game.NUMBER_COL;
-        boolean xCorrect = y >= 0 && y < Game.NUMBER_ROW;
+        boolean yCorrect = x >= 0 && x < NUMBER_COL;
+        boolean xCorrect = y >= 0 && y < NUMBER_ROW;
 
         return xCorrect && yCorrect;
     }
 
     private boolean isAlive(int x, int y) {
         return cellGrid[y][x];
+    }
+
+    public boolean[][] getBooleanGrid() {
+        return cellGrid;
+    }
+
+    public static int getNumberRow() {
+        return NUMBER_ROW;
+    }
+
+    public static int getNumberCol() {
+        return NUMBER_COL;
     }
 }

@@ -1,6 +1,9 @@
+package be.elgem.gameoflife.gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import be.elgem.gameoflife.gamelogic.Game;
 
 public class OptionPanel extends JPanel {
     final private Game game;
