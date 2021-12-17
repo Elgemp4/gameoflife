@@ -19,7 +19,7 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
 
     public void postWindowCreationLoading() {
         this.createBufferStrategy(2);
-        this.camera = new Camera(50, 0, 2, this);
+        this.camera = new Camera(Game.NUMBER_COL / 2, Game.NUMBER_ROW / 2, 400, this);
         this.render();
     }
 
@@ -53,14 +53,16 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
     private void drawGrid(Graphics graphics) {
         graphics.setColor(Color.lightGray);
 
+        int test = 0;
+
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY(); yIndex++) {
-            int yPos = camera.getPositionFromIndex(new Index(0, yIndex)).getYPos();
+            int yPos = camera.getCellSize() * yIndex - camera.getYOffset();
 
             graphics.drawLine(0, yPos, getHeight(), yPos);
         }
 
         for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX(); xIndex++) {
-            int xPos = camera.getPositionFromIndex(new Index(xIndex, 0)).getXPos();
+            int xPos = camera.getCellSize() * xIndex - camera.getXOffset();
 
             graphics.drawLine(xPos, 0, xPos, getWidth());
         }
@@ -77,7 +79,7 @@ public class GameCanvas extends Canvas implements MouseMotionListener {
                     continue;
                 }
                 if (cellsArray[index.getYIndex()][index.getXIndex()]) {
-                    graphics.fillRect(x - camera.getX() , y + camera.getY(), camera.getCellSize(), camera.getCellSize());
+                    graphics.fillRect(x - camera.getXOffset() , y - camera.getYOffset(), camera.getCellSize(), camera.getCellSize());
                 }
             }
         }

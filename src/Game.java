@@ -3,8 +3,8 @@ import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 
 public class Game {
-    final static public int NUMBER_ROW = 50;
-    final static public int NUMBER_COL = 50;
+    final static public int NUMBER_ROW = 10000;
+    final static public int NUMBER_COL = 10000;
 
     final private GameLoop gameLoop;
 
@@ -20,14 +20,6 @@ public class Game {
         this.gameLoop = new GameLoop(gameSpeed, this);
 
         cellGrid = new boolean[NUMBER_ROW][NUMBER_COL];
-
-        cellGrid[2][0] = true;
-        cellGrid[2][1] = true;
-        cellGrid[2][2] = true;
-
-        cellGrid[2][30] = true;
-
-        cellGrid[2][31] = true;
     }
 
     public void putCell(int x, int y) {

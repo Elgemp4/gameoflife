@@ -22,6 +22,15 @@ public class Camera {
         actualizePracticalData();
     }
 
+    public int getXOffset() {
+        return x % cellSize;
+    }
+
+    public int getYOffset() {
+        return y % cellSize;
+    }
+
+
     public Index getCellIndexFromPosition(Position position) {
 
         int xIndex = (position.getXPos() + x) / cellSize;
@@ -35,8 +44,8 @@ public class Camera {
     }
 
     public Position getPositionFromIndex(Index index) {
-        int xPos = (index.getXIndex() - x / cellSize) * cellSize;
-        int yPos = (index.getYIndex() - y / cellSize) * cellSize;
+        int xPos = (index.getXIndex() + x / cellSize) * cellSize;
+        int yPos = (index.getYIndex() + y / cellSize) * cellSize;
 
         return new Position(xPos, yPos);
     }
@@ -45,9 +54,9 @@ public class Camera {
     private void actualizePracticalData() {
         cellSize = canvas.getWidth() / (Game.NUMBER_COL / zoomLevel);
 
-        numberDisplayedCellsX = canvas.getHeight() / cellSize;
+        numberDisplayedCellsX = canvas.getHeight() / cellSize + 1;
 
-        numberDisplayedCellsY = canvas.getWidth() / cellSize;
+        numberDisplayedCellsY = canvas.getWidth() / cellSize + 1;
     }
 
     public int getX() {
