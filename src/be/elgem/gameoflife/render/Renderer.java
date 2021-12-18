@@ -22,9 +22,11 @@ public class Renderer {
 
         drawBackground(graphics);
 
-        drawGrid(graphics);
+
 
         drawCells(graphics);
+
+        drawGrid(graphics);
 
         graphics.dispose();
 
@@ -38,7 +40,7 @@ public class Renderer {
     }
 
     private void drawGrid(Graphics graphics) {
-        graphics.setColor(Color.lightGray);
+        graphics.setColor(Color.gray);
 
         int test = 0;
 

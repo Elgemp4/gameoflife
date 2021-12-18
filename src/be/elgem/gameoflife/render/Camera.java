@@ -5,27 +5,35 @@ import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.gui.GameCanvas;
 
 public class Camera {
-    private int x;
-    private int y;
-
-    private int zoomLevel;
+    private double x;
+    private double y;
 
     private GameCanvas canvas;
 
     private double cellSize;
+
     private int numberDisplayedCellsY;
     private int numberDisplayedCellsX;
+
+    final private static int MIN_ZOOM = 2;
+    final private static int MAX_ZOOM = 60;
 
     public Camera(int x, int y, int zoomLevel, GameCanvas canvas) {
         this.x = x;
 
         this.y = y;
 
-        this.zoomLevel = zoomLevel;
-
         this.canvas = canvas;
 
+        cellSize = 40;
+
         actualizePracticalData();
+    }
+
+    private void actualizePracticalData() {
+        numberDisplayedCellsX = (int) (canvas.getHeight() / cellSize) + 1;
+
+        numberDisplayedCellsY = (int) (canvas.getWidth() / cellSize) + 1;
     }
 
     public int getXOffset() {
@@ -56,54 +64,55 @@ public class Camera {
         return new Position(xPos, yPos);
     }
 
-
-    private void actualizePracticalData() {
-        cellSize = canvas.getWidth() / (CellGrid.getNumberCol() / zoomLevel);
-
-        numberDisplayedCellsX = (int) (canvas.getHeight() / cellSize + 1);
-
-        numberDisplayedCellsY = (int) (canvas.getWidth() / cellSize + 1);
-    }
-
     public int getX() {
-        return x;
+        return (int) x;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setX(double x) {
+        if(x>0){
+            this.x = x;
+        }
+
 
         actualizePracticalData();
     }
 
     public int getY() {
-        return y;
+        return (int) y;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(double y) {
+        if(y>0) {
+            this.y = y;
+        }
+
 
         actualizePracticalData();
     }
 
-    public int getZoomLevel() {
-        return zoomLevel;
-    }
 
-    public void setZoomLevel(int zoomLevel) {
-        this.zoomLevel = zoomLevel;
+    public void zoom(double zoomFactor){
+        if(cellSize+zoomFactor<=MAX_ZOOM && cellSize+zoomFactor>=MIN_ZOOM) {//Pour éviter des bouger la caméra lorsque ça ne dézoom pas
+            setX(x + zoomFactor * (x / cellSize));
+            setY(y + zoomFactor * (y / cellSize));
+        }
+
+
+        cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
 
         actualizePracticalData();
+
     }
 
     public double getCellSize() {
         return cellSize;
     }
 
-    public double getNumberDisplayedCellsY() {
+    public int getNumberDisplayedCellsY() {
         return numberDisplayedCellsY;
     }
 
-    public double getNumberDisplayedCellsX() {
+    public int getNumberDisplayedCellsX() {
         return numberDisplayedCellsX;
     }
 }

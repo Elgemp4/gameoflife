@@ -33,8 +33,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         this.createBufferStrategy(2);
 
         this.camera = new Camera(0, 0, 40, this);
-        this.camera.setX((int) (CellGrid.getNumberCol() * camera.getCellSize() / 2));
-        this.camera.setX((int) (CellGrid.getNumberRow() * camera.getCellSize() / 2));
+        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
+        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
 
         this.renderer = new Renderer(this);
 
@@ -95,6 +95,11 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         Position clickPosition = new Position(e.getX(), e.getY());
         Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
 
+        if(clickedIndex == null) {
+            System.out.println("Error, index x : "  + " y index : " );
+            return;
+        }
+
         if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
             render();
@@ -130,12 +135,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
 
         System.out.println(e.getWheelRotation());
-        camera.setZoomLevel(Math.max(10, camera.getZoomLevel() + e.getWheelRotation() * -10));
+        camera.zoom(-1 * e.getWheelRotation());
 
-        Position newCamPos = camera.getPositionFromIndex(new Index((int) (clickedIndex.getXIndex() - camera.getNumberDisplayedCellsX() / 2), (int) (clickedIndex.getYIndex() - camera.getNumberDisplayedCellsY() / 2)));
-
-        camera.setX(newCamPos.getXPos());
-        camera.setY(newCamPos.getYPos());
 
         render();
     }

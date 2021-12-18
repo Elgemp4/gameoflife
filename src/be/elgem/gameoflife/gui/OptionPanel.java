@@ -42,7 +42,7 @@ public class OptionPanel extends JPanel {
         speedSliderPanel.setSize(new Dimension(getWidth(), 0));
         speedSliderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JSlider sldSpeed = new JSlider(1,10, game.getGameSpeed());
+        JSlider sldSpeed = new JSlider(1,20, game.getGameSpeed());
         sldSpeed.setPreferredSize(new Dimension(100,20));
         sldSpeed.addChangeListener(game::setExecutionSpeed);
         JLabel speedText = new JLabel(String.format("Speed (%d) : ",sldSpeed.getValue()));
