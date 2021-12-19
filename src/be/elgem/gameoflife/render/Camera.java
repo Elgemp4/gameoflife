@@ -12,8 +12,8 @@ public class Camera {
 
     private double cellSize;
 
-    private int numberDisplayedCellsY;
-    private int numberDisplayedCellsX;
+    private double numberDisplayedCellsY;
+    private double numberDisplayedCellsX;
 
     final private static int MIN_ZOOM = 2;
     final private static int MAX_ZOOM = 60;
@@ -34,9 +34,9 @@ public class Camera {
      * Mets à jour les données pratiques de la caméra
      */
     private void actualizePracticalData() {
-        numberDisplayedCellsX = (int) (canvas.getHeight() / cellSize) + 1;
+        numberDisplayedCellsX = canvas.getHeight() / cellSize;
 
-        numberDisplayedCellsY = (int) (canvas.getWidth() / cellSize) + 1;
+        numberDisplayedCellsY = canvas.getWidth() / cellSize;
     }
 
     /**
@@ -98,6 +98,7 @@ public class Camera {
      * @param x
      */
     public void setX(double x) {
+        System.out.println(x);
         if (x > 0) {
             this.x = x;
         }
@@ -136,16 +137,24 @@ public class Camera {
     public void zoom(double zoomFactor) {
         if (cellSize + zoomFactor <= MAX_ZOOM && cellSize + zoomFactor >= MIN_ZOOM) {
             fixCameraPositionAfterZoom(zoomFactor);
+
+            cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
+
+            actualizePracticalData();
+
         }
 
-        cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
 
-        actualizePracticalData();
     }
 
     private void fixCameraPositionAfterZoom(double zoomFactor) {
-        setX(x + zoomFactor * (x / (cellSize)));
-        setY(y + zoomFactor * (y / (cellSize)));
+        /**
+         * Pour corriger la position on ajoute la position en y + l'aggrandissement des cellules * le nombres de
+         * cellules jusqu'en y + le nombres de cellules affichée à l'écran multiplié par l'aggrandissement le tout
+         * divisé par deux sinon ça s'aggrandirais pas enbase à gauche
+         */
+        setX(x + zoomFactor * (x / cellSize) + zoomFactor * numberDisplayedCellsX/2);
+        setY(y + zoomFactor * (y / cellSize) + zoomFactor * numberDisplayedCellsY/2);
     }
 
     /**
@@ -162,7 +171,7 @@ public class Camera {
      *
      * @return
      */
-    public int getNumberDisplayedCellsY() {
+    public double getNumberDisplayedCellsY() {
         return numberDisplayedCellsY;
     }
 
@@ -171,7 +180,7 @@ public class Camera {
      *
      * @return
      */
-    public int getNumberDisplayedCellsX() {
+    public double getNumberDisplayedCellsX() {
         return numberDisplayedCellsX;
     }
 }

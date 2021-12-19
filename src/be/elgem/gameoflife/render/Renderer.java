@@ -17,6 +17,7 @@ public class Renderer {
 
     /**
      * Affiche le jeu à l'écran
+     *
      * @param bufferStrategy
      */
     public void render(BufferStrategy bufferStrategy) {
@@ -36,6 +37,7 @@ public class Renderer {
 
     /**
      * Dessine l'arrière plan en noir
+     *
      * @param graphics
      */
     private void drawBackground(Graphics graphics) {
@@ -46,19 +48,20 @@ public class Renderer {
 
     /**
      * Dessine le grille du jeu
+     *
      * @param graphics
      */
     private void drawGrid(Graphics graphics) {
         graphics.setColor(Color.gray);
 
-        for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY(); yIndex++) {
-            int yPos = (int)(camera.getCellSize() * yIndex - camera.getYOffset());
+        for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
+            int yPos = (int) (camera.getCellSize() * yIndex - camera.getYOffset());
 
             graphics.drawLine(0, yPos, gameCanvas.getHeight(), yPos);
         }
 
-        for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX(); xIndex++) {
-            int xPos = (int)(camera.getCellSize() * xIndex - camera.getXOffset());
+        for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX() + 1; xIndex++) {
+            int xPos = (int) (camera.getCellSize() * xIndex - camera.getXOffset());
 
             graphics.drawLine(xPos, 0, xPos, gameCanvas.getWidth());
         }
@@ -66,20 +69,21 @@ public class Renderer {
 
     /**
      * Dessine les cellules du jeu
+     *
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
         boolean[][] cellsArray = gameCanvas.getGame().getCellGrid().getBooleanGrid();
         graphics.setColor(Color.WHITE);
 
-        for (int y = 0; y < gameCanvas.getHeight(); y += camera.getCellSize()) {
-            for (int x = 0; x < gameCanvas.getWidth(); x += camera.getCellSize()) {
+        for (int y = 0; y < gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
+            for (int x = 0; x < gameCanvas.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
                 Index index = camera.getCellIndexFromPosition(new Position(x, y));
-                if(index==null){
+                if (index == null) {
                     continue;
                 }
                 if (cellsArray[index.getYIndex()][index.getXIndex()]) {
-                    graphics.fillRect(x - camera.getXOffset() , y - camera.getYOffset(), (int)camera.getCellSize(), (int)camera.getCellSize());
+                    graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), (int) camera.getCellSize(), (int) camera.getCellSize());
                 }
             }
         }
