@@ -32,11 +32,11 @@ public class OptionPanel extends JPanel {
 
 
         add(Box.createVerticalGlue());
-        createButtonWithSpacing(this, "Start", game::toggleExecution);
+        JButton start = createButtonWithSpacing(this, "Start", game::toggleExecution);
 
-        createButtonWithSpacing(this, "Step", game::step);
+        JButton step = createButtonWithSpacing(this, "Step", game::step);
 
-        createButtonWithSpacing(this, "Reset", game::reset);
+        JButton reset = createButtonWithSpacing(this, "Reset", ignoredEvent -> game.reset(ignoredEvent, start));
 
         createSpeedPanel();
     }
@@ -77,12 +77,14 @@ public class OptionPanel extends JPanel {
      * @param name
      * @param actionListener
      */
-    private void createButtonWithSpacing(JPanel panel, String name, ActionListener actionListener){
+    private JButton createButtonWithSpacing(JPanel panel, String name, ActionListener actionListener){
         JButton button = new JButton(name);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(actionListener);
 
         panel.add(button);
         panel.add(Box.createVerticalStrut(20));
+
+        return button;
     }
 }
