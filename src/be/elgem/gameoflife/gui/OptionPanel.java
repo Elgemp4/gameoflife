@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import be.elgem.gameoflife.gamelogic.Game;
 
+/**
+ * OptionPanel est une class JPanel qui contient tous les composants "paramètres" du jeu de la vie"
+ */
 public class OptionPanel extends JPanel {
     final private Game game;
 
@@ -18,6 +21,11 @@ public class OptionPanel extends JPanel {
 
     }
 
+    /**
+     * Créer un JPanel d'option de la taille spécifiée
+     * @param width
+     * @param height
+     */
     private void initializePanel(int width, int height) {
         setPreferredSize(new Dimension(width, height));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -31,18 +39,18 @@ public class OptionPanel extends JPanel {
         createButtonWithSpacing(this, "Reset", game::reset);
 
         createSpeedPanel();
-
-
-
     }
 
+    /**
+     * Crée un JPanel contenant un label et un slider, servant à définir le taux de rafraichissement
+     */
     private void createSpeedPanel() {
         //Speed slider
         JPanel speedSliderPanel = new JPanel(new FlowLayout());
         speedSliderPanel.setSize(new Dimension(getWidth(), 0));
         speedSliderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JSlider sldSpeed = new JSlider(1,20, game.getGameSpeed());
+        JSlider sldSpeed = new JSlider(1,10, game.getGameSpeed());
         sldSpeed.setPreferredSize(new Dimension(100,20));
         sldSpeed.addChangeListener(game::setExecutionSpeed);
         JLabel speedText = new JLabel(String.format("Speed (%d) : ",sldSpeed.getValue()));
@@ -63,6 +71,12 @@ public class OptionPanel extends JPanel {
         panel.add(button);
     }
 
+    /**
+     * Crée un bouton avec le nom et l'action listener fournit
+     * @param panel
+     * @param name
+     * @param actionListener
+     */
     private void createButtonWithSpacing(JPanel panel, String name, ActionListener actionListener){
         JButton button = new JButton(name);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

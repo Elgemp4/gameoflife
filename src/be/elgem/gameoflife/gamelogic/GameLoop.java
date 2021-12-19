@@ -24,6 +24,9 @@ public class GameLoop implements Runnable{
         this.game = game;
     }
 
+    /**
+     * Démarre le jeu et son thread
+     */
     public void start() {
         if(!running) {
             worker = new Thread(this);
@@ -32,14 +35,26 @@ public class GameLoop implements Runnable{
 
     }
 
+    /**
+     * Arrête le jeu et son thread
+     */
     public void stop() {
         running = false;
+        worker = new Thread(this);
     }
 
+    /**
+     * Retourne vrai si le jeu est en cours d'exécution
+     * @return
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * défini la vitesse de mise à jour du jeu
+     * @param updateRate
+     */
     public void setUpdateRate(double updateRate) {
         this.updateRate = (1.0 / updateRate) * 1000;
     }
@@ -62,6 +77,9 @@ public class GameLoop implements Runnable{
 
     }
 
+    /**
+     * Mets à jour les variables gérant le temps s'étant passé
+     */
     private void updateTime() {
         currentTime = System.currentTimeMillis();
 
@@ -72,6 +90,9 @@ public class GameLoop implements Runnable{
         accumulator+=timeBetweenTicks;
     }
 
+    /**
+     * Mets à jour, si le moment est arrivé, le jeu
+     */
     private void tryUpdate() {
         while(accumulator>=updateRate) {
             game.update();
@@ -83,6 +104,9 @@ public class GameLoop implements Runnable{
 
     }
 
+    /**
+     * Imprime dans la console le nombre d'image par seconde
+     */
     private void debugFPS() {
         if(System.currentTimeMillis()>=timeForNextDebug) {
             System.out.printf("FPS : %d%n", fps);

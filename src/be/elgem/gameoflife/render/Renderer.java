@@ -9,20 +9,21 @@ public class Renderer {
     final private Camera camera;
     final private GameCanvas gameCanvas;
 
-
     public Renderer(GameCanvas gameCanvas) {
         this.gameCanvas = gameCanvas;
 
         this.camera = gameCanvas.getCamera();
     }
 
+    /**
+     * Affiche le jeu à l'écran
+     * @param bufferStrategy
+     */
     public void render(BufferStrategy bufferStrategy) {
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
 
         drawBackground(graphics);
-
-
 
         drawCells(graphics);
 
@@ -33,16 +34,22 @@ public class Renderer {
         bufferStrategy.show();
     }
 
+    /**
+     * Dessine l'arrière plan en noir
+     * @param graphics
+     */
     private void drawBackground(Graphics graphics) {
         graphics.setColor(Color.BLACK);
 
         graphics.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
 
+    /**
+     * Dessine le grille du jeu
+     * @param graphics
+     */
     private void drawGrid(Graphics graphics) {
         graphics.setColor(Color.gray);
-
-        int test = 0;
 
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY(); yIndex++) {
             int yPos = (int)(camera.getCellSize() * yIndex - camera.getYOffset());
@@ -57,6 +64,10 @@ public class Renderer {
         }
     }
 
+    /**
+     * Dessine les cellules du jeu
+     * @param graphics
+     */
     private void drawCells(Graphics graphics) {
         boolean[][] cellsArray = gameCanvas.getGame().getCellGrid().getBooleanGrid();
         graphics.setColor(Color.WHITE);

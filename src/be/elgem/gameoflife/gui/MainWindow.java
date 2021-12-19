@@ -28,6 +28,11 @@ public class MainWindow extends JFrame {
         initializeWindow(width, height);
     }
 
+    /**
+     * Initialise la fenêtre
+     * @param width
+     * @param height
+     */
     private void initializeWindow(int width, int height) {
         this.width = width;
         this.height = height;
@@ -43,6 +48,7 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
 
         setVisible(true);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         gameCanvas.postWindowCreationLoading();

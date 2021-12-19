@@ -14,19 +14,35 @@ public class CellGrid {
         cellGrid = new boolean[numberCol][numberRow];
     }
 
+    /**
+     * Mets une cellule en x y
+     * @param x
+     * @param y
+     */
     public void putCell(int x, int y) {
         System.out.println("x : " + x + " y : " + y);
         cellGrid[y][x] = true;
     }
 
+    /**
+     * Enlève un cellule en x y
+     * @param x
+     * @param y
+     */
     public void removeCell(int x, int y) {
         cellGrid[y][x] = false;
     }
 
+    /**
+     * Reset la grille de boolean en une nouvelle grille
+     */
     public void reset() {
         cellGrid = new boolean[NUMBER_COL][NUMBER_ROW];
     }
 
+    /**
+     * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
+     */
     public void checkCells() {
         boolean[][] cellGridCopy = cloneCellGrid();
 
@@ -49,6 +65,10 @@ public class CellGrid {
         this.cellGrid = cellGridCopy.clone();
     }
 
+    /**
+     * Créer un copie sans pointeur de la grille de boolean
+     * @return
+     */
     private boolean[][] cloneCellGrid() {
         boolean[][] copiedCellGrid = new boolean[cellGrid.length][cellGrid[0].length];
 
@@ -59,6 +79,12 @@ public class CellGrid {
         return  copiedCellGrid;
     }
 
+    /**
+     * Conte le nombre de cellules vivantes autour d'une autre cellule
+     * @param x
+     * @param y
+     * @return
+     */
     private int countSurroundingCells(int x, int y) {
         int aliveCellsCounter = 0;
 
@@ -82,6 +108,12 @@ public class CellGrid {
 
     }
 
+    /**
+     * Renvoie true si jamais la cellule en x y est dans l'enceinte du tableau et faux dans le cas inverse
+     * @param x
+     * @param y
+     * @return
+     */
     public static boolean isInGrid(double x, double y) {
         boolean yCorrect = x >= 0 && x < NUMBER_COL;
         boolean xCorrect = y >= 0 && y < NUMBER_ROW;
@@ -89,18 +121,36 @@ public class CellGrid {
         return xCorrect && yCorrect;
     }
 
+    /**
+     * Renvoie vrai si jamais la cellule en x y est vivante
+     * @param x
+     * @param y
+     * @return
+     */
     private boolean isAlive(int x, int y) {
         return cellGrid[y][x];
     }
 
+    /**
+     * Retourne la grille de boolean du jeu
+     * @return
+     */
     public boolean[][] getBooleanGrid() {
         return cellGrid;
     }
 
+    /**
+     * Retourne le nombre de lignes du jeu
+     * @return
+     */
     public static int getNumberRow() {
         return NUMBER_ROW;
     }
 
+    /**
+     * Retourne le nombre de colones du jeu
+     * @return
+     */
     public static int getNumberCol() {
         return NUMBER_COL;
     }
