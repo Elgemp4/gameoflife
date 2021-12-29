@@ -10,15 +10,23 @@ import be.elgem.gameoflife.gamelogic.Game;
  */
 public class OptionPanel extends JPanel {
     final private Game game;
+    final private MainWindow window;
 
-    public OptionPanel(Game game, int width, int height) {
+    public OptionPanel(MainWindow window, Game game, int width, int height) {
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new SpringLayout());
+
+        this.window = window;
 
         this.game = game;
 
         initializePanel(width, height);
 
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(MainWindow.OPTION_PANE_SIZE, window.getHeight());
     }
 
     /**
@@ -38,13 +46,13 @@ public class OptionPanel extends JPanel {
 
         JButton reset = createButtonWithSpacing(this, "Reset", ignoredEvent -> game.reset(ignoredEvent, start));
 
-        createSpeedPanel();
+        createSpeedPanel(this);
     }
 
     /**
      * Crée un JPanel contenant un label et un slider, servant à définir le taux de rafraichissement
      */
-    private void createSpeedPanel() {
+    private void createSpeedPanel(JPanel panel) {
         //Speed slider
         JPanel speedSliderPanel = new JPanel(new FlowLayout());
         speedSliderPanel.setSize(new Dimension(getWidth(), 0));
@@ -58,8 +66,8 @@ public class OptionPanel extends JPanel {
         speedSliderPanel.add(speedText);
         speedSliderPanel.add(sldSpeed);
 
-        add(speedSliderPanel);
-        add(Box.createVerticalStrut(20));
+        panel.add(speedSliderPanel);
+        panel.add(Box.createVerticalStrut(20));
     }
 
 
@@ -83,7 +91,7 @@ public class OptionPanel extends JPanel {
         button.addActionListener(actionListener);
 
         panel.add(button);
-        panel.add(Box.createVerticalStrut(20));
+        //panel.add(Box.createVerticalStrut(20));
 
         return button;
     }

@@ -1,8 +1,9 @@
 package be.elgem.gameoflife.render;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
-import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.gui.GameCanvas;
+
+import java.awt.*;
 
 public class Camera {
     private double x;
@@ -27,16 +28,18 @@ public class Camera {
 
         cellSize = 40;
 
-        actualizePracticalData();
+        actualizeDisplayedCells();
     }
 
     /**
      * Mets à jour les données pratiques de la caméra
      */
-    private void actualizePracticalData() {
-        numberDisplayedCellsX = canvas.getHeight() / cellSize;
+    public void actualizeDisplayedCells() {
+        Dimension gameCanvasSize = canvas.getPreferredSize();
 
-        numberDisplayedCellsY = canvas.getWidth() / cellSize;
+        numberDisplayedCellsX = gameCanvasSize.getWidth() / cellSize;
+
+        numberDisplayedCellsY = gameCanvasSize.getHeight() / cellSize;
     }
 
     /**
@@ -104,7 +107,7 @@ public class Camera {
         }
 
 
-        actualizePracticalData();
+        actualizeDisplayedCells();
     }
 
     /**
@@ -126,7 +129,7 @@ public class Camera {
             this.y = y;
         }
 
-        actualizePracticalData();
+        actualizeDisplayedCells();
     }
 
     /**
@@ -140,7 +143,7 @@ public class Camera {
 
             cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
 
-            actualizePracticalData();
+            actualizeDisplayedCells();
 
         }
 

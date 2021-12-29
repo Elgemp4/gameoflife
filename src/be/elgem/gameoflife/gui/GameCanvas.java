@@ -14,16 +14,19 @@ import java.awt.event.*;
 public class GameCanvas extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener {
     final private Game game;
 
+    private MainWindow window;
+
     private Camera camera;
     private Renderer renderer;
 
     private Position lastMousePosition = null;
 
-    public GameCanvas(int width, int height) {
+    public GameCanvas(MainWindow window, int width, int height) {
         super();
 
         game = new Game(this);
 
+        this.window = window;
 
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(width, height));
@@ -48,6 +51,13 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
     @Override
     public void paint(Graphics g) {
         render();
+        camera.actualizeDisplayedCells();
+    }
+
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(window.getWidth() - MainWindow.OPTION_PANE_SIZE, window.getHeight());
     }
 
     public void render() {

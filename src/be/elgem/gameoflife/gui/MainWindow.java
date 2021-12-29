@@ -2,8 +2,6 @@ package be.elgem.gameoflife.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import be.elgem.gameoflife.gui.GameCanvas;
-import be.elgem.gameoflife.gamelogic.Game;
 
 public class MainWindow extends JFrame {
     private OptionPanel optionPanel;
@@ -12,6 +10,7 @@ public class MainWindow extends JFrame {
 
     private int width, height;
 
+    final public static int OPTION_PANE_SIZE = 200;
 
     public static void main(String[] args) {
         try {
@@ -37,18 +36,18 @@ public class MainWindow extends JFrame {
         this.width = width;
         this.height = height;
 
-
-        gameCanvas = new GameCanvas(width * 6/8, height);
+        gameCanvas = new GameCanvas(this, width - OPTION_PANE_SIZE, height);
         add(gameCanvas, BorderLayout.EAST);
 
-        optionPanel = new OptionPanel(gameCanvas.getGame(), width * 2/8, height);
+        optionPanel = new OptionPanel(this, gameCanvas.getGame(), OPTION_PANE_SIZE, height);
         add(optionPanel);
+
+        setSize(width, height);
 
         pack();
         setLocationRelativeTo(null);
 
         setVisible(true);
-        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         gameCanvas.postWindowCreationLoading();

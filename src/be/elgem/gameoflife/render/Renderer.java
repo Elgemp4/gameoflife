@@ -52,18 +52,20 @@ public class Renderer {
      * @param graphics
      */
     private void drawGrid(Graphics graphics) {
+        Dimension canvasSize = gameCanvas.getPreferredSize();
+
         graphics.setColor(Color.gray);
 
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
             int yPos = (int) (camera.getCellSize() * yIndex - camera.getYOffset());
 
-            graphics.drawLine(0, yPos, gameCanvas.getHeight(), yPos);
+            graphics.drawLine(0, yPos, (int) canvasSize.getWidth(), yPos);
         }
 
         for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX() + 1; xIndex++) {
             int xPos = (int) (camera.getCellSize() * xIndex - camera.getXOffset());
 
-            graphics.drawLine(xPos, 0, xPos, gameCanvas.getWidth());
+            graphics.drawLine(xPos, 0, xPos, (int) canvasSize.getHeight());
         }
     }
 
