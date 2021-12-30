@@ -7,9 +7,13 @@ public class CellGrid {
 
     private boolean[][] cellGrid;
 
-    public CellGrid(int numberRow, int numberCol) {
+    private GameLoop gameLoop;
+
+    public CellGrid(int numberRow, int numberCol, GameLoop gameLoop) {
         CellGrid.NUMBER_ROW = numberRow;
         CellGrid.NUMBER_COL = numberCol;
+
+        this.gameLoop = gameLoop;
 
         cellGrid = new boolean[numberCol][numberRow];
     }
@@ -62,7 +66,12 @@ public class CellGrid {
             }
         }
 
-        this.cellGrid = cellGridCopy.clone();
+        //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
+        //de ça la grille n'est pas reset
+        if(gameLoop.isRunning()){
+            this.cellGrid = cellGridCopy.clone();
+        }
+
     }
 
     /**
