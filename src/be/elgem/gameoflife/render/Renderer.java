@@ -9,6 +9,10 @@ public class Renderer {
     final private Camera camera;
     final private GameCanvas gameCanvas;
 
+    private boolean isVisible = false;
+
+    private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
+
     public Renderer(GameCanvas gameCanvas) {
         this.gameCanvas = gameCanvas;
 
@@ -52,6 +56,10 @@ public class Renderer {
      * @param graphics
      */
     private void drawGrid(Graphics graphics) {
+        if(!canGridBeDisplayed()){
+            return;
+        }
+
         Dimension canvasSize = gameCanvas.getPreferredSize();
 
         graphics.setColor(Color.gray);
@@ -91,4 +99,22 @@ public class Renderer {
         }
     }
 
+    public boolean canGridBeDisplayed() {
+        switch (gridVisibility){
+            case ALWAYS_SHOWN:
+                return true;
+            case ALWAYS_HIDE:
+                return false;
+            default:
+                return isVisible;
+        }
+    }
+
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
+    }
+
+    public void setGridVisibility(EGridVisibility gridVisibility) {
+        this.gridVisibility = gridVisibility;
+    }
 }

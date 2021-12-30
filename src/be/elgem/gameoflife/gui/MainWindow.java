@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
-    private OptionPanel optionPanel;
+    private ToolPanel toolPanel;
 
     private GameCanvas gameCanvas;
 
     private int width, height;
 
-    final public static int OPTION_PANE_SIZE = 200;
+    final public static int OPTION_PANE_SIZE = 230;
 
     public static void main(String[] args) {
         try {
@@ -39,8 +39,8 @@ public class MainWindow extends JFrame {
         gameCanvas = new GameCanvas(this, width - OPTION_PANE_SIZE, height);
         add(gameCanvas, BorderLayout.EAST);
 
-        optionPanel = new OptionPanel(this, gameCanvas.getGame(), OPTION_PANE_SIZE, height);
-        add(optionPanel);
+        toolPanel = new ToolPanel(this, gameCanvas.getGame(), OPTION_PANE_SIZE, height);
+        add(toolPanel);
 
         setSize(width, height);
 
@@ -53,7 +53,11 @@ public class MainWindow extends JFrame {
         gameCanvas.postWindowCreationLoading();
     }
 
+    public ToolPanel getToolPanel() {
+        return toolPanel;
+    }
 
-
-
+    public GameCanvas getGameCanvas() {
+        return gameCanvas;
+    }
 }

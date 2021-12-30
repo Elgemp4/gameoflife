@@ -66,9 +66,11 @@ public class Game {
      * Permet de redéfinir le taux d'exécution du jeu
      * @param changeEvent
      */
-    public void setExecutionSpeed(ChangeEvent changeEvent) {
+    public void setExecutionSpeed(ChangeEvent changeEvent, JLabel textLabel) {
         gameSpeed = ((JSlider) changeEvent.getSource()).getValue();
         gameLoop.setUpdateRate(gameSpeed);
+
+        textLabel.setText(String.format("Speed (%d) : ",gameSpeed));
     }
 
     /**

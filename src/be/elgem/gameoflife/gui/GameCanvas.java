@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameCanvas extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener {
+public class GameCanvas extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener{
     final private Game game;
 
     private MainWindow window;
@@ -72,10 +72,12 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
             render();
-        } else if (SwingUtilities.isRightMouseButton(e)) {
+        }
+        else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
             render();
-        } else if (SwingUtilities.isMiddleMouseButton(e)) {
+        }
+        else if (SwingUtilities.isMiddleMouseButton(e)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
             int deltaY = lastMousePosition.getYPos() - e.getY();
 
@@ -106,7 +108,6 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
 
         if(clickedIndex == null) {
-            System.out.println("Error, index x : "  + " y index : " );
             return;
         }
 
@@ -131,23 +132,26 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        renderer.setVisible(true);
+        render();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        renderer.setVisible(false);
+        render();
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         Position clickPosition = new Position(e.getX(), e.getY());
-        Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
 
-        System.out.println(e.getWheelRotation());
         camera.zoom(-1 * e.getWheelRotation());
 
-
         render();
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
     }
 }

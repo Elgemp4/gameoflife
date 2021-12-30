@@ -101,7 +101,6 @@ public class Camera {
      * @param x
      */
     public void setX(double x) {
-        System.out.println(x);
         if (x > 0) {
             this.x = x;
         }

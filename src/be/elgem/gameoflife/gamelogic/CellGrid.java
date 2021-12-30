@@ -24,7 +24,6 @@ public class CellGrid {
      * @param y
      */
     public void putCell(int x, int y) {
-        System.out.println("x : " + x + " y : " + y);
         cellGrid[y][x] = true;
     }
 
