@@ -32,36 +32,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         this.setPreferredSize(new Dimension(width, height));
     }
 
-    public void postWindowCreationLoading() {
-        this.createBufferStrategy(2);
-
-        this.camera = new Camera(0, 0, 40, this);
-        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
-        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
-
-        this.renderer = new Renderer(this);
-
-        addMouseWheelListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-
-        this.render();
-    }
-
     @Override
-    public void paint(Graphics g) {
-        render();
-        camera.actualizeDisplayedCells();
-    }
-
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(window.getWidth() - MainWindow.OPTION_PANE_SIZE, window.getHeight());
-    }
-
-    public void render() {
-        renderer.render(this.getBufferStrategy());
+    public void mouseMoved(MouseEvent e) {
     }
 
     @Override
@@ -69,15 +41,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         Position clickPosition = new Position(e.getX(), e.getY());
         Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            render();
-        }
-        else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            render();
-        }
-        else if (SwingUtilities.isMiddleMouseButton(e)) {
+
+        if (SwingUtilities.isMiddleMouseButton(e)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
             int deltaY = lastMousePosition.getYPos() - e.getY();
 
@@ -88,18 +53,20 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
             render();
         }
 
-    }
+        else if(clickedIndex == null) {
+            return;
+        }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-    }
+        else if (SwingUtilities.isLeftMouseButton(e)) {
+            game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+            render();
+        }
 
-    public Game getGame() {
-        return game;
-    }
+        else if (SwingUtilities.isRightMouseButton(e)) {
+            game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+            render();
+        }
 
-    public Camera getCamera() {
-        return camera;
     }
 
     @Override
@@ -122,33 +89,74 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        lastMousePosition = new Position(e.getX(), e.getY());
+        if(SwingUtilities.isMiddleMouseButton(e))
+            lastMousePosition = new Position(e.getX(), e.getY());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        lastMousePosition = new Position(e.getX(), e.getY());
+        if(SwingUtilities.isMiddleMouseButton(e))
+            lastMousePosition = new Position(e.getX(), e.getY());
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        renderer.setVisible(true);
+        renderer.showGrid(true);
         render();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        renderer.setVisible(false);
+        renderer.showGrid(false);
         render();
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        Position clickPosition = new Position(e.getX(), e.getY());
-
         camera.zoom(-1 * e.getWheelRotation());
 
         render();
+    }
+
+    public void postWindowCreationLoading() {
+        this.createBufferStrategy(2);
+
+        this.camera = new Camera(0, 0, 40, this);
+        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
+        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
+
+        this.renderer = new Renderer(this);
+
+        addMouseWheelListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        this.render();
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        render();
+        camera.actualizeDisplayedCells();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(window.getWidth() - MainWindow.OPTION_PANE_SIZE, window.getHeight());
+    }
+
+    public void render() {
+        renderer.render(this.getBufferStrategy());
+    }
+
+
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     public Renderer getRenderer() {

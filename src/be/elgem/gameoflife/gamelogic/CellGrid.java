@@ -46,7 +46,7 @@ public class CellGrid {
     /**
      * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
      */
-    public void checkCells() {
+    public void checkCells(boolean forceCheck) {
         boolean[][] cellGridCopy = cloneCellGrid();
 
         for (int y = 0; y < cellGrid.length; y++) {
@@ -57,7 +57,8 @@ public class CellGrid {
                     if (numberCells != 2 && numberCells != 3) {
                         cellGridCopy[y][x] = false;
                     }
-                } else {
+                }
+                else {
                     if (numberCells == 3) {
                         cellGridCopy[y][x] = true;
                     }
@@ -67,7 +68,7 @@ public class CellGrid {
 
         //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
         //de ça la grille n'est pas reset
-        if(gameLoop.isRunning()){
+        if(gameLoop.isRunning() || forceCheck){
             this.cellGrid = cellGridCopy.clone();
         }
 

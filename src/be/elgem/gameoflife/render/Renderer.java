@@ -110,7 +110,7 @@ public class Renderer {
         }
     }
 
-    public void setVisible(boolean visible) {
+    public void showGrid(boolean visible) {
         this.isVisible = visible;
     }
 

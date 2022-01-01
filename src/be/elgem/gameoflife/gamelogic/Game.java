@@ -42,7 +42,7 @@ public class Game {
      * @param ignoredEvent
      */
     public void step(ActionEvent ignoredEvent) {
-        update();
+        cellGrid.checkCells(true);
         render();
     }
 
@@ -77,7 +77,7 @@ public class Game {
      * Mets à jour tout ce qui a rapport au jeu
      */
     public void update() {
-        cellGrid.checkCells();
+        cellGrid.checkCells(false);
     }
 
     /**
