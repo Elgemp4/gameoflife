@@ -11,7 +11,7 @@ public class Game {
 
     final private GameCanvas gameCanvas;
 
-    final private CellGrid cellGrid;
+    private CellGrid cellGrid;
 
     private int gameSpeed = 1;
 
@@ -20,7 +20,7 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        cellGrid = new CellGrid(2000, 2000, gameLoop);
+        cellGrid = new CellGrid(2000, 2000);
     }
 
     /**
@@ -42,7 +42,7 @@ public class Game {
      * @param ignoredEvent
      */
     public void step(ActionEvent ignoredEvent) {
-        cellGrid.checkCells(true);
+        checkCells(true);
         render();
     }
 
@@ -77,7 +77,7 @@ public class Game {
      * Mets à jour tout ce qui a rapport au jeu
      */
     public void update() {
-        cellGrid.checkCells(false);
+        checkCells(false);
     }
 
     /**
@@ -85,6 +85,38 @@ public class Game {
      */
     public void render() {
         gameCanvas.render();
+    }
+
+    /**
+     * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
+     */
+    public void checkCells(boolean forceCheck) {
+        CellGrid cellGridCopy = cellGrid.cloneCellGrid();
+        Cell[][] cellGridCopyCellMatrix = cellGridCopy.getCellMatrix();
+
+        for (int y = 0; y < cellGridCopyCellMatrix.length; y++) {
+            for (int x = 0; x < cellGridCopyCellMatrix[0].length; x++) {
+                int numberCells = cellGridCopy.getSurroundingCells(x, y);
+
+                if (cellGridCopy.isAlive(x, y)) {
+                    if (numberCells != 2 && numberCells != 3) {
+                        cellGridCopy.removeCell(x, y);
+                    }
+                }
+                else {
+                    if (numberCells == 3) {
+                        cellGridCopy.putCell(x, y);
+                    }
+                }
+            }
+        }
+
+        //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
+        //de ça la grille n'est pas reset
+        if(gameLoop.isRunning() || forceCheck){
+            this.cellGrid = cellGridCopy;
+        }
+
     }
 
     /**

@@ -5,17 +5,27 @@ public class CellGrid {
     private static int NUMBER_ROW = 50;
     private static int NUMBER_COL = 50;
 
-    private boolean[][] cellGrid;
+    private Cell[][] cellGrid;
 
-    private GameLoop gameLoop;
-
-    public CellGrid(int numberRow, int numberCol, GameLoop gameLoop) {
+    public CellGrid(int numberRow, int numberCol) {
         CellGrid.NUMBER_ROW = numberRow;
         CellGrid.NUMBER_COL = numberCol;
 
-        this.gameLoop = gameLoop;
+        initCellGrid();
+    }
 
-        cellGrid = new boolean[numberCol][numberRow];
+    public CellGrid(Cell[][] cellGrid) {
+        this.cellGrid = cellGrid;
+    }
+
+    private void initCellGrid() {
+        cellGrid = new Cell[NUMBER_COL][NUMBER_ROW];
+
+        for (int y = 0; y < cellGrid.length; y++) {
+            for (int x = 0; x < cellGrid[0].length; x++) {
+                cellGrid[y][x] = new Cell();
+            }
+        }
     }
 
     /**
@@ -24,7 +34,10 @@ public class CellGrid {
      * @param y
      */
     public void putCell(int x, int y) {
-        cellGrid[y][x] = true;
+        if(!cellGrid[y][x].isAlive()) {
+            cellGrid[y][x].setAlive(true);
+            addAttenantCell(x, y);
+        }
     }
 
     /**
@@ -33,59 +46,63 @@ public class CellGrid {
      * @param y
      */
     public void removeCell(int x, int y) {
-        cellGrid[y][x] = false;
+        if(cellGrid[y][x].isAlive()) {
+            cellGrid[y][x].setAlive(false);
+            removeAttenantCell(x, y);
+        }
+
+    }
+
+    public void addAttenantCell(int x, int y) {
+        for (int yOffset = -1; yOffset <= 1; yOffset++) {
+            for (int xOffset = -1; xOffset <= 1; xOffset++) {
+                if(yOffset!=0 || xOffset!=0) {
+                    int searchX = x + xOffset;
+                    int searchY = y + yOffset;
+
+                    if(isInGrid(searchX, searchY)) {
+                        System.out.println("ici");
+                        cellGrid[searchY][searchX].addAttenantCell();
+                    }
+                }
+            }
+        }
+    }
+
+    public void removeAttenantCell(int x, int y) {
+        for (int yOffset = -1; yOffset <= 1; yOffset++) {
+            for (int xOffset = -1; xOffset <= 1; xOffset++) {
+                if(yOffset!=0 || xOffset!=0) {
+                    int searchX = x + xOffset;
+                    int searchY = y + yOffset;
+
+                    if(isInGrid(searchX, searchY)) {
+                        cellGrid[searchY][searchX].removeAttenantCell();
+                    }
+                }
+            }
+        }
     }
 
     /**
      * Reset la grille de boolean en une nouvelle grille
      */
     public void reset() {
-        cellGrid = new boolean[NUMBER_COL][NUMBER_ROW];
-    }
-
-    /**
-     * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
-     */
-    public void checkCells(boolean forceCheck) {
-        boolean[][] cellGridCopy = cloneCellGrid();
-
-        for (int y = 0; y < cellGrid.length; y++) {
-            for (int x = 0; x < cellGrid[0].length; x++) {
-                int numberCells = countSurroundingCells(x, y);
-
-                if (isAlive(x, y)) {
-                    if (numberCells != 2 && numberCells != 3) {
-                        cellGridCopy[y][x] = false;
-                    }
-                }
-                else {
-                    if (numberCells == 3) {
-                        cellGridCopy[y][x] = true;
-                    }
-                }
-            }
-        }
-
-        //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
-        //de ça la grille n'est pas reset
-        if(gameLoop.isRunning() || forceCheck){
-            this.cellGrid = cellGridCopy.clone();
-        }
-
+        initCellGrid();
     }
 
     /**
      * Créer un copie sans pointeur de la grille de boolean
      * @return
      */
-    private boolean[][] cloneCellGrid() {
-        boolean[][] copiedCellGrid = new boolean[cellGrid.length][cellGrid[0].length];
+    public CellGrid cloneCellGrid() {
+        Cell[][] copiedCellGrid = new Cell[cellGrid.length][cellGrid[0].length];
 
         for (int y = 0; y < copiedCellGrid.length; y++) {
             copiedCellGrid[y] = cellGrid[y].clone();
         }
 
-        return  copiedCellGrid;
+        return new CellGrid(copiedCellGrid);
     }
 
     /**
@@ -94,27 +111,8 @@ public class CellGrid {
      * @param y
      * @return
      */
-    private int countSurroundingCells(int x, int y) {
-        int aliveCellsCounter = 0;
-
-        for (int yOffset = -1; yOffset <= 1; yOffset++) {
-            for (int xOffset = -1; xOffset <= 1; xOffset++) {
-                if (xOffset != 0 || yOffset != 0) {
-                    int searchX = x + xOffset;
-                    int searchY = y + yOffset;
-
-                    if (isInGrid(searchX, searchY)) {
-                        if (isAlive(searchX, searchY)) {
-                            aliveCellsCounter++;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        return aliveCellsCounter;
-
+    public int getSurroundingCells(int x, int y) {
+        return cellGrid[y][x].getAttenantCellsCount();
     }
 
     /**
@@ -136,15 +134,15 @@ public class CellGrid {
      * @param y
      * @return
      */
-    private boolean isAlive(int x, int y) {
-        return cellGrid[y][x];
+    public boolean isAlive(int x, int y) {
+        return cellGrid[y][x].isAlive();
     }
 
     /**
      * Retourne la grille de boolean du jeu
      * @return
      */
-    public boolean[][] getBooleanGrid() {
+    public Cell[][] getCellMatrix() {
         return cellGrid;
     }
 

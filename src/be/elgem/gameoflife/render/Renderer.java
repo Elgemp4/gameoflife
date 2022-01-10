@@ -1,5 +1,7 @@
 package be.elgem.gameoflife.render;
 
+import be.elgem.gameoflife.gamelogic.Cell;
+import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gui.GameCanvas;
 
 import java.awt.*;
@@ -83,7 +85,8 @@ public class Renderer {
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
-        boolean[][] cellsArray = gameCanvas.getGame().getCellGrid().getBooleanGrid();
+        CellGrid cellsGrid = gameCanvas.getGame().getCellGrid();
+        Cell[][] cellMatrix = cellsGrid.getCellMatrix();
         graphics.setColor(Color.WHITE);
 
         for (int y = 0; y < gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
@@ -92,9 +95,13 @@ public class Renderer {
                 if (index == null) {
                     continue;
                 }
-                if (cellsArray[index.getYIndex()][index.getXIndex()]) {
+                if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
+                    graphics.setColor(Color.white);
                     graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), (int) camera.getCellSize(), (int) camera.getCellSize());
+
                 }
+                graphics.setColor(Color.red);
+                graphics.drawString(""+cellMatrix[index.getYIndex()][index.getYIndex()].getAttenantCellsCount(), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
             }
         }
     }
