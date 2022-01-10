@@ -42,7 +42,7 @@ public class Game {
      * @param ignoredEvent
      */
     public void step(ActionEvent ignoredEvent) {
-        checkCells(true);
+        checkCells();
         render();
     }
 
@@ -77,7 +77,7 @@ public class Game {
      * Mets à jour tout ce qui a rapport au jeu
      */
     public void update() {
-        checkCells(false);
+        checkCells();
     }
 
     /**
@@ -90,13 +90,15 @@ public class Game {
     /**
      * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
      */
-    public void checkCells(boolean forceCheck) {
+    public void checkCells() {
         CellGrid cellGridCopy = cellGrid.cloneCellGrid();
-        Cell[][] cellGridCopyCellMatrix = cellGridCopy.getCellMatrix();
+        byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
 
-        for (int y = 0; y < cellGridCopyCellMatrix.length; y++) {
-            for (int x = 0; x < cellGridCopyCellMatrix[0].length; x++) {
+        for (int y = 0; y < cellGridCopyByteCellMatrices.length; y++) {
+            for (int x = 0; x < cellGridCopyByteCellMatrices[0].length; x++) {
                 int numberCells = cellGridCopy.getSurroundingCells(x, y);
+
+                if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}
 
                 if (cellGrid.isAlive(x, y)) {
                     if (numberCells != 2 && numberCells != 3) {
@@ -110,13 +112,6 @@ public class Game {
                 }
             }
         }
-
-        //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
-        //de ça la grille n'est pas reset
-//        if(gameLoop.isRunning() || forceCheck){
-//            this.cellGrid = cellGridCopy;
-//        }
-
     }
 
     /**
@@ -135,6 +130,7 @@ public class Game {
         return cellGrid;
     }
 
-
-
+    public GameLoop getGameLoop() {
+        return gameLoop;
+    }
 }

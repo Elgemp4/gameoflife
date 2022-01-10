@@ -1,31 +1,26 @@
 package be.elgem.gameoflife.gamelogic;
 
+/**
+ * La class CellGrid est une classe représentant un grille de cellule d'un jeu de la vie, chaque cellule est un byte
+ * dont les trois premiers bits sont inutilisés, les quatres suivants encodent le nombre de cellules adjacentes et
+ * le dernier encode si la cellule est vivante.
+ */
 public class CellGrid {
 
     private static int NUMBER_ROW = 50;
     private static int NUMBER_COL = 50;
 
-    private Cell[][] cellGrid;
+    private byte[][] byteCellGrid;
 
     public CellGrid(int numberRow, int numberCol) {
         CellGrid.NUMBER_ROW = numberRow;
         CellGrid.NUMBER_COL = numberCol;
 
-        initCellGrid();
+        byteCellGrid = new byte[NUMBER_COL][NUMBER_ROW];
     }
 
-    public CellGrid(Cell[][] cellGrid) {
-        this.cellGrid = cellGrid;
-    }
-
-    private void initCellGrid() {
-        cellGrid = new Cell[NUMBER_COL][NUMBER_ROW];
-
-        for (int y = 0; y < cellGrid.length; y++) {
-            for (int x = 0; x < cellGrid[0].length; x++) {
-                cellGrid[y][x] = new Cell();
-            }
-        }
+    public CellGrid(byte[][] byteCellGrid) {
+        this.byteCellGrid = byteCellGrid;
     }
 
     /**
@@ -34,8 +29,8 @@ public class CellGrid {
      * @param y
      */
     public void putCell(int x, int y) {
-        if(!cellGrid[y][x].isAlive()) {
-            cellGrid[y][x].setAlive(true);
+        if(!ByteCell.isAlive(byteCellGrid[y][x])) {
+            byteCellGrid[y][x] = ByteCell.setAlive(byteCellGrid[y][x], true);
             informAdditionSurroundingCells(x, y);
         }
     }
@@ -46,8 +41,8 @@ public class CellGrid {
      * @param y
      */
     public void removeCell(int x, int y) {
-        if(cellGrid[y][x].isAlive()) {
-            cellGrid[y][x].setAlive(false);
+        if(ByteCell.isAlive(byteCellGrid[y][x])) {
+            byteCellGrid[y][x] = ByteCell.setAlive(byteCellGrid[y][x], false);
             informRemovalSurroundingCells(x, y);
         }
 
@@ -61,7 +56,7 @@ public class CellGrid {
                     int searchY = y + yOffset;
 
                     if(isInGrid(searchX, searchY)) {
-                        cellGrid[searchY][searchX].incrementAdjacentCellCount();
+                        byteCellGrid[searchY][searchX] = ByteCell.incrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
                     }
                 }
             }
@@ -76,7 +71,7 @@ public class CellGrid {
                     int searchY = y + yOffset;
 
                     if(isInGrid(searchX, searchY)) {
-                        cellGrid[searchY][searchX].decrementAdjacentCellCount();
+                        byteCellGrid[searchY][searchX] = ByteCell.decrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
                     }
                 }
             }
@@ -87,7 +82,7 @@ public class CellGrid {
      * Reset la grille de boolean en une nouvelle grille
      */
     public void reset() {
-        initCellGrid();
+        byteCellGrid = new byte[NUMBER_COL][NUMBER_ROW];
     }
 
     /**
@@ -95,13 +90,13 @@ public class CellGrid {
      * @return
      */
     public CellGrid cloneCellGrid() {
-        Cell[][] copiedCellGrid = new Cell[cellGrid.length][cellGrid[0].length];
+        byte[][] copiedByteCellGrid = new byte[byteCellGrid.length][byteCellGrid[0].length];
 
-        for (int y = 0; y < copiedCellGrid.length; y++) {
-            copiedCellGrid[y] = cellGrid[y].clone();
+        for (int y = 0; y < copiedByteCellGrid.length; y++) {
+            copiedByteCellGrid[y] = byteCellGrid[y].clone();
         }
 
-        return new CellGrid(copiedCellGrid);
+        return new CellGrid(copiedByteCellGrid);
     }
 
     /**
@@ -111,7 +106,7 @@ public class CellGrid {
      * @return
      */
     public int getSurroundingCells(int x, int y) {
-        return cellGrid[y][x].getAdjacentCellCount();
+        return ByteCell.getAdjacentCellCount(byteCellGrid[y][x]);
     }
 
     /**
@@ -134,15 +129,15 @@ public class CellGrid {
      * @return
      */
     public boolean isAlive(int x, int y) {
-        return cellGrid[y][x].isAlive();
+        return ByteCell.isAlive(byteCellGrid[y][x]);
     }
 
     /**
      * Retourne la grille de boolean du jeu
      * @return
      */
-    public Cell[][] getCellMatrix() {
-        return cellGrid;
+    public byte[][] getCellMatrix() {
+        return byteCellGrid;
     }
 
     /**

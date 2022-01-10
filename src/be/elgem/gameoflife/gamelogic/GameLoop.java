@@ -12,7 +12,7 @@ public class GameLoop implements Runnable{
 
     private double timeBetweenTicks;
 
-    private int fps;
+    private int fps, storedFPS;
 
     private Thread worker;
 
@@ -94,7 +94,7 @@ public class GameLoop implements Runnable{
      * Mets à jour, si le moment est arrivé, le jeu
      */
     private void tryUpdate() {
-        while(accumulator>=updateRate) {
+        if(accumulator>=updateRate) {
             game.update();
             game.render();
             fps++;
@@ -109,11 +109,16 @@ public class GameLoop implements Runnable{
      */
     private void debugFPS() {
         if(System.currentTimeMillis()>=timeForNextDebug) {
-            System.out.printf("FPS : %d%n", fps);
+//            System.out.printf("FPS : %d%n", fps);
 
+            storedFPS = fps;
             fps = 0;
+
             timeForNextDebug = System.currentTimeMillis() + 1000;
         }
     }
 
+    public int getFps() {
+        return storedFPS;
+    }
 }

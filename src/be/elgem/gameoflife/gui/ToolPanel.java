@@ -133,7 +133,7 @@ public class ToolPanel extends JPanel {
 
         JLabel speedText = new JLabel("Speed (1)");
 
-        JSlider sldSpeed = new JSlider(1,10, game.getGameSpeed());
+        JSlider sldSpeed = new JSlider(1,200, game.getGameSpeed());
         sldSpeed.setPreferredSize(new Dimension(100,20));
         sldSpeed.addChangeListener(changeEvent -> game.setExecutionSpeed(changeEvent, speedText));
 

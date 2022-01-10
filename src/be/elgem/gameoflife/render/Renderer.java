@@ -1,7 +1,7 @@
 package be.elgem.gameoflife.render;
 
-import be.elgem.gameoflife.gamelogic.Cell;
 import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.GameLoop;
 import be.elgem.gameoflife.gui.GameCanvas;
 
 import java.awt.*;
@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 public class Renderer {
     final private Camera camera;
     final private GameCanvas gameCanvas;
+    final private GameLoop gameLoop;
 
     private boolean isVisible = false;
 
@@ -19,6 +20,8 @@ public class Renderer {
         this.gameCanvas = gameCanvas;
 
         this.camera = gameCanvas.getCamera();
+
+        this.gameLoop = gameCanvas.getGame().getGameLoop();
     }
 
     /**
@@ -35,6 +38,8 @@ public class Renderer {
         drawCells(graphics);
 
         drawGrid(graphics);
+
+        drawFPSCount(graphics);
 
         graphics.dispose();
 
@@ -86,7 +91,7 @@ public class Renderer {
      */
     private void drawCells(Graphics graphics) {
         CellGrid cellsGrid = gameCanvas.getGame().getCellGrid();
-        Cell[][] cellMatrix = cellsGrid.getCellMatrix();
+        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(Color.WHITE);
 
         for (int y = 0; y < gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
@@ -100,10 +105,15 @@ public class Renderer {
                     graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), (int) camera.getCellSize(), (int) camera.getCellSize());
 
                 }
-                graphics.setColor(Color.red);
-                graphics.drawString(""+cellMatrix[index.getYIndex()][index.getXIndex()].getAdjacentCellCount(), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
+//                graphics.setColor(Color.red);
+//                graphics.drawString(""+ ByteCell.getAdjacentCellCount(byteCellMatrices[index.getYIndex()][index.getXIndex()]), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
             }
         }
+    }
+
+    private void drawFPSCount(Graphics graphics) {
+        graphics.setColor(Color.green);
+        graphics.drawString("FPS : " + gameLoop.getFps(), 5,15);
     }
 
     public boolean canGridBeDisplayed() {
