@@ -113,7 +113,7 @@ public class Renderer {
 
     private void drawFPSCount(Graphics graphics) {
         graphics.setColor(Color.green);
-        graphics.drawString("FPS : " + gameLoop.getFps(), 5,15);
+        graphics.drawString("UPS : " + gameLoop.getUps(), 5,15);
     }
 
     public boolean canGridBeDisplayed() {
