@@ -98,14 +98,14 @@ public class Game {
             for (int x = 0; x < cellGridCopyCellMatrix[0].length; x++) {
                 int numberCells = cellGridCopy.getSurroundingCells(x, y);
 
-                if (cellGridCopy.isAlive(x, y)) {
+                if (cellGrid.isAlive(x, y)) {
                     if (numberCells != 2 && numberCells != 3) {
-                        cellGridCopy.removeCell(x, y);
+                        cellGrid.removeCell(x, y);
                     }
                 }
                 else {
                     if (numberCells == 3) {
-                        cellGridCopy.putCell(x, y);
+                        cellGrid.putCell(x, y);
                     }
                 }
             }
@@ -113,9 +113,9 @@ public class Game {
 
         //Dans le cas d'un reset il peut arriver que la grille soit clonée après que la grille est été reset et à cause
         //de ça la grille n'est pas reset
-        if(gameLoop.isRunning() || forceCheck){
-            this.cellGrid = cellGridCopy;
-        }
+//        if(gameLoop.isRunning() || forceCheck){
+//            this.cellGrid = cellGridCopy;
+//        }
 
     }
 

@@ -1,11 +1,11 @@
 package be.elgem.gameoflife.gamelogic;
 
 public class Cell {
-    private int attenantCellsCount;
+    private int adjacentCellCount;
     private boolean isAlive;
 
     public Cell() {
-        attenantCellsCount = 0;
+        adjacentCellCount = 0;
         isAlive = false;
     }
 
@@ -17,15 +17,15 @@ public class Cell {
         return isAlive;
     }
 
-    public void addAttenantCell() {
-        attenantCellsCount++;
+    public void incrementAdjacentCellCount() {
+        adjacentCellCount++;
     }
 
-    public void removeAttenantCell() {
-        attenantCellsCount--;
+    public void decrementAdjacentCellCount() {
+        adjacentCellCount--;
     }
 
-    public int getAttenantCellsCount() {
-        return attenantCellsCount;
+    public int getAdjacentCellCount() {
+        return adjacentCellCount;
     }
 }

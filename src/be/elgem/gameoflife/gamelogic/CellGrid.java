@@ -36,7 +36,7 @@ public class CellGrid {
     public void putCell(int x, int y) {
         if(!cellGrid[y][x].isAlive()) {
             cellGrid[y][x].setAlive(true);
-            addAttenantCell(x, y);
+            informAdditionSurroundingCells(x, y);
         }
     }
 
@@ -48,12 +48,12 @@ public class CellGrid {
     public void removeCell(int x, int y) {
         if(cellGrid[y][x].isAlive()) {
             cellGrid[y][x].setAlive(false);
-            removeAttenantCell(x, y);
+            informRemovalSurroundingCells(x, y);
         }
 
     }
 
-    public void addAttenantCell(int x, int y) {
+    public void informAdditionSurroundingCells(int x, int y) {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if(yOffset!=0 || xOffset!=0) {
@@ -61,15 +61,14 @@ public class CellGrid {
                     int searchY = y + yOffset;
 
                     if(isInGrid(searchX, searchY)) {
-                        System.out.println("ici");
-                        cellGrid[searchY][searchX].addAttenantCell();
+                        cellGrid[searchY][searchX].incrementAdjacentCellCount();
                     }
                 }
             }
         }
     }
 
-    public void removeAttenantCell(int x, int y) {
+    public void informRemovalSurroundingCells(int x, int y) {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if(yOffset!=0 || xOffset!=0) {
@@ -77,7 +76,7 @@ public class CellGrid {
                     int searchY = y + yOffset;
 
                     if(isInGrid(searchX, searchY)) {
-                        cellGrid[searchY][searchX].removeAttenantCell();
+                        cellGrid[searchY][searchX].decrementAdjacentCellCount();
                     }
                 }
             }
@@ -112,7 +111,7 @@ public class CellGrid {
      * @return
      */
     public int getSurroundingCells(int x, int y) {
-        return cellGrid[y][x].getAttenantCellsCount();
+        return cellGrid[y][x].getAdjacentCellCount();
     }
 
     /**

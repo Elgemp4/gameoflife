@@ -101,7 +101,7 @@ public class Renderer {
 
                 }
                 graphics.setColor(Color.red);
-                graphics.drawString(""+cellMatrix[index.getYIndex()][index.getYIndex()].getAttenantCellsCount(), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
+                graphics.drawString(""+cellMatrix[index.getYIndex()][index.getXIndex()].getAdjacentCellCount(), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
             }
         }
     }
