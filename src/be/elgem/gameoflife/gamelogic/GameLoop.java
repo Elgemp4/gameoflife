@@ -8,9 +8,7 @@ public class GameLoop implements Runnable{
 
     private long timeForNextDebug;
 
-    private long timeSinceLastTick, currentTime, accumulator;
-
-    private double timeBetweenTicks;
+    private long startTime, endTime;
 
     private int ups, storedUPS;
 
@@ -40,6 +38,7 @@ public class GameLoop implements Runnable{
      */
     public void stop() {
         running = false;
+        storedUPS = 0;
         worker = new Thread(this);
     }
 
@@ -63,16 +62,21 @@ public class GameLoop implements Runnable{
     public void run() {
         running = true;
 
-        timeSinceLastTick = currentTime = System.currentTimeMillis();
-
         timeForNextDebug = System.currentTimeMillis() + 1000;
 
         while(running) {
-            updateTime();
+            startTime = System.currentTimeMillis();
 
-            tryUpdate();
-
+            update();
             debugUPS();
+
+            endTime = System.currentTimeMillis();
+
+            long deltaTime = endTime - startTime;
+
+            try {
+                Thread.sleep((long) ((updateRate - deltaTime) <0 ? 0 : (updateRate - deltaTime)));
+            } catch (InterruptedException e) {}
         }
 
     }
@@ -80,28 +84,14 @@ public class GameLoop implements Runnable{
     /**
      * Mets à jour les variables gérant le temps s'étant passé
      */
-    private void updateTime() {
-        currentTime = System.currentTimeMillis();
-
-        timeBetweenTicks = currentTime - timeSinceLastTick;
-
-        timeSinceLastTick = currentTime;
-
-        accumulator += timeBetweenTicks;
-    }
 
     /**
      * Mets à jour, si le moment est arrivé, le jeu
      */
-    private void tryUpdate() {
-        if(accumulator>=updateRate) {
-            game.update();
-            game.render();
-            ups++;
-
-            accumulator-=updateRate;
-        }
-
+    private void update() {
+        game.update();
+        game.render();
+        ups++;
     }
 
     /**
