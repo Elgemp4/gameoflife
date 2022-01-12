@@ -7,20 +7,36 @@ package be.elgem.gameoflife.gamelogic;
  */
 public class CellGrid {
 
-    private static int NUMBER_ROW = 50;
-    private static int NUMBER_COL = 50;
+    private static int NUMBER_ROW;
+    private static int NUMBER_COL;
 
     private byte[][] byteCellGrid;
+
+    private int[][] chunkGrid;
+    private int chunkSize;
+
 
     public CellGrid(int numberRow, int numberCol) {
         CellGrid.NUMBER_ROW = numberRow;
         CellGrid.NUMBER_COL = numberCol;
 
-        byteCellGrid = new byte[NUMBER_COL][NUMBER_ROW];
+        chunkSize = 50;
+
+        byteCellGrid = new byte[NUMBER_ROW][NUMBER_COL];
+
+        chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
+
     }
 
     public CellGrid(byte[][] byteCellGrid) {
         this.byteCellGrid = byteCellGrid;
+
+        CellGrid.NUMBER_ROW = byteCellGrid.length;
+        CellGrid.NUMBER_COL = byteCellGrid[0].length;
+
+        chunkSize = NUMBER_COL / 200;
+
+        chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
     }
 
     /**
@@ -57,6 +73,7 @@ public class CellGrid {
 
                     if(isInGrid(searchX, searchY)) {
                         byteCellGrid[searchY][searchX] = ByteCell.incrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
+                        chunkGrid[searchY / chunkSize][searchX / chunkSize]++;
                     }
                 }
             }
@@ -72,6 +89,7 @@ public class CellGrid {
 
                     if(isInGrid(searchX, searchY)) {
                         byteCellGrid[searchY][searchX] = ByteCell.decrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
+                        chunkGrid[searchY / chunkSize][searchX / chunkSize]--;
                     }
                 }
             }
@@ -97,6 +115,43 @@ public class CellGrid {
         }
 
         return new CellGrid(copiedByteCellGrid);
+    }
+
+    /**
+     * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
+     */
+    public void checkCells() {
+        CellGrid cellGridCopy = cloneCellGrid();
+        byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
+
+        int interation = 0;
+
+        for (int yChunk = 0; yChunk < chunkGrid.length; yChunk++) {
+            for (int xChunk = 0; xChunk < chunkGrid[0].length; xChunk++) {
+                if(chunkGrid[yChunk][xChunk]!=0){
+                    for (int y = yChunk * chunkSize; y < (yChunk + 1) * chunkSize; y++) {
+                        for (int x = xChunk * chunkSize; x < (xChunk + 1) * chunkSize; x++) {
+                            interation++;
+                            if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}
+
+                            int numberCells = cellGridCopy.getSurroundingCells(x, y);
+
+                            if (this.isAlive(x, y)) {
+                                if (numberCells != 2 && numberCells != 3) {
+                                    this.removeCell(x, y);
+                                }
+                            }
+                            else {
+                                if (numberCells == 3) {
+                                    this.putCell(x, y);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(interation);
     }
 
     /**

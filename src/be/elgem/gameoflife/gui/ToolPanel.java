@@ -81,7 +81,7 @@ public class ToolPanel extends JPanel {
 
         createSpeedSection(gamePanel);
 
-        gamePanel.setBackground(Color.RED);
+        //gamePanel.setBackground(Color.RED);
 
 
         return gamePanel;

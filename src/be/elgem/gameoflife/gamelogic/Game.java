@@ -42,7 +42,7 @@ public class Game {
      * @param ignoredEvent
      */
     public void step(ActionEvent ignoredEvent) {
-        checkCells();
+        cellGrid.checkCells();
         render();
     }
 
@@ -77,7 +77,7 @@ public class Game {
      * Mets à jour tout ce qui a rapport au jeu
      */
     public void update() {
-        checkCells();
+        cellGrid.checkCells();
     }
 
     /**
@@ -87,32 +87,7 @@ public class Game {
         gameCanvas.render();
     }
 
-    /**
-     * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
-     */
-    public void checkCells() {
-        CellGrid cellGridCopy = cellGrid.cloneCellGrid();
-        byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
 
-        for (int y = 0; y < cellGridCopyByteCellMatrices.length; y++) {
-            for (int x = 0; x < cellGridCopyByteCellMatrices[0].length; x++) {
-                if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}
-
-                int numberCells = cellGridCopy.getSurroundingCells(x, y);
-
-                if (cellGrid.isAlive(x, y)) {
-                    if (numberCells != 2 && numberCells != 3) {
-                        cellGrid.removeCell(x, y);
-                    }
-                }
-                else {
-                    if (numberCells == 3) {
-                        cellGrid.putCell(x, y);
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * retourne la vitesse actuelle de mise à jour du jeu
