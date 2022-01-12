@@ -87,7 +87,7 @@ public class GameLoop implements Runnable{
 
         timeSinceLastTick = currentTime;
 
-        accumulator+=timeBetweenTicks;
+        accumulator += timeBetweenTicks;
     }
 
     /**

@@ -19,15 +19,23 @@ public class ToolPanel extends JPanel {
 
     final private GameCanvas gameCanvas;
 
+    final private HashMap<String, EGridVisibility> correspondingMap;
+
+
     public ToolPanel(MainWindow window, Game game, int width, int height) {
         super();
-        this.setLayout(new SpringLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.window = window;
 
         this.game = game;
 
         this.gameCanvas = window.getGameCanvas();
+
+        this.correspondingMap = new HashMap<>();
+        this.correspondingMap.put("Always shown", EGridVisibility.ALWAYS_SHOWN);
+        this.correspondingMap.put("Hybrid", EGridVisibility.HYBRID);
+        this.correspondingMap.put("Always hide", EGridVisibility.ALWAYS_HIDE);
 
         initializePanel(width, height);
 
@@ -47,16 +55,12 @@ public class ToolPanel extends JPanel {
         setPreferredSize(new Dimension(width, height));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        add(Box.createVerticalGlue());
-
         JPanel gamePanel = createGameCategory();
         this.add(gamePanel);
 
         JPanel optionPanel = createOptionCategory();
 
         this.add(optionPanel);
-
-        add(Box.createVerticalGlue());
     }
 
 
@@ -76,6 +80,9 @@ public class ToolPanel extends JPanel {
         JButton reset = createButton(gamePanel, "Reset", ignoredEvent -> game.reset(ignoredEvent, start));
 
         createSpeedSection(gamePanel);
+
+        gamePanel.setBackground(Color.RED);
+
 
         return gamePanel;
     }
@@ -114,11 +121,6 @@ public class ToolPanel extends JPanel {
     }
 
     private void changeGridVisibility(ItemEvent event){
-        HashMap<String, EGridVisibility> correspondingMap = new HashMap<>();
-        correspondingMap.put("Always shown", EGridVisibility.ALWAYS_SHOWN);
-        correspondingMap.put("Hybrid", EGridVisibility.HYBRID);
-        correspondingMap.put("Always hide", EGridVisibility.ALWAYS_HIDE);
-
         gameCanvas.getRenderer().setGridVisibility(correspondingMap.get((String)event.getItem()));
         gameCanvas.render();
     }
@@ -133,7 +135,7 @@ public class ToolPanel extends JPanel {
 
         JLabel speedText = new JLabel("Speed (1)");
 
-        JSlider sldSpeed = new JSlider(1,200, game.getGameSpeed());
+        JSlider sldSpeed = new JSlider(1,100, game.getGameSpeed());
         sldSpeed.setPreferredSize(new Dimension(100,20));
         sldSpeed.addChangeListener(changeEvent -> game.setExecutionSpeed(changeEvent, speedText));
 

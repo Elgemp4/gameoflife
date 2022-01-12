@@ -96,9 +96,9 @@ public class Game {
 
         for (int y = 0; y < cellGridCopyByteCellMatrices.length; y++) {
             for (int x = 0; x < cellGridCopyByteCellMatrices[0].length; x++) {
-                int numberCells = cellGridCopy.getSurroundingCells(x, y);
-
                 if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}
+
+                int numberCells = cellGridCopy.getSurroundingCells(x, y);
 
                 if (cellGrid.isAlive(x, y)) {
                     if (numberCells != 2 && numberCells != 3) {
