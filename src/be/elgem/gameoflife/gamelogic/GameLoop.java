@@ -75,8 +75,9 @@ public class GameLoop implements Runnable{
             long deltaTime = endTime - startTime;
 
             try {
-                Thread.sleep((long) ((updateRate - deltaTime) <0 ? 0 : (updateRate - deltaTime)));
-            } catch (InterruptedException e) {}
+                Thread.sleep((long) ((updateRate - deltaTime < 0) ? 0 : updateRate - deltaTime));
+            }
+            catch (InterruptedException e) {}
         }
 
     }

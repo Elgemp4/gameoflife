@@ -13,7 +13,7 @@ public class Game {
 
     private CellGrid cellGrid;
 
-    private int gameSpeed = 1;
+    private int gameSpeed = 10;
 
     public Game(GameCanvas gameCanvas) {
         this.gameCanvas = gameCanvas;
@@ -66,11 +66,9 @@ public class Game {
      * Permet de redéfinir le taux d'exécution du jeu
      * @param changeEvent
      */
-    public void setExecutionSpeed(ChangeEvent changeEvent, JLabel textLabel) {
-        gameSpeed = ((JSlider) changeEvent.getSource()).getValue();
+    public void setExecutionSpeed(ChangeEvent changeEvent) {
+        gameSpeed = (int) ((JSpinner) changeEvent.getSource()).getValue();
         gameLoop.setUpdateRate(gameSpeed);
-
-        textLabel.setText(String.format("Speed (%d) : ",gameSpeed));
     }
 
     /**

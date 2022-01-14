@@ -124,14 +124,12 @@ public class CellGrid {
         CellGrid cellGridCopy = cloneCellGrid();
         byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
 
-        int interation = 0;
 
         for (int yChunk = 0; yChunk < chunkGrid.length; yChunk++) {
             for (int xChunk = 0; xChunk < chunkGrid[0].length; xChunk++) {
                 if(chunkGrid[yChunk][xChunk]!=0){
                     for (int y = yChunk * chunkSize; y < (yChunk + 1) * chunkSize; y++) {
                         for (int x = xChunk * chunkSize; x < (xChunk + 1) * chunkSize; x++) {
-                            interation++;
                             if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}
 
                             int numberCells = cellGridCopy.getSurroundingCells(x, y);
@@ -151,7 +149,6 @@ public class CellGrid {
                 }
             }
         }
-        System.out.println(interation);
     }
 
     /**

@@ -21,6 +21,8 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
 
     private Position lastMousePosition = null;
 
+    private boolean isHovering = false;
+
     public GameCanvas(MainWindow window, int width, int height) {
         super();
 
@@ -28,6 +30,7 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
 
         this.window = window;
 
+        this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(width, height));
     }
@@ -91,24 +94,37 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e))
             lastMousePosition = new Position(e.getX(), e.getY());
+            renderer.showGrid(true);
+            render();
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e))
-            lastMousePosition = new Position(e.getX(), e.getY());
+        lastMousePosition = new Position(e.getX(), e.getY());
+
+        System.out.println(SwingUtilities.isMiddleMouseButton(e));
+        if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
+            renderer.showGrid(false);
+            render();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        isHovering = true;
         renderer.showGrid(true);
         render();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        renderer.showGrid(false);
-        render();
+        isHovering = false;
+
+        if(!SwingUtilities.isMiddleMouseButton(e)) {
+            renderer.showGrid(false);
+            render();
+        }
+
     }
 
     @Override
@@ -142,7 +158,7 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(window.getWidth() - MainWindow.OPTION_PANE_SIZE, window.getHeight());
+        return new Dimension(window.getWidth(), window.getHeight());
     }
 
     public void render() {

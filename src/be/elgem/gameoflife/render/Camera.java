@@ -101,10 +101,7 @@ public class Camera {
      * @param x
      */
     public void setX(double x) {
-        if (x > 0) {
-            this.x = x;
-        }
-
+        this.x = x;
 
         actualizeDisplayedCells();
     }
@@ -124,9 +121,7 @@ public class Camera {
      * @param y
      */
     public void setY(double y) {
-        if (y > 0) {
-            this.y = y;
-        }
+        this.y = y;
 
         actualizeDisplayedCells();
     }
@@ -143,7 +138,6 @@ public class Camera {
             cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
 
             actualizeDisplayedCells();
-
         }
 
 

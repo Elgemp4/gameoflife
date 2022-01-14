@@ -18,6 +18,7 @@ public class MainWindow extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.setProperty("sun.awt.noerasebackground", "true");
         new MainWindow(800, 600);
     }
 
@@ -36,13 +37,14 @@ public class MainWindow extends JFrame {
         this.width = width;
         this.height = height;
 
-        gameCanvas = new GameCanvas(this, width - OPTION_PANE_SIZE, height);
+        gameCanvas = new GameCanvas(this, width, height);
         add(gameCanvas, BorderLayout.EAST);
 
-        toolPanel = new ToolPanel(this, gameCanvas.getGame(), OPTION_PANE_SIZE, height);
-        add(toolPanel);
+        toolPanel = new ToolPanel(this, gameCanvas.getGame());
+        add(toolPanel, BorderLayout.SOUTH);
 
         setSize(width, height);
+        setMinimumSize(new Dimension(350,250));
 
         pack();
         setLocationRelativeTo(null);

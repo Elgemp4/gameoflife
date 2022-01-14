@@ -3,6 +3,7 @@ package be.elgem.gameoflife.render;
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gamelogic.GameLoop;
 import be.elgem.gameoflife.gui.GameCanvas;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -29,21 +30,25 @@ public class Renderer {
      *
      * @param bufferStrategy
      */
+    @Nullable
     public void render(BufferStrategy bufferStrategy) {
+        try {
+            Graphics graphics = bufferStrategy.getDrawGraphics();
 
-        Graphics graphics = bufferStrategy.getDrawGraphics();
+            drawBackground(graphics);
 
-        drawBackground(graphics);
+            drawCells(graphics);
 
-        drawCells(graphics);
+            drawGrid(graphics);
 
-        drawGrid(graphics);
+            drawFPSCount(graphics);
 
-        drawFPSCount(graphics);
+            graphics.dispose();
 
-        graphics.dispose();
+            bufferStrategy.show();
+        }
+        catch (Exception e) {}
 
-        bufferStrategy.show();
     }
 
     /**
@@ -73,14 +78,17 @@ public class Renderer {
 
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
             int yPos = (int) (camera.getCellSize() * yIndex - camera.getYOffset());
+            if(camera.getCellIndexFromPosition(new Position(0, yPos)) != null)
+                graphics.drawLine(0, yPos, (int) canvasSize.getWidth(), yPos);
 
-            graphics.drawLine(0, yPos, (int) canvasSize.getWidth(), yPos);
+
         }
 
         for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX() + 1; xIndex++) {
             int xPos = (int) (camera.getCellSize() * xIndex - camera.getXOffset());
 
-            graphics.drawLine(xPos, 0, xPos, (int) canvasSize.getHeight());
+            if(camera.getCellIndexFromPosition(new Position(xPos, 0)) != null)
+                graphics.drawLine(xPos, 0, xPos, (int) canvasSize.getHeight());
         }
     }
 
@@ -91,7 +99,7 @@ public class Renderer {
      */
     private void drawCells(Graphics graphics) {
         CellGrid cellsGrid = gameCanvas.getGame().getCellGrid();
-        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
+//        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(Color.WHITE);
 
         for (int y = 0; y < gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
@@ -101,7 +109,7 @@ public class Renderer {
                     continue;
                 }
                 if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
-                    graphics.setColor(Color.white);
+//                    graphics.setColor(Color.white);
                     graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), (int) camera.getCellSize(), (int) camera.getCellSize());
 
                 }
@@ -113,7 +121,7 @@ public class Renderer {
 
     private void drawFPSCount(Graphics graphics) {
         graphics.setColor(Color.green);
-        graphics.drawString("UPS : " + gameLoop.getUps(), 5,15);
+        graphics.drawString("UPS : " + gameLoop.getUps(), 20,15);
     }
 
     public boolean canGridBeDisplayed() {

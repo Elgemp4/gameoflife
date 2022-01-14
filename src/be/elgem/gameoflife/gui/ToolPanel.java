@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.render.EGridVisibility;
+import be.elgem.gameoflife.externallibrary.WrapLayout;
 
 /**
  * ToolPanel est une class JPanel qui contient tous les composants "paramètres" du jeu de la vie"
@@ -21,8 +22,7 @@ public class ToolPanel extends JPanel {
 
     final private HashMap<String, EGridVisibility> correspondingMap;
 
-
-    public ToolPanel(MainWindow window, Game game, int width, int height) {
+    public ToolPanel(MainWindow window, Game game) {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -37,23 +37,21 @@ public class ToolPanel extends JPanel {
         this.correspondingMap.put("Hybrid", EGridVisibility.HYBRID);
         this.correspondingMap.put("Always hide", EGridVisibility.ALWAYS_HIDE);
 
-        initializePanel(width, height);
+        initializePanel();
 
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(MainWindow.OPTION_PANE_SIZE, window.getHeight());
-    }
+//    @Override
+//    public Dimension getPreferredSize() {
+//        return new Dimension(MainWindow.OPTION_PANE_SIZE, window.getHeight());
+//    }
 
     /**
-     * Créer un JPanel d'option de la taille spécifiée
-     * @param width
-     * @param height
+     * Créer un JPanel d'option
      */
-    private void initializePanel(int width, int height) {
-        setPreferredSize(new Dimension(width, height));
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    private void initializePanel() {
+//        setPreferredSize(new Dimension(width, height));
+        setLayout(new WrapLayout(FlowLayout.CENTER));
 
         JPanel gamePanel = createGameCategory();
         this.add(gamePanel);
@@ -81,7 +79,6 @@ public class ToolPanel extends JPanel {
 
         createSpeedSection(gamePanel);
 
-        //gamePanel.setBackground(Color.RED);
 
 
         return gamePanel;
@@ -133,14 +130,16 @@ public class ToolPanel extends JPanel {
         speedSliderPanel.setSize(new Dimension(getWidth(), 0));
         speedSliderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel speedText = new JLabel("Speed (1)");
+        JLabel speedText = new JLabel("Speed : ");
 
-        JSlider sldSpeed = new JSlider(1,500, game.getGameSpeed());
-        sldSpeed.setPreferredSize(new Dimension(100,20));
-        sldSpeed.addChangeListener(changeEvent -> game.setExecutionSpeed(changeEvent, speedText));
+        SpinnerNumberModel model = new SpinnerNumberModel(10,0,1000,10);
+
+        JSpinner spinnerSpeed = new JSpinner(model);
+        spinnerSpeed.setPreferredSize(new Dimension(50,20));
+        spinnerSpeed.addChangeListener(changeEvent -> game.setExecutionSpeed(changeEvent));
 
         speedSliderPanel.add(speedText);
-        speedSliderPanel.add(sldSpeed);
+        speedSliderPanel.add(spinnerSpeed);
 
         panel.add(speedSliderPanel);
     }
