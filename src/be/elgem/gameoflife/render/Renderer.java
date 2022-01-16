@@ -74,21 +74,25 @@ public class Renderer {
 
         Dimension canvasSize = gameCanvas.getPreferredSize();
 
+        Position minPos = camera.getScreenPositionFromGamePosition(new Position(0, 0));
+        Position maxPos = camera.getScreenPositionFromGamePosition(new Position((int) (camera.getCellSize() * CellGrid.getNumberCol()), (int)(camera.getCellSize() * CellGrid.getNumberRow())));
+
         graphics.setColor(Color.gray);
 
+        //Horizontal lines
         for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
-            int yPos = (int) (camera.getCellSize() * yIndex - camera.getYOffset());
-            if(camera.getCellIndexFromPosition(new Position(0, yPos)) != null)
-                graphics.drawLine(0, yPos, (int) canvasSize.getWidth(), yPos);
+            int yPos = Camera.clamp(minPos.getYPos(), maxPos.getYPos(), (int) (camera.getCellSize() * yIndex - camera.getYOffset()));
+
+            graphics.drawLine(minPos.getXPos(), yPos, maxPos.getXPos(), yPos);
 
 
         }
 
+        //Vertical lines
         for (int xIndex = 0; xIndex <= camera.getNumberDisplayedCellsX() + 1; xIndex++) {
-            int xPos = (int) (camera.getCellSize() * xIndex - camera.getXOffset());
+            int xPos = Camera.clamp(minPos.getXPos(), maxPos.getXPos(), (int) (camera.getCellSize() * xIndex - camera.getXOffset()));
 
-            if(camera.getCellIndexFromPosition(new Position(xPos, 0)) != null)
-                graphics.drawLine(xPos, 0, xPos, (int) canvasSize.getHeight());
+            graphics.drawLine(xPos, minPos.getYPos(), xPos, maxPos.getYPos());
         }
     }
 

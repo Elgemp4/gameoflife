@@ -2,6 +2,7 @@ package be.elgem.gameoflife.render;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gui.GameCanvas;
+import javafx.geometry.Pos;
 
 import java.awt.*;
 
@@ -48,7 +49,8 @@ public class Camera {
      * @return
      */
     public int getXOffset() {
-        return (int) (x % cellSize);
+        System.out.println((int) (x % cellSize));
+        return (int) Math.abs(x % cellSize);
     }
 
     /**
@@ -57,19 +59,19 @@ public class Camera {
      * @return
      */
     public int getYOffset() {
-        return (int) (y % cellSize);
+        return (int) Math.abs(y % cellSize);
     }
 
     /**
      * Renvoie l'index d'une cellule depuis une position sur l'écran
      *
-     * @param position
+     * @param screenPosition
      * @return
      */
-    public Index getCellIndexFromPosition(Position position) {
+    public Index getCellIndexFromPosition(Position screenPosition) {
 
-        int xIndex = (int) ((position.getXPos() + x) / cellSize);
-        int yIndex = (int) ((position.getYPos() + y) / cellSize);
+        int xIndex = (int) ((screenPosition.getXPos() + x) / cellSize);
+        int yIndex = (int) ((screenPosition.getYPos() + y) / cellSize);
 
         if (!CellGrid.isInGrid(xIndex, yIndex)) {
             return null;
@@ -77,6 +79,21 @@ public class Camera {
 
         return new Index(xIndex, yIndex);
     }
+
+    public Position getGamePositionFromScreenPosition(Position screenPosition) {
+        int posX = (int) (screenPosition.getXPos() + x);
+        int posY = (int) (screenPosition.getYPos() + y);
+
+        return new Position(posX, posY);
+    }
+
+    public Position getScreenPositionFromGamePosition(Position gamePosition) {
+        int posX = clamp(0, canvas.getWidth(), (int) (gamePosition.getXPos() - x));
+        int posY= clamp(0, canvas.getHeight(), (int) (gamePosition.getYPos() - y));
+
+        return new Position(posX, posY);
+    }
+
 
 
 //    public Position getPositionFromIndex(Index index) {
@@ -178,5 +195,9 @@ public class Camera {
      */
     public double getNumberDisplayedCellsX() {
         return numberDisplayedCellsX;
+    }
+
+    public static int clamp(int min, int max, int nb) {
+        return Math.min(Math.max(min, nb), max);
     }
 }
