@@ -58,7 +58,7 @@ public class Game {
 
         cellGrid.reset();
 
-        gameCanvas.render();
+        gameCanvas.repaint();
 
     }
 
@@ -82,7 +82,7 @@ public class Game {
      * Appelle l'affichage du jeu
      */
     public void render() {
-        gameCanvas.render();
+        gameCanvas.repaint();
     }
 
 

@@ -29,10 +29,8 @@ public class Renderer {
      *
      * @param bufferStrategy
      */
-    public void render(BufferStrategy bufferStrategy) {
+    public void render(Graphics graphics) {
         try {
-            Graphics graphics = bufferStrategy.getDrawGraphics();
-
             drawBackground(graphics);
 
             drawCells(graphics);
@@ -42,8 +40,6 @@ public class Renderer {
             drawFPSCount(graphics);
 
             graphics.dispose();
-
-            bufferStrategy.show();
         }
         catch (Exception e) {}
 
