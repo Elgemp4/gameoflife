@@ -3,7 +3,6 @@ package be.elgem.gameoflife.render;
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gamelogic.GameLoop;
 import be.elgem.gameoflife.gui.GameCanvas;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -30,7 +29,6 @@ public class Renderer {
      *
      * @param bufferStrategy
      */
-    @Nullable
     public void render(BufferStrategy bufferStrategy) {
         try {
             Graphics graphics = bufferStrategy.getDrawGraphics();
@@ -80,7 +78,7 @@ public class Renderer {
         graphics.setColor(Color.gray);
 
         //Horizontal lines
-        for (int yIndex = 0; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
+        for (int yIndex = 1; yIndex <= camera.getNumberDisplayedCellsY() + 1; yIndex++) {
             int yPos = Camera.clamp(minPos.getYPos(), maxPos.getYPos(), (int) (camera.getCellSize() * yIndex - camera.getYOffset()));
 
             graphics.drawLine(minPos.getXPos(), yPos, maxPos.getXPos(), yPos);
@@ -106,15 +104,19 @@ public class Renderer {
 //        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(Color.WHITE);
 
-        for (int y = 0; y < gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
-            for (int x = 0; x < gameCanvas.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
+        for (int y = 0; y <= gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
+            for (int x = 0; x <= gameCanvas.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
                 Index index = camera.getCellIndexFromPosition(new Position(x, y));
                 if (index == null) {
                     continue;
                 }
                 if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
 //                    graphics.setColor(Color.white);
-                    graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), (int) camera.getCellSize(), (int) camera.getCellSize());
+                    System.out.println("x : " + x + " offset : " + Math.abs(camera.getXOffset()));
+                    System.out.println("y : " + y + " offset : " + Math.abs(camera.getYOffset()));
+                    System.out.println();
+
+                    graphics.fillRect(x - Math.abs(camera.getXOffset()), y - Math.abs(camera.getYOffset()), (int) camera.getCellSize(), (int) camera.getCellSize());
 
                 }
 //                graphics.setColor(Color.red);

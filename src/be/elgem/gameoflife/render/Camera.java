@@ -49,8 +49,11 @@ public class Camera {
      * @return
      */
     public int getXOffset() {
-        System.out.println((int) (x % cellSize));
-        return (int) Math.abs(x % cellSize);
+//        System.out.println((int) (x % cellSize));
+        if(x>0)
+            return (int) (x % cellSize);
+        else
+            return (int) ((cellSize - Math.abs(x % cellSize))%cellSize);
     }
 
     /**
@@ -59,7 +62,10 @@ public class Camera {
      * @return
      */
     public int getYOffset() {
-        return (int) Math.abs(y % cellSize);
+        if(y>0)
+            return (int) (y % cellSize);
+        else
+            return (int) ((cellSize - Math.abs(y % cellSize))%cellSize);
     }
 
     /**
@@ -70,8 +76,8 @@ public class Camera {
      */
     public Index getCellIndexFromPosition(Position screenPosition) {
 
-        int xIndex = (int) ((screenPosition.getXPos() + x) / cellSize);
-        int yIndex = (int) ((screenPosition.getYPos() + y) / cellSize);
+        int xIndex = (int) Math.floor((screenPosition.getXPos() + x) / cellSize);
+        int yIndex = (int) Math.floor((screenPosition.getYPos() + y) / cellSize);
 
         if (!CellGrid.isInGrid(xIndex, yIndex)) {
             return null;
