@@ -44,7 +44,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
             camera.setX(camera.getX() + deltaX);
             camera.setY(camera.getY() + deltaY);
 
-            lastMousePosition = new Position(e.getX(), e.getY());
+            updateLastMousePosition(e);
             gamePanel.repaint();
         }
 
@@ -85,7 +85,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e))
-            lastMousePosition = new Position(e.getX(), e.getY());
+            updateLastMousePosition(e);
         renderer.showGrid(true);
         gamePanel.repaint();
 
@@ -93,9 +93,8 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        lastMousePosition = new Position(e.getX(), e.getY());
+        updateLastMousePosition(e);
 
-        System.out.println(SwingUtilities.isMiddleMouseButton(e));
         if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
             renderer.showGrid(false);
         gamePanel.repaint();
@@ -104,6 +103,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseEntered(MouseEvent e) {
         isHovering = true;
+
         renderer.showGrid(true);
         gamePanel.repaint();
     }
@@ -139,5 +139,9 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    private void updateLastMousePosition(MouseEvent e) {
+        lastMousePosition = new Position(e.getX(), e.getY());
     }
 }

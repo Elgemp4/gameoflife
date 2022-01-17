@@ -1,5 +1,7 @@
 package be.elgem.gameoflife.gui;
 
+import be.elgem.gameoflife.io.FileLoader;
+import be.elgem.gameoflife.io.FileSaver;
 import be.elgem.gameoflife.render.EGridVisibility;
 
 import javax.swing.*;
@@ -8,12 +10,18 @@ import java.awt.event.ActionListener;
 public class MenuBar extends JMenuBar {
     private GamePanel gamePanel;
 
+    private FileSaver fileSaver;
+    private FileLoader fileLoader;
+
     private JMenu file, option, help;
 
     public MenuBar(GamePanel gamePanel) {
         super();
 
         this.gamePanel = gamePanel;
+
+        fileSaver = new FileSaver();
+        fileLoader = new FileLoader(gamePanel.getGame().getCellGrid());
 
         file = createFileMenu();
         option = createOptionMenu();
@@ -27,7 +35,7 @@ public class MenuBar extends JMenuBar {
     private JMenu createFileMenu() {
         JMenu fileMenu = new JMenu("File");
 
-        JMenuItem open = createJMenuItem("Open", null);
+        JMenuItem open = createJMenuItem("Open", fileLoader::openFile);
         JMenuItem save = createJMenuItem("Save", null);
 
         fileMenu.add(open);
