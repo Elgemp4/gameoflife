@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
-    private ToolPanel toolPanel;
+    private ControlsPanel toolPanel;
 
     private GameCanvas gameCanvas;
+
+    private MenuBar menuBar;
 
     private int width, height;
 
@@ -19,6 +21,7 @@ public class MainWindow extends JFrame {
             e.printStackTrace();
         }
         System.setProperty("sun.awt.noerasebackground", "true");
+
         new MainWindow(800, 600);
     }
 
@@ -37,11 +40,16 @@ public class MainWindow extends JFrame {
         this.width = width;
         this.height = height;
 
+
+
         gameCanvas = new GameCanvas(this, width, height);
         add(gameCanvas, BorderLayout.EAST);
 
-        toolPanel = new ToolPanel(this, gameCanvas.getGame());
+        toolPanel = new ControlsPanel(this, gameCanvas.getGame());
         add(toolPanel, BorderLayout.SOUTH);
+
+        menuBar = new MenuBar(gameCanvas);
+        this.setJMenuBar(menuBar);
 
         setSize(width, height);
         setMinimumSize(new Dimension(350,250));
@@ -55,7 +63,7 @@ public class MainWindow extends JFrame {
         gameCanvas.postWindowCreationLoading();
     }
 
-    public ToolPanel getToolPanel() {
+    public ControlsPanel getToolPanel() {
         return toolPanel;
     }
 

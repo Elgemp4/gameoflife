@@ -112,10 +112,6 @@ public class Renderer {
                 }
                 if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
 //                    graphics.setColor(Color.white);
-                    System.out.println("x : " + x + " offset : " + Math.abs(camera.getXOffset()));
-                    System.out.println("y : " + y + " offset : " + Math.abs(camera.getYOffset()));
-                    System.out.println();
-
                     graphics.fillRect(x - Math.abs(camera.getXOffset()), y - Math.abs(camera.getYOffset()), (int) camera.getCellSize(), (int) camera.getCellSize());
 
                 }
@@ -147,5 +143,6 @@ public class Renderer {
 
     public void setGridVisibility(EGridVisibility gridVisibility) {
         this.gridVisibility = gridVisibility;
+        gameCanvas.getGame().render();
     }
 }

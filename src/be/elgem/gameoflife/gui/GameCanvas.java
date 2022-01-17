@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GameCanvas extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener{
-    final private Game game;
+    private Game game;
 
     private MainWindow window;
 
@@ -26,13 +26,29 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
     public GameCanvas(MainWindow window, int width, int height) {
         super();
 
-        game = new Game(this);
+        this.game = new Game(this);
 
         this.window = window;
 
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(width, height));
+    }
+
+    public void postWindowCreationLoading() {
+        this.createBufferStrategy(2);
+
+        this.camera = new Camera(0, 0, 40, this);
+        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
+        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
+
+        this.renderer = new Renderer(this);
+
+        addMouseWheelListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        this.render();
     }
 
     @Override
@@ -134,26 +150,14 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
         render();
     }
 
-    public void postWindowCreationLoading() {
-        this.createBufferStrategy(2);
 
-        this.camera = new Camera(0, 0, 40, this);
-        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
-        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
-
-        this.renderer = new Renderer(this);
-
-        addMouseWheelListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-
-        this.render();
-    }
 
     @Override
     public void paint(Graphics g) {
         render();
-        camera.actualizeDisplayedCells();
+
+        if(camera!=null)
+            camera.actualizeDisplayedCells();
     }
 
     @Override
@@ -162,10 +166,9 @@ public class GameCanvas extends Canvas implements MouseMotionListener, MouseList
     }
 
     public void render() {
-        renderer.render(this.getBufferStrategy());
+        if(getBufferStrategy()!=null)
+            renderer.render(this.getBufferStrategy());
     }
-
-
 
     public Game getGame() {
         return game;
