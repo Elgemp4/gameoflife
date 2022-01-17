@@ -2,26 +2,25 @@ package be.elgem.gameoflife.render;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gamelogic.GameLoop;
-import be.elgem.gameoflife.gui.GameCanvas;
+import be.elgem.gameoflife.gui.GamePanel;
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class Renderer {
     final private Camera camera;
-    final private GameCanvas gameCanvas;
+    final private GamePanel gamePanel;
     final private GameLoop gameLoop;
 
     private boolean isVisible = false;
 
     private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
 
-    public Renderer(GameCanvas gameCanvas) {
-        this.gameCanvas = gameCanvas;
+    public Renderer(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
 
-        this.camera = gameCanvas.getCamera();
+        this.camera = gamePanel.getCamera();
 
-        this.gameLoop = gameCanvas.getGame().getGameLoop();
+        this.gameLoop = gamePanel.getGame().getGameLoop();
     }
 
     /**
@@ -53,7 +52,7 @@ public class Renderer {
     private void drawBackground(Graphics graphics) {
         graphics.setColor(Color.BLACK);
 
-        graphics.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+        graphics.fillRect(0, 0, gamePanel.getWidth(), gamePanel.getHeight());
     }
 
     /**
@@ -66,7 +65,7 @@ public class Renderer {
             return;
         }
 
-        Dimension canvasSize = gameCanvas.getPreferredSize();
+        Dimension canvasSize = gamePanel.getPreferredSize();
 
         Position minPos = camera.getScreenPositionFromGamePosition(new Position(0, 0));
         Position maxPos = camera.getScreenPositionFromGamePosition(new Position((int) (camera.getCellSize() * CellGrid.getNumberCol()), (int)(camera.getCellSize() * CellGrid.getNumberRow())));
@@ -96,12 +95,12 @@ public class Renderer {
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
-        CellGrid cellsGrid = gameCanvas.getGame().getCellGrid();
+        CellGrid cellsGrid = gamePanel.getGame().getCellGrid();
 //        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(Color.WHITE);
 
-        for (int y = 0; y <= gameCanvas.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
-            for (int x = 0; x <= gameCanvas.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
+        for (int y = 0; y <= gamePanel.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
+            for (int x = 0; x <= gamePanel.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
                 Index index = camera.getCellIndexFromPosition(new Position(x, y));
                 if (index == null) {
                     continue;
@@ -139,6 +138,6 @@ public class Renderer {
 
     public void setGridVisibility(EGridVisibility gridVisibility) {
         this.gridVisibility = gridVisibility;
-        gameCanvas.getGame().render();
+        gamePanel.getGame().render();
     }
 }

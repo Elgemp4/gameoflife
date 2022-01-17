@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
-import be.elgem.gameoflife.gui.GameCanvas;
+import be.elgem.gameoflife.gui.GamePanel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -9,14 +9,14 @@ import java.awt.event.ActionEvent;
 public class Game {
     final private GameLoop gameLoop;
 
-    final private GameCanvas gameCanvas;
+    final private GamePanel gamePanel;
 
     private CellGrid cellGrid;
 
     private int gameSpeed = 10;
 
-    public Game(GameCanvas gameCanvas) {
-        this.gameCanvas = gameCanvas;
+    public Game(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
@@ -58,7 +58,7 @@ public class Game {
 
         cellGrid.reset();
 
-        gameCanvas.repaint();
+        gamePanel.repaint();
 
     }
 
@@ -82,7 +82,7 @@ public class Game {
      * Appelle l'affichage du jeu
      */
     public void render() {
-        gameCanvas.repaint();
+        gamePanel.repaint();
     }
 
 

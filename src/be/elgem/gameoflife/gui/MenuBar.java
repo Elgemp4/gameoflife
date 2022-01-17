@@ -3,18 +3,17 @@ package be.elgem.gameoflife.gui;
 import be.elgem.gameoflife.render.EGridVisibility;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar {
-    private GameCanvas gameCanvas;
+    private GamePanel gamePanel;
 
     private JMenu file, option, help;
 
-    public MenuBar(GameCanvas gameCanvas) {
+    public MenuBar(GamePanel gamePanel) {
         super();
 
-        this.gameCanvas = gameCanvas;
+        this.gamePanel = gamePanel;
 
         file = createFileMenu();
         option = createOptionMenu();
@@ -71,12 +70,12 @@ public class MenuBar extends JMenuBar {
         JMenu visibilitySubmenu = new JMenu("Grid visibility");
         ButtonGroup visibilityGroup = new ButtonGroup();
 
-        JMenuItem alwaysShown = createJRadioButtonMenuItem("Always shown", visibilityGroup, x -> gameCanvas.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_SHOWN));
+        JMenuItem alwaysShown = createJRadioButtonMenuItem("Always shown", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_SHOWN));
 
-        JMenuItem hybrid = createJRadioButtonMenuItem("Hybrid", visibilityGroup, x -> gameCanvas.getRenderer().setGridVisibility(EGridVisibility.HYBRID));
+        JMenuItem hybrid = createJRadioButtonMenuItem("Hybrid", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.HYBRID));
         hybrid.setSelected(true);
 
-        JMenuItem alwaysHide = createJRadioButtonMenuItem("Always hide", visibilityGroup, x -> gameCanvas.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_HIDE));
+        JMenuItem alwaysHide = createJRadioButtonMenuItem("Always hide", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_HIDE));
 
         visibilitySubmenu.add(alwaysShown);
         visibilitySubmenu.add(hybrid);

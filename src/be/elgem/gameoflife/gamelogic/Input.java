@@ -1,57 +1,31 @@
-package be.elgem.gameoflife.gui;
+package be.elgem.gameoflife.gamelogic;
 
-import be.elgem.gameoflife.gamelogic.CellGrid;
-import be.elgem.gameoflife.gamelogic.Game;
+import be.elgem.gameoflife.gui.GamePanel;
 import be.elgem.gameoflife.render.Camera;
 import be.elgem.gameoflife.render.Index;
 import be.elgem.gameoflife.render.Position;
 import be.elgem.gameoflife.render.Renderer;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferStrategy;
 
-public class GameCanvas extends JPanel implements MouseMotionListener, MouseListener, MouseWheelListener{
-    private Game game;
-
-    private MainWindow window;
-
+public class Input implements MouseMotionListener, MouseListener, MouseWheelListener, KeyListener {
+    private GamePanel gamePanel;
     private Camera camera;
+    private Game game;
     private Renderer renderer;
 
     private Position lastMousePosition = null;
-
     private boolean isHovering = false;
 
-    private BufferStrategy bufferStrategy;
-
-    public GameCanvas(MainWindow window, int width, int height) {
-        super();
-
-        this.game = new Game(this);
-
-        this.window = window;
-
-        this.setBackground(Color.BLACK);
-        this.setFocusable(true);
-        this.setPreferredSize(new Dimension(width, height));
-    }
-
-    public void postWindowCreationLoading() {
-        this.setDoubleBuffered(true);
-
-        this.camera = new Camera(0, 0, 40, this);
-        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
-        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
-
-        this.renderer = new Renderer(this);
-
-        addMouseWheelListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-
-        this.repaint();
+    public Input(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+        
+        this.camera = gamePanel.getCamera();
+        
+        this.game = gamePanel.getGame();
+        
+        this.renderer = gamePanel.getRenderer();
     }
 
     @Override
@@ -61,8 +35,7 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
     @Override
     public void mouseDragged(MouseEvent e) {
         Position clickPosition = new Position(e.getX(), e.getY());
-        Index clickedIndex = camera.getCellIndexFromPosition(clickPosition);
-
+        Index clickedIndex = gamePanel.getCamera().getCellIndexFromPosition(clickPosition);
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
@@ -72,7 +45,7 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
             camera.setY(camera.getY() + deltaY);
 
             lastMousePosition = new Position(e.getX(), e.getY());
-            repaint();
+            gamePanel.repaint();
         }
 
         else if(clickedIndex == null) {
@@ -81,12 +54,12 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
 
         else if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            repaint();
+            gamePanel.repaint();
         }
 
         else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            repaint();
+            gamePanel.repaint();
         }
 
     }
@@ -102,10 +75,10 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            repaint();
+            gamePanel.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            repaint();
+            gamePanel.repaint();
         }
     }
 
@@ -113,8 +86,8 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
     public void mousePressed(MouseEvent e) {
         if(SwingUtilities.isMiddleMouseButton(e))
             lastMousePosition = new Position(e.getX(), e.getY());
-            renderer.showGrid(true);
-            repaint();
+        renderer.showGrid(true);
+        gamePanel.repaint();
 
     }
 
@@ -125,14 +98,14 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
         System.out.println(SwingUtilities.isMiddleMouseButton(e));
         if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
             renderer.showGrid(false);
-            repaint();
+        gamePanel.repaint();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
         isHovering = true;
         renderer.showGrid(true);
-        repaint();
+        gamePanel.repaint();
     }
 
     @Override
@@ -141,7 +114,7 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
 
         if(!SwingUtilities.isMiddleMouseButton(e)) {
             renderer.showGrid(false);
-            repaint();
+            gamePanel.repaint();
         }
 
     }
@@ -150,40 +123,21 @@ public class GameCanvas extends JPanel implements MouseMotionListener, MouseList
     public void mouseWheelMoved(MouseWheelEvent e) {
         camera.zoom(-1 * e.getWheelRotation());
 
-        repaint();
-    }
-
-
-
-//    @Override
-//    public void paint(Graphics g) {
-//        render();
-//
-//        if(camera!=null)
-//            camera.actualizeDisplayedCells();
-//    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        renderer.render(g);
+        gamePanel.repaint();
     }
 
     @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(window.getWidth(), window.getHeight());
+    public void keyTyped(KeyEvent e) {
+
     }
 
-    public Game getGame() {
-        return game;
+    @Override
+    public void keyPressed(KeyEvent e) {
+
     }
 
-    public Camera getCamera() {
-        return camera;
-    }
+    @Override
+    public void keyReleased(KeyEvent e) {
 
-    public Renderer getRenderer() {
-        return renderer;
     }
 }

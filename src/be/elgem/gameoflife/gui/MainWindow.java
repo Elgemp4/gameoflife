@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainWindow extends JFrame {
     private ControlsPanel toolPanel;
 
-    private GameCanvas gameCanvas;
+    private GamePanel gamePanel;
 
     private MenuBar menuBar;
 
@@ -42,13 +42,13 @@ public class MainWindow extends JFrame {
 
 
 
-        gameCanvas = new GameCanvas(this, width, height);
-        add(gameCanvas, BorderLayout.EAST);
+        gamePanel = new GamePanel(this, width, height);
+        add(gamePanel, BorderLayout.EAST);
 
-        toolPanel = new ControlsPanel(this, gameCanvas.getGame());
+        toolPanel = new ControlsPanel(this, gamePanel.getGame());
         add(toolPanel, BorderLayout.SOUTH);
 
-        menuBar = new MenuBar(gameCanvas);
+        menuBar = new MenuBar(gamePanel);
         this.setJMenuBar(menuBar);
 
         setSize(width, height);
@@ -60,14 +60,14 @@ public class MainWindow extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        gameCanvas.postWindowCreationLoading();
+        gamePanel.postWindowCreationLoading();
     }
 
     public ControlsPanel getToolPanel() {
         return toolPanel;
     }
 
-    public GameCanvas getGameCanvas() {
-        return gameCanvas;
+    public GamePanel getGameCanvas() {
+        return gamePanel;
     }
 }

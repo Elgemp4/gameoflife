@@ -1,14 +1,10 @@
 package be.elgem.gameoflife.gui;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.util.HashMap;
 
 import be.elgem.gameoflife.gamelogic.Game;
-import be.elgem.gameoflife.render.EGridVisibility;
 import be.elgem.gameoflife.externallibrary.WrapLayout;
 
 /**
@@ -18,7 +14,7 @@ public class ControlsPanel extends JPanel {
     final private Game game;
     final private MainWindow window;
 
-    final private GameCanvas gameCanvas;
+    final private GamePanel gamePanel;
 
     private JButton start, step, reset;
     private JPanel speedSection;
@@ -30,7 +26,7 @@ public class ControlsPanel extends JPanel {
 
         this.game = game;
 
-        this.gameCanvas = window.getGameCanvas();
+        this.gamePanel = window.getGameCanvas();
 
         initializePanel();
 
