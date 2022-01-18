@@ -20,8 +20,8 @@ public class MenuBar extends JMenuBar {
 
         this.gamePanel = gamePanel;
 
-        fileSaver = new FileSaver();
-        fileLoader = new FileLoader(gamePanel.getGame().getCellGrid());
+        fileSaver = new FileSaver(gamePanel);
+        fileLoader = new FileLoader(gamePanel);
 
         file = createFileMenu();
         option = createOptionMenu();
@@ -36,7 +36,7 @@ public class MenuBar extends JMenuBar {
         JMenu fileMenu = new JMenu("File");
 
         JMenuItem open = createJMenuItem("Open", fileLoader::openFile);
-        JMenuItem save = createJMenuItem("Save", null);
+        JMenuItem save = createJMenuItem("Save", fileSaver::saveFile);
 
         fileMenu.add(open);
         fileMenu.add(save);

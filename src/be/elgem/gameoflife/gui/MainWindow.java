@@ -48,8 +48,6 @@ public class MainWindow extends JFrame {
         toolPanel = new ControlsPanel(this, gamePanel.getGame());
         add(toolPanel, BorderLayout.SOUTH);
 
-        menuBar = new MenuBar(gamePanel);
-        this.setJMenuBar(menuBar);
 
         setSize(width, height);
         setMinimumSize(new Dimension(350,250));

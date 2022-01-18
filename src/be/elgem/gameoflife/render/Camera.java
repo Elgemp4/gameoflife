@@ -19,14 +19,14 @@ public class Camera {
     final private static int MIN_ZOOM = 2;
     final private static int MAX_ZOOM = 60;
 
-    public Camera(int x, int y, int zoomLevel, GamePanel canvas) {
+    public Camera(int x, int y, int cellSize, GamePanel canvas) {
         this.x = x;
 
         this.y = y;
 
         this.canvas = canvas;
 
-        cellSize = 40;
+        this.cellSize = cellSize;
 
         actualizeDisplayedCells();
     }
@@ -200,6 +200,10 @@ public class Camera {
      */
     public double getNumberDisplayedCellsX() {
         return numberDisplayedCellsX;
+    }
+
+    public void setCellSize(double cellSize) {
+        this.cellSize = cellSize;
     }
 
     public static int clamp(int min, int max, int nb) {

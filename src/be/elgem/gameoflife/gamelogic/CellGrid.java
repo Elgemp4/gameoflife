@@ -29,6 +29,10 @@ public class CellGrid {
     }
 
     public CellGrid(byte[][] byteCellGrid) {
+        setByteCellGrid(byteCellGrid);
+    }
+
+    public void setByteCellGrid(byte[][] byteCellGrid) {
         this.byteCellGrid = byteCellGrid;
 
         CellGrid.NUMBER_ROW = byteCellGrid.length;

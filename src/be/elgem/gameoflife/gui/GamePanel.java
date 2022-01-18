@@ -44,6 +44,9 @@ public class GamePanel extends JPanel{
 
         this.input = new Input(this);
 
+        window.new MenuBar(gamePanel);
+        this.setJMenuBar(menuBar);
+
         addMouseWheelListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
