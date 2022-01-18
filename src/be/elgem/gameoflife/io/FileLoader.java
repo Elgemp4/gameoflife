@@ -47,7 +47,9 @@ public class FileLoader extends JFileChooser {
 
                 this.cellGrid.setByteCellGrid(openedCellGrid);
 
-            } catch (FileNotFoundException e) {
+                gamePanel.repaint();
+            }
+            catch (FileNotFoundException e) {
                 e.printStackTrace();
                 System.out.println("Une erreur a eu lieu lors du chargement");
             }
@@ -68,6 +70,8 @@ public class FileLoader extends JFileChooser {
         this.camera.setX(Integer.parseInt(cameraSettings[0]));
         this.camera.setY(Integer.parseInt(cameraSettings[1]));
         this.camera.setCellSize(Double.parseDouble(cameraSettings[2]));
+        this.camera.actualizeDisplayedCells();
+
     }
 
     private void parseCells(Scanner sc, byte[][] openedCellGrid) {

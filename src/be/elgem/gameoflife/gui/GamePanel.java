@@ -31,9 +31,7 @@ public class GamePanel extends JPanel{
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(width, height));
-    }
 
-    public void postWindowCreationLoading() {
         this.setDoubleBuffered(true);
 
         this.camera = new Camera(0, 0, 40, this);
@@ -44,13 +42,17 @@ public class GamePanel extends JPanel{
 
         this.input = new Input(this);
 
-        window.new MenuBar(gamePanel);
-        this.setJMenuBar(menuBar);
+        window.setJMenuBar(new MenuBar(this));
 
         addMouseWheelListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
 
+        this.repaint();
+    }
+
+    public void postWindowCreationLoading() {
+        this.camera.actualizeDisplayedCells();
         this.repaint();
     }
 
