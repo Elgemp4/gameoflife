@@ -61,6 +61,7 @@ public class FileLoader extends JFileChooser {
 
         String[] gridSize = sc.nextLine().split(":");
         returnGrid = new byte[Integer.parseInt(gridSize[0])][Integer.parseInt(gridSize[1])];
+        
         return returnGrid;
     }
 

@@ -32,11 +32,11 @@ public class CellGrid {
         setByteCellGrid(byteCellGrid);
     }
 
-    public void setByteCellGrid(byte[][] byteCellGrid) {
-        this.byteCellGrid = byteCellGrid;
+    public void setByteCellGrid(byte[][] newByteCellGrid) {
+        this.byteCellGrid = newByteCellGrid;
 
-        CellGrid.NUMBER_ROW = byteCellGrid.length;
-        CellGrid.NUMBER_COL = byteCellGrid[0].length;
+        CellGrid.NUMBER_ROW = newByteCellGrid.length;
+        CellGrid.NUMBER_COL = newByteCellGrid[0].length;
 
         chunkSize = NUMBER_COL / 200;
 

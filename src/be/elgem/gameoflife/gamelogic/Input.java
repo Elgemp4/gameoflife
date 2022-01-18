@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Input implements MouseMotionListener, MouseListener, MouseWheelListener, KeyListener {
+    //https://stackoverflow.com/questions/5344823/how-can-i-listen-for-key-presses-within-java-swing-across-all-components
+
     private GamePanel gamePanel;
     private Camera camera;
     private Game game;
@@ -140,6 +142,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
         pressedKey[e.getKeyCode()] = true;
     }
 

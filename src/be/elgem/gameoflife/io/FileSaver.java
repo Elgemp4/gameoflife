@@ -8,22 +8,16 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class FileSaver extends JFileChooser {
-    private GamePanel gamePanel;
     private CellGrid cellGrid;
     private Camera camera;
 
     public FileSaver(GamePanel gamePanel) {
         super();
-
-        this.gamePanel = gamePanel;
-
         this.cellGrid = gamePanel.getGame().getCellGrid();
-
         this.camera = gamePanel.getCamera();
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
@@ -32,12 +26,11 @@ public class FileSaver extends JFileChooser {
         setDialogTitle("Choisissez la zone de jeu :");
     }
 
-    public void saveFile(ActionEvent event) {
+    public void saveFile(ActionEvent ignoredEvent) {
         if(showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             byte[][] byteGrid = cellGrid.getCellMatrix();
+            File file = new File(getSelectedFile().getPath() + ".gold");
 
-            File file = getSelectedFile();
-            file = new File(file.getPath() + ".gold");
             try {
                 PrintWriter writer = new PrintWriter(file);
                 writer.println(byteGrid.length+":"+byteGrid[0].length);

@@ -40,13 +40,13 @@ public class MainWindow extends JFrame {
         this.width = width;
         this.height = height;
 
-
-
         gamePanel = new GamePanel(this, width, height);
         add(gamePanel, BorderLayout.EAST);
 
         toolPanel = new ControlsPanel(this, gamePanel.getGame());
         add(toolPanel, BorderLayout.SOUTH);
+
+        addKeyListener(gamePanel.getInput());
 
         setSize(width, height);
         setMinimumSize(new Dimension(350,250));
