@@ -15,6 +15,8 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Game game;
     private Renderer renderer;
 
+    private boolean[] pressedKey;
+
     private Position lastMousePosition = null;
     private boolean isHovering = false;
 
@@ -26,6 +28,8 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         this.game = gamePanel.getGame();
         
         this.renderer = gamePanel.getRenderer();
+
+        pressedKey = new boolean[256];
     }
 
     @Override
@@ -37,7 +41,11 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         Position clickPosition = new Position(e.getX(), e.getY());
         Index clickedIndex = gamePanel.getCamera().getCellIndexFromPosition(clickPosition);
 
-        if (SwingUtilities.isMiddleMouseButton(e)) {
+//        System.out.println(SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_SPACE));
+        System.out.println(isPressed(KeyEvent.VK_CONTROL));
+//        System.out.println(SwingUtilities.isMiddleMouseButton(e));
+
+        if (SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_CONTROL)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
             int deltaY = lastMousePosition.getYPos() - e.getY();
 
@@ -84,8 +92,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(SwingUtilities.isMiddleMouseButton(e))
-            updateLastMousePosition(e);
+        updateLastMousePosition(e);
         renderer.showGrid(true);
         gamePanel.repaint();
 
@@ -133,12 +140,16 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        pressedKey[e.getKeyCode()] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        pressedKey[e.getKeyCode()] = false;
+    }
 
+    public boolean isPressed(int keyCode) {
+        return pressedKey[keyCode];
     }
 
     private void updateLastMousePosition(MouseEvent e) {

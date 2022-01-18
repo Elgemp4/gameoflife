@@ -11,7 +11,10 @@ public class Renderer {
     final private GamePanel gamePanel;
     final private GameLoop gameLoop;
 
+    private boolean isDarkTheme = true;
     private boolean isVisible = false;
+
+    private Color lightBackground;
 
     private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
 
@@ -21,12 +24,13 @@ public class Renderer {
         this.camera = gamePanel.getCamera();
 
         this.gameLoop = gamePanel.getGame().getGameLoop();
+
+        lightBackground = new Color(230,230,230);
     }
 
     /**
      * Affiche le jeu à l'écran
      *
-     * @param bufferStrategy
      */
     public void render(Graphics graphics) {
         try {
@@ -50,7 +54,7 @@ public class Renderer {
      * @param graphics
      */
     private void drawBackground(Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(getBackgroundColor());
 
         graphics.fillRect(0, 0, gamePanel.getWidth(), gamePanel.getHeight());
     }
@@ -77,8 +81,6 @@ public class Renderer {
             int yPos = Camera.clamp(minPos.getYPos(), maxPos.getYPos(), (int) (camera.getCellSize() * yIndex - camera.getYOffset()));
 
             graphics.drawLine(minPos.getXPos(), yPos, maxPos.getXPos(), yPos);
-
-
         }
 
         //Vertical lines
@@ -97,7 +99,7 @@ public class Renderer {
     private void drawCells(Graphics graphics) {
         CellGrid cellsGrid = gamePanel.getGame().getCellGrid();
 //        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(getCellColor());
 
         for (int y = 0; y <= gamePanel.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
             for (int x = 0; x <= gamePanel.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
@@ -139,5 +141,17 @@ public class Renderer {
     public void setGridVisibility(EGridVisibility gridVisibility) {
         this.gridVisibility = gridVisibility;
         gamePanel.getGame().render();
+    }
+
+    private Color getBackgroundColor() {
+        return (isDarkTheme) ? Color.BLACK : lightBackground;
+    }
+
+    private Color getCellColor() {
+        return (isDarkTheme) ? Color.WHITE : Color.BLACK;
+    }
+
+    public void setDarkTheme(boolean darkTheme) {
+        isDarkTheme = darkTheme;
     }
 }

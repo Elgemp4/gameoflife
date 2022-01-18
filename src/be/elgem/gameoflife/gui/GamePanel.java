@@ -47,6 +47,7 @@ public class GamePanel extends JPanel{
         addMouseWheelListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
+        addKeyListener(input);
 
         this.repaint();
     }
@@ -78,5 +79,9 @@ public class GamePanel extends JPanel{
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public Input getInput() {
+        return input;
     }
 }

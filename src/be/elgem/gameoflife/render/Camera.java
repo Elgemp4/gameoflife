@@ -74,7 +74,6 @@ public class Camera {
      * @return
      */
     public Index getCellIndexFromPosition(Position screenPosition) {
-
         int xIndex = (int) Math.floor((screenPosition.getXPos() + x) / cellSize);
         int yIndex = (int) Math.floor((screenPosition.getYPos() + y) / cellSize);
 

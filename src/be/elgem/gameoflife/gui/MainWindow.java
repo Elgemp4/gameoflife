@@ -48,7 +48,6 @@ public class MainWindow extends JFrame {
         toolPanel = new ControlsPanel(this, gamePanel.getGame());
         add(toolPanel, BorderLayout.SOUTH);
 
-
         setSize(width, height);
         setMinimumSize(new Dimension(350,250));
 

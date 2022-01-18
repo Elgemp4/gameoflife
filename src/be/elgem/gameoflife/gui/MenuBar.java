@@ -48,8 +48,12 @@ public class MenuBar extends JMenuBar {
         JMenu optionMenu = new JMenu("Option");
 
         JMenu gridVisibilitySubmenu = createVisibilitySubmenu();
+        JMenu themeSelector = createThemeSelector();
 
         optionMenu.add(gridVisibilitySubmenu);
+        optionMenu.add(themeSelector);
+
+
 
         return optionMenu;
     }
@@ -90,6 +94,21 @@ public class MenuBar extends JMenuBar {
         visibilitySubmenu.add(alwaysHide);
 
         return visibilitySubmenu;
+    }
+
+    private JMenu createThemeSelector() {
+        JMenu themeSelector = new JMenu("Theme");
+        ButtonGroup themeGroup = new ButtonGroup();
+
+        JMenuItem lightTheme = this.createJRadioButtonMenuItem("Light theme", themeGroup, x -> gamePanel.getRenderer().setDarkTheme(false));
+
+        JMenuItem darkTheme = this.createJRadioButtonMenuItem("Dark theme", themeGroup, x -> gamePanel.getRenderer().setDarkTheme(true));
+        darkTheme.setSelected(true);
+
+        themeSelector.add(lightTheme);
+        themeSelector.add(darkTheme);
+
+        return themeSelector;
     }
 
 }
