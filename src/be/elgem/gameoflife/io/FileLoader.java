@@ -34,6 +34,8 @@ public class FileLoader extends JFileChooser {
     public void openFile(ActionEvent event) {
         byte[][] openedCellGrid;
 
+        gamePanel.getGame().stop();
+
         if(showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File openedFile = getSelectedFile();
             try {

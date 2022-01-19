@@ -92,4 +92,8 @@ public class ControlsPanel extends JPanel {
 
         return button;
     }
+
+    public JButton getStart() {
+        return start;
+    }
 }

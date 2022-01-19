@@ -19,7 +19,7 @@ public class MenuBar extends JMenuBar {
         super();
 
         this.gamePanel = gamePanel;
-
+        setFocusable(false);
         fileSaver = new FileSaver(gamePanel);
         fileLoader = new FileLoader(gamePanel);
 

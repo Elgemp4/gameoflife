@@ -20,7 +20,7 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        cellGrid = new CellGrid(2000, 2000);
+        this.cellGrid = new CellGrid(2000, 2000);
     }
 
     /**
@@ -29,11 +29,23 @@ public class Game {
      */
     public void toggleExecution(ActionEvent event) {
         if (gameLoop.isRunning()) {
-            gameLoop.stop();
-            ((JButton) event.getSource()).setText("Start");
+            stop();
         } else {
+            start();
+        }
+    }
+
+    public void stop() {
+        if(gameLoop.isRunning()) {
+            gameLoop.stop();
+            gamePanel.getWindow().getToolPanel().getStart().setText("Start");
+        }
+    }
+
+    public void start() {
+        if(!gameLoop.isRunning()) {
             gameLoop.start();
-            ((JButton) event.getSource()).setText("Stop");
+            gamePanel.getWindow().getToolPanel().getStart().setText("Stop");
         }
     }
 

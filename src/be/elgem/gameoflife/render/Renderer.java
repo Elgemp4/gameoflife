@@ -35,8 +35,7 @@ public class Renderer {
      */
     public void render(Graphics graphics) {
         try {
-            if(MainWindow.isUnix())
-                Toolkit.getDefaultToolkit().sync();
+            Toolkit.getDefaultToolkit().sync();
 
             drawBackground(graphics);
 

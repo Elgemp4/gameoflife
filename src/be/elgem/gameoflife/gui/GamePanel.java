@@ -47,6 +47,7 @@ public class GamePanel extends JComponent{
         addMouseWheelListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
+        addKeyListener(input);
 
         this.repaint();
     }
@@ -60,6 +61,10 @@ public class GamePanel extends JComponent{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        requestFocus(); //Nécessaire car lorsque l'on clique sur un bouton on perd le focus sur le gamePanel empêchant
+                        // ainsi de pouvoir utiliser le clavier
+
         camera.actualizeDisplayedCells();
         renderer.render(g);
     }
@@ -83,5 +88,9 @@ public class GamePanel extends JComponent{
 
     public Input getInput() {
         return input;
+    }
+
+    public MainWindow getWindow() {
+        return window;
     }
 }

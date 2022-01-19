@@ -14,11 +14,13 @@ import java.io.PrintWriter;
 public class FileSaver extends JFileChooser {
     private CellGrid cellGrid;
     private Camera camera;
+    private GamePanel gamePanel;
 
     public FileSaver(GamePanel gamePanel) {
         super();
         this.cellGrid = gamePanel.getGame().getCellGrid();
         this.camera = gamePanel.getCamera();
+        this.gamePanel = gamePanel;
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
 
@@ -27,6 +29,8 @@ public class FileSaver extends JFileChooser {
     }
 
     public void saveFile(ActionEvent ignoredEvent) {
+        gamePanel.getGame().stop();
+
         if(showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             byte[][] byteGrid = cellGrid.getCellMatrix();
             File file = new File(getSelectedFile().getPath() + ".gold");
@@ -45,6 +49,7 @@ public class FileSaver extends JFileChooser {
                     writer.println();
                 }
                 writer.close();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
