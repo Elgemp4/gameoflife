@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
-public class GamePanel extends JComponent{
+public class GameDisplay extends JComponent{
     private Game game;
     private MainWindow window;
 
@@ -21,7 +21,7 @@ public class GamePanel extends JComponent{
     private Renderer renderer;
     private Input input;
 
-    public GamePanel(MainWindow window, int width, int height) {
+    public GameDisplay(MainWindow window, int width, int height) {
         super();
 
         this.game = new Game(this);
@@ -42,8 +42,6 @@ public class GamePanel extends JComponent{
 
         this.input = new Input(this);
 
-        window.setJMenuBar(new MenuBar(this));
-
         addMouseWheelListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
@@ -61,9 +59,6 @@ public class GamePanel extends JComponent{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        requestFocus(); //Nécessaire car lorsque l'on clique sur un bouton on perd le focus sur le gamePanel empêchant
-                        // ainsi de pouvoir utiliser le clavier
 
         camera.actualizeDisplayedCells();
         renderer.render(g);

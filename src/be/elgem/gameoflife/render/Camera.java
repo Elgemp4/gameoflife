@@ -1,7 +1,7 @@
 package be.elgem.gameoflife.render;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 
 import java.awt.*;
 
@@ -9,7 +9,7 @@ public class Camera {
     private double x;
     private double y;
 
-    private GamePanel canvas;
+    private GameDisplay canvas;
 
     private double cellSize;
 
@@ -19,7 +19,7 @@ public class Camera {
     final private static int MIN_ZOOM = 2;
     final private static int MAX_ZOOM = 60;
 
-    public Camera(int x, int y, int cellSize, GamePanel canvas) {
+    public Camera(int x, int y, int cellSize, GameDisplay canvas) {
         this.x = x;
 
         this.y = y;

@@ -14,7 +14,7 @@ public class ControlsPanel extends JPanel {
     final private Game game;
     final private MainWindow window;
 
-    final private GamePanel gamePanel;
+    final private GameDisplay gameDisplay;
 
     private JButton start, step, reset;
     private JPanel speedSection;
@@ -26,7 +26,7 @@ public class ControlsPanel extends JPanel {
 
         this.game = game;
 
-        this.gamePanel = window.getGameCanvas();
+        this.gameDisplay = window.getGameCanvas();
 
         initializePanel();
 
@@ -96,4 +96,5 @@ public class ControlsPanel extends JPanel {
     public JButton getStart() {
         return start;
     }
+
 }

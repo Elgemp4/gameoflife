@@ -29,18 +29,30 @@ public class CellGrid {
     }
 
     public CellGrid(byte[][] byteCellGrid) {
+        this(byteCellGrid.length, byteCellGrid[0].length);
+
         setByteCellGrid(byteCellGrid);
     }
 
     public void setByteCellGrid(byte[][] newByteCellGrid) {
         this.byteCellGrid = newByteCellGrid;
+    }
 
-        CellGrid.NUMBER_ROW = newByteCellGrid.length;
-        CellGrid.NUMBER_COL = newByteCellGrid[0].length;
+    public void recreateChunks() {
+        CellGrid.NUMBER_ROW = byteCellGrid.length;
+        CellGrid.NUMBER_COL = byteCellGrid[0].length;
 
         chunkSize = NUMBER_COL / 200;
 
         chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
+
+        for (int y = 0; y < byteCellGrid.length; y++) {
+            for (int x = 0; x < byteCellGrid[0].length; x++) {
+                if(byteCellGrid[y][x]!=0) {
+                    chunkGrid[y / chunkSize][x / chunkSize]++;
+                }
+            }
+        }
     }
 
     /**
@@ -127,11 +139,11 @@ public class CellGrid {
     public void checkCells() {
         CellGrid cellGridCopy = cloneCellGrid();
         byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
-
-
+        System.out.println();
         for (int yChunk = 0; yChunk < chunkGrid.length; yChunk++) {
             for (int xChunk = 0; xChunk < chunkGrid[0].length; xChunk++) {
                 if(chunkGrid[yChunk][xChunk]!=0){
+                    System.out.println(chunkGrid[yChunk][xChunk]);
                     for (int y = yChunk * chunkSize; y < (yChunk + 1) * chunkSize; y++) {
                         for (int x = xChunk * chunkSize; x < (xChunk + 1) * chunkSize; x++) {
                             if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}

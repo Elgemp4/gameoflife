@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
 import be.elgem.gameoflife.render.Index;
 import be.elgem.gameoflife.render.Position;
@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class Input implements MouseMotionListener, MouseListener, MouseWheelListener, KeyListener {
     //https://stackoverflow.com/questions/5344823/how-can-i-listen-for-key-presses-within-java-swing-across-all-components
 
-    private GamePanel gamePanel;
+    private GameDisplay gameDisplay;
     private Camera camera;
     private Game game;
     private Renderer renderer;
@@ -22,14 +22,14 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Position lastMousePosition = null;
     private boolean isHovering = false;
 
-    public Input(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public Input(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
         
-        this.camera = gamePanel.getCamera();
+        this.camera = gameDisplay.getCamera();
         
-        this.game = gamePanel.getGame();
+        this.game = gameDisplay.getGame();
         
-        this.renderer = gamePanel.getRenderer();
+        this.renderer = gameDisplay.getRenderer();
 
         pressedKey = new boolean[256];
     }
@@ -41,13 +41,9 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseDragged(MouseEvent e) {
         Position clickPosition = new Position(e.getX(), e.getY());
-        Index clickedIndex = gamePanel.getCamera().getCellIndexFromPosition(clickPosition);
+        Index clickedIndex = gameDisplay.getCamera().getCellIndexFromPosition(clickPosition);
 
-//        System.out.println(SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_SPACE));
-        System.out.println(isPressed(KeyEvent.VK_CONTROL));
-//        System.out.println(SwingUtilities.isMiddleMouseButton(e));
-
-        if (SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_CONTROL)) {
+        if (isInMovingMode(e)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
             int deltaY = lastMousePosition.getYPos() - e.getY();
 
@@ -55,7 +51,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
             camera.setY(camera.getY() + deltaY);
 
             updateLastMousePosition(e);
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
 
         else if(clickedIndex == null) {
@@ -64,12 +60,12 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
         else if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
 
         else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
 
     }
@@ -85,10 +81,10 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
     }
 
@@ -96,7 +92,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     public void mousePressed(MouseEvent e) {
         updateLastMousePosition(e);
         renderer.showGrid(true);
-        gamePanel.repaint();
+        gameDisplay.repaint();
 
     }
 
@@ -104,41 +100,42 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     public void mouseReleased(MouseEvent e) {
         updateLastMousePosition(e);
 
-        if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
+        if(isInMovingMode(e) && isHovering == false)
             renderer.showGrid(false);
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        gameDisplay.requestFocus();
+
         isHovering = true;
 
         renderer.showGrid(true);
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         isHovering = false;
 
-        if(!SwingUtilities.isMiddleMouseButton(e)) {
+        if(!isInMovingMode(e)) {
             renderer.showGrid(false);
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
-
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        gameDisplay.requestFocus();
+
         camera.zoom(-1 * e.getWheelRotation());
 
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -157,5 +154,9 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     private void updateLastMousePosition(MouseEvent e) {
         lastMousePosition = new Position(e.getX(), e.getY());
+    }
+
+    private boolean isInMovingMode(MouseEvent e) {
+        return SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_CONTROL);
     }
 }

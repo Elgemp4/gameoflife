@@ -8,20 +8,20 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class MenuBar extends JMenuBar {
-    private GamePanel gamePanel;
+    private GameDisplay gameDisplay;
 
     private FileSaver fileSaver;
     private FileLoader fileLoader;
 
     private JMenu file, option, help;
 
-    public MenuBar(GamePanel gamePanel) {
+    public MenuBar(GameDisplay gameDisplay) {
         super();
 
-        this.gamePanel = gamePanel;
+        this.gameDisplay = gameDisplay;
         setFocusable(false);
-        fileSaver = new FileSaver(gamePanel);
-        fileLoader = new FileLoader(gamePanel);
+        fileSaver = new FileSaver(gameDisplay);
+        fileLoader = new FileLoader(gameDisplay);
 
         file = createFileMenu();
         option = createOptionMenu();
@@ -82,12 +82,12 @@ public class MenuBar extends JMenuBar {
         JMenu visibilitySubmenu = new JMenu("Grid visibility");
         ButtonGroup visibilityGroup = new ButtonGroup();
 
-        JMenuItem alwaysShown = createJRadioButtonMenuItem("Always shown", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_SHOWN));
+        JMenuItem alwaysShown = createJRadioButtonMenuItem("Always shown", visibilityGroup, x -> gameDisplay.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_SHOWN));
 
-        JMenuItem hybrid = createJRadioButtonMenuItem("Hybrid", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.HYBRID));
+        JMenuItem hybrid = createJRadioButtonMenuItem("Hybrid", visibilityGroup, x -> gameDisplay.getRenderer().setGridVisibility(EGridVisibility.HYBRID));
         hybrid.setSelected(true);
 
-        JMenuItem alwaysHide = createJRadioButtonMenuItem("Always hide", visibilityGroup, x -> gamePanel.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_HIDE));
+        JMenuItem alwaysHide = createJRadioButtonMenuItem("Always hide", visibilityGroup, x -> gameDisplay.getRenderer().setGridVisibility(EGridVisibility.ALWAYS_HIDE));
 
         visibilitySubmenu.add(alwaysShown);
         visibilitySubmenu.add(hybrid);
@@ -100,9 +100,9 @@ public class MenuBar extends JMenuBar {
         JMenu themeSelector = new JMenu("Theme");
         ButtonGroup themeGroup = new ButtonGroup();
 
-        JMenuItem lightTheme = this.createJRadioButtonMenuItem("Light theme", themeGroup, x -> gamePanel.getRenderer().setDarkTheme(false));
+        JMenuItem lightTheme = this.createJRadioButtonMenuItem("Light theme", themeGroup, x -> gameDisplay.getRenderer().setDarkTheme(false));
 
-        JMenuItem darkTheme = this.createJRadioButtonMenuItem("Dark theme", themeGroup, x -> gamePanel.getRenderer().setDarkTheme(true));
+        JMenuItem darkTheme = this.createJRadioButtonMenuItem("Dark theme", themeGroup, x -> gameDisplay.getRenderer().setDarkTheme(true));
         darkTheme.setSelected(true);
 
         themeSelector.add(lightTheme);
