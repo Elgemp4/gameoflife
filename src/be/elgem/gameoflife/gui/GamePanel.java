@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JComponent{
     private Game game;
     private MainWindow window;
 
@@ -51,6 +51,7 @@ public class GamePanel extends JPanel{
         this.repaint();
     }
 
+
     public void postWindowCreationLoading() {
         this.camera.actualizeDisplayedCells();
         this.repaint();
@@ -59,7 +60,7 @@ public class GamePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        camera.actualizeDisplayedCells();
         renderer.render(g);
     }
 

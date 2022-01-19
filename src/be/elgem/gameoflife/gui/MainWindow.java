@@ -21,6 +21,7 @@ public class MainWindow extends JFrame {
             e.printStackTrace();
         }
         System.setProperty("sun.awt.noerasebackground", "true");
+        System.setProperty("sun.java2d.opengl", "true");
 
         new MainWindow(800, 600);
     }
