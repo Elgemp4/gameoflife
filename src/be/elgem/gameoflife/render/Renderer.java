@@ -3,6 +3,7 @@ package be.elgem.gameoflife.render;
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gamelogic.GameLoop;
 import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.MainWindow;
 
 import java.awt.*;
 
@@ -34,6 +35,9 @@ public class Renderer {
      */
     public void render(Graphics graphics) {
         try {
+            if(MainWindow.isUnix())
+                Toolkit.getDefaultToolkit().sync();
+
             drawBackground(graphics);
 
             drawCells(graphics);

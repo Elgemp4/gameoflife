@@ -14,14 +14,18 @@ public class MainWindow extends JFrame {
 
     final public static int OPTION_PANE_SIZE = 230;
 
+    public static boolean isUnix;
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.setProperty("sun.awt.noerasebackground", "true");
-        System.setProperty("sun.java2d.opengl", "true");
+        System.setProperty("sun.awt.noerasebackground", "true"); //Empêche l'effacement de ce qui est dessiné
+        System.setProperty("sun.java2d.opengl", "true"); //Activation de l'accéleration graphique
+
+        isUnix = System.getProperty("os.name").startsWith("Linux");
 
         new MainWindow(800, 600);
     }
@@ -59,6 +63,8 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         gamePanel.postWindowCreationLoading();
+
+        System.out.println(System.getProperty("sun.java2d.opengl"));
     }
 
     public ControlsPanel getToolPanel() {
@@ -67,5 +73,9 @@ public class MainWindow extends JFrame {
 
     public GamePanel getGameCanvas() {
         return gamePanel;
+    }
+
+    public static boolean isUnix() {
+        return isUnix;
     }
 }
