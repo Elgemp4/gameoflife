@@ -161,11 +161,10 @@ public class CellGrid {
     public void checkCells() {
         CellGrid cellGridCopy = cloneCellGrid();
         byte[][] cellGridCopyByteCellMatrices = cellGridCopy.getCellMatrix();
-        System.out.println();
+
         for (int yChunk = 0; yChunk < chunkGrid.length; yChunk++) {
             for (int xChunk = 0; xChunk < chunkGrid[0].length; xChunk++) {
-                if(chunkGrid[yChunk][xChunk]!=0){
-                    System.out.println(chunkGrid[yChunk][xChunk]);
+                if(chunkGrid[yChunk][xChunk] != 0){
                     for (int y = yChunk * chunkSize; y < (yChunk + 1) * chunkSize; y++) {
                         for (int x = xChunk * chunkSize; x < (xChunk + 1) * chunkSize; x++) {
                             if(cellGridCopyByteCellMatrices[y][x]==0) {continue;}

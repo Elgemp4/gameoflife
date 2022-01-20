@@ -1,7 +1,10 @@
 package be.elgem.gameoflife.gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
     private ControlsPanel toolPanel;
@@ -13,6 +16,8 @@ public class MainWindow extends JFrame {
     private int width, height;
 
     final public static int OPTION_PANE_SIZE = 230;
+
+    private Image icon;
 
     public static void main(String[] args) {
         try {
@@ -28,6 +33,13 @@ public class MainWindow extends JFrame {
 
     public MainWindow(int width, int height){
         super("Conway's GameLogic.Game Of Life");
+
+        try {
+            this.icon = ImageIO.read(new File("src/be/elgem/gameoflife/images/icon.png"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
         initializeWindow(width, height);
     }
@@ -49,6 +61,7 @@ public class MainWindow extends JFrame {
 
         setJMenuBar(new MenuBar(gameDisplay));
 
+        setIconImage(this.icon);
         setSize(width, height);
         setMinimumSize(new Dimension(350,250));
 

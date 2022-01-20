@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Input implements MouseMotionListener, MouseListener, MouseWheelListener, KeyListener {
-    //https://stackoverflow.com/questions/5344823/how-can-i-listen-for-key-presses-within-java-swing-across-all-components
 
     private GameDisplay gameDisplay;
     private Camera camera;
@@ -54,20 +53,15 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
             gameDisplay.repaint();
         }
 
-        else if(clickedIndex == null) {
-            return;
+        else if(clickedIndex != null) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+                gameDisplay.repaint();
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+                gameDisplay.repaint();
+            }
         }
-
-        else if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gameDisplay.repaint();
-        }
-
-        else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gameDisplay.repaint();
-        }
-
     }
 
     @Override

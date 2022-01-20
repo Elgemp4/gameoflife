@@ -16,7 +16,7 @@ public class ControlsPanel extends JPanel {
 
     final private GameDisplay gameDisplay;
 
-    private JButton start, step, reset;
+    private JButton start, step, reset, prefab;
     private JPanel speedSection;
 
     public ControlsPanel(MainWindow window, Game game) {
@@ -47,7 +47,9 @@ public class ControlsPanel extends JPanel {
 
         step = createButton( "Step", game::step);
 
-        reset = createButton( "Reset", ignoredEvent -> game.reset(ignoredEvent, start));
+        reset = createButton( "Reset", game::reset);
+
+        prefab = createButton("Prefab", null);
 
         speedSection = createSpeedSection();
     }
@@ -64,7 +66,7 @@ public class ControlsPanel extends JPanel {
 
         JLabel speedText = new JLabel("Speed : ");
 
-        SpinnerNumberModel model = new SpinnerNumberModel(10,0,1000,10);
+        SpinnerNumberModel model = new SpinnerNumberModel(10, 1,1000,10);
 
         JSpinner spinnerSpeed = new JSpinner(model);
         spinnerSpeed.setPreferredSize(new Dimension(50,20));

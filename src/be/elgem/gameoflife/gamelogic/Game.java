@@ -62,11 +62,8 @@ public class Game {
      * Gère le reset de la grille du jeu en l'arrêtant au préalable et en refraîchissant l'écran après
      * @param ignoredEvent
      */
-    public void reset(ActionEvent ignoredEvent, JButton btnToggle) {
-        if (gameLoop.isRunning()) {
-            gameLoop.stop();
-            btnToggle.setText("Start");
-        }
+    public void reset(ActionEvent ignoredEvent) {
+        stop();
 
         cellGrid.reset();
 
