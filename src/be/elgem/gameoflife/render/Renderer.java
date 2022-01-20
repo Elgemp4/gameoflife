@@ -101,7 +101,7 @@ public class Renderer {
      */
     private void drawCells(Graphics graphics) {
         CellGrid cellsGrid = gameDisplay.getGame().getCellGrid();
-        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
+//        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(getCellColor());
 
         for (int y = 0; y <= gameDisplay.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
@@ -111,12 +111,12 @@ public class Renderer {
                     continue;
                 }
                 if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
-                    graphics.setColor(Color.white);
+//                    graphics.setColor(Color.white);
                     graphics.fillRect(x - Math.abs(camera.getXOffset()), y - Math.abs(camera.getYOffset()), (int) camera.getCellSize(), (int) camera.getCellSize());
 
                 }
-                graphics.setColor(Color.red);
-                graphics.drawString(""+ ByteCell.getAdjacentCellCount(byteCellMatrices[index.getYIndex()][index.getXIndex()]), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
+//                graphics.setColor(Color.red);
+//                graphics.drawString(""+ ByteCell.getAdjacentCellCount(byteCellMatrices[index.getYIndex()][index.getXIndex()]), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
             }
         }
     }

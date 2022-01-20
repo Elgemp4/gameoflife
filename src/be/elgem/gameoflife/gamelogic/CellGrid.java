@@ -20,9 +20,11 @@ public class CellGrid {
         CellGrid.NUMBER_ROW = numberRow;
         CellGrid.NUMBER_COL = numberCol;
 
-        chunkSize = 50;
+
 
         byteCellGrid = new byte[NUMBER_ROW][NUMBER_COL];
+
+        chunkSize = 50;
 
         chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
 
@@ -36,13 +38,13 @@ public class CellGrid {
 
     public void setByteCellGrid(byte[][] newByteCellGrid) {
         this.byteCellGrid = newByteCellGrid;
+
+        CellGrid.NUMBER_ROW = byteCellGrid.length;
+        CellGrid.NUMBER_COL = byteCellGrid[0].length;
     }
 
     public void recreateChunks() {
-        CellGrid.NUMBER_ROW = byteCellGrid.length;
-        CellGrid.NUMBER_COL = byteCellGrid[0].length;
-
-        chunkSize = NUMBER_COL / 200;
+        chunkSize = 50;
 
         chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
 
@@ -63,6 +65,10 @@ public class CellGrid {
     public void putCell(int x, int y) {
         if(!ByteCell.isAlive(byteCellGrid[y][x])) {
             byteCellGrid[y][x] = ByteCell.setAlive(byteCellGrid[y][x], true);
+
+            if(ByteCell.getAdjacentCellCount(byteCellGrid[y][x]) == 0) //Si la cellule n'a pas de voisin on sait qu'elle ne figure pas dans le chunk donc on l'ajoute
+                chunkGrid[y / chunkSize][x / chunkSize]++;
+
             informAdditionSurroundingCells(x, y);
         }
     }
@@ -75,12 +81,24 @@ public class CellGrid {
     public void removeCell(int x, int y) {
         if(ByteCell.isAlive(byteCellGrid[y][x])) {
             byteCellGrid[y][x] = ByteCell.setAlive(byteCellGrid[y][x], false);
+
+            if(ByteCell.getAdjacentCellCount(byteCellGrid[y][x]) == 0) //Si la cellule n'a aucune voisine elle ne doit plus figurer dans le chunk
+                decrementChunk(x, y);
+
             informRemovalSurroundingCells(x, y);
         }
 
     }
 
-    public void informAdditionSurroundingCells(int x, int y) {
+    private void incrementChunk(int x, int y) {
+        chunkGrid[y / chunkSize][x / chunkSize]++;
+    }
+
+    private void decrementChunk(int x, int y) {
+        chunkGrid[y / chunkSize][x / chunkSize]--;
+    }
+
+    private void informAdditionSurroundingCells(int x, int y) {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if(yOffset!=0 || xOffset!=0) {
@@ -88,8 +106,10 @@ public class CellGrid {
                     int searchY = y + yOffset;
 
                     if(isInGrid(searchX, searchY)) {
+                        if(byteCellGrid[searchY][searchX] == 0) //Si la cellule n'a ni voisine et n'est ni en vie alors
+                            incrementChunk(searchX, searchY);   //on sait qu'on doit l'ajouter au chunk car on sait
+                                                                //qu'elle n'y est pas encore.
                         byteCellGrid[searchY][searchX] = ByteCell.incrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
-                        chunkGrid[searchY / chunkSize][searchX / chunkSize]++;
                     }
                 }
             }
@@ -105,7 +125,9 @@ public class CellGrid {
 
                     if(isInGrid(searchX, searchY)) {
                         byteCellGrid[searchY][searchX] = ByteCell.decrementAdjacentCellCount(byteCellGrid[searchY][searchX]);
-                        chunkGrid[searchY / chunkSize][searchX / chunkSize]--;
+
+                        if(byteCellGrid[searchY][searchX] == 0) //Si après avoir perdu une voisine la cellule n'est ni
+                            decrementChunk(searchX, searchY);   //en vie et n'a plus de voisine alors on l'enlève du chunk.
                     }
                 }
             }
