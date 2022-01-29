@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -9,14 +9,14 @@ import java.awt.event.ActionEvent;
 public class Game {
     final private GameLoop gameLoop;
 
-    final private GamePanel gamePanel;
+    final private GameDisplay gameDisplay;
 
     private CellGrid cellGrid;
 
     private int gameSpeed = 10;
 
-    public Game(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public Game(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
@@ -38,14 +38,14 @@ public class Game {
     public void stop() {
         if(gameLoop.isRunning()) {
             gameLoop.stop();
-            gamePanel.getWindow().getToolPanel().getStart().setText("Start");
+            gameDisplay.getWindow().getToolPanel().getStart().setText("Start");
         }
     }
 
     public void start() {
         if(!gameLoop.isRunning()) {
             gameLoop.start();
-            gamePanel.getWindow().getToolPanel().getStart().setText("Stop");
+            gameDisplay.getWindow().getToolPanel().getStart().setText("Stop");
         }
     }
 
@@ -62,15 +62,12 @@ public class Game {
      * Gère le reset de la grille du jeu en l'arrêtant au préalable et en refraîchissant l'écran après
      * @param ignoredEvent
      */
-    public void reset(ActionEvent ignoredEvent, JButton btnToggle) {
-        if (gameLoop.isRunning()) {
-            gameLoop.stop();
-            btnToggle.setText("Start");
-        }
+    public void reset(ActionEvent ignoredEvent) {
+        stop();
 
         cellGrid.reset();
 
-        gamePanel.repaint();
+        gameDisplay.repaint();
 
     }
 
@@ -94,7 +91,7 @@ public class Game {
      * Appelle l'affichage du jeu
      */
     public void render() {
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
 

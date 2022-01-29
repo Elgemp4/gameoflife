@@ -1,7 +1,7 @@
 package be.elgem.gameoflife.io;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
 
 import javax.swing.*;
@@ -12,18 +12,18 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class FileLoader extends JFileChooser {
-    private GamePanel gamePanel;
+    private GameDisplay gameDisplay;
     private CellGrid cellGrid;
     private Camera camera;
 
-    public FileLoader(GamePanel gamePanel) {
+    public FileLoader(GameDisplay gameDisplay) {
         super();
 
-        this.gamePanel = gamePanel;
+        this.gameDisplay = gameDisplay;
 
-        this.cellGrid = gamePanel.getGame().getCellGrid();
+        this.cellGrid = gameDisplay.getGame().getCellGrid();
 
-        this.camera = gamePanel.getCamera();
+        this.camera = gameDisplay.getCamera();
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
 
@@ -34,7 +34,7 @@ public class FileLoader extends JFileChooser {
     public void openFile(ActionEvent event) {
         byte[][] openedCellGrid;
 
-        gamePanel.getGame().stop();
+        gameDisplay.getGame().stop();
 
         if(showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File openedFile = getSelectedFile();
@@ -47,9 +47,10 @@ public class FileLoader extends JFileChooser {
 
                 parseCells(sc, openedCellGrid);
 
-                this.cellGrid.setByteCellGrid(openedCellGrid);
+                cellGrid.setByteCellGrid(openedCellGrid);
+                cellGrid.recreateChunks();
 
-                gamePanel.repaint();
+                gameDisplay.repaint();
             }
             catch (FileNotFoundException e) {
                 e.printStackTrace();

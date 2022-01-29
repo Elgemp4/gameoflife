@@ -1,15 +1,15 @@
 package be.elgem.gameoflife.render;
 
+import be.elgem.gameoflife.gamelogic.ByteCell;
 import be.elgem.gameoflife.gamelogic.CellGrid;
 import be.elgem.gameoflife.gamelogic.GameLoop;
-import be.elgem.gameoflife.gui.GamePanel;
-import be.elgem.gameoflife.gui.MainWindow;
+import be.elgem.gameoflife.gui.GameDisplay;
 
 import java.awt.*;
 
 public class Renderer {
     final private Camera camera;
-    final private GamePanel gamePanel;
+    final private GameDisplay gameDisplay;
     final private GameLoop gameLoop;
 
     private boolean isDarkTheme = true;
@@ -19,12 +19,12 @@ public class Renderer {
 
     private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
 
-    public Renderer(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public Renderer(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
 
-        this.camera = gamePanel.getCamera();
+        this.camera = gameDisplay.getCamera();
 
-        this.gameLoop = gamePanel.getGame().getGameLoop();
+        this.gameLoop = gameDisplay.getGame().getGameLoop();
 
         lightBackground = new Color(230,230,230);
     }
@@ -59,7 +59,7 @@ public class Renderer {
     private void drawBackground(Graphics graphics) {
         graphics.setColor(getBackgroundColor());
 
-        graphics.fillRect(0, 0, gamePanel.getWidth(), gamePanel.getHeight());
+        graphics.fillRect(0, 0, gameDisplay.getWidth(), gameDisplay.getHeight());
     }
 
     /**
@@ -72,7 +72,7 @@ public class Renderer {
             return;
         }
 
-        Dimension canvasSize = gamePanel.getPreferredSize();
+        Dimension canvasSize = gameDisplay.getPreferredSize();
 
         Position minPos = camera.getScreenPositionFromGamePosition(new Position(0, 0));
         Position maxPos = camera.getScreenPositionFromGamePosition(new Position((int) (camera.getCellSize() * CellGrid.getNumberCol()), (int)(camera.getCellSize() * CellGrid.getNumberRow())));
@@ -100,12 +100,12 @@ public class Renderer {
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
-        CellGrid cellsGrid = gamePanel.getGame().getCellGrid();
+        CellGrid cellsGrid = gameDisplay.getGame().getCellGrid();
 //        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
         graphics.setColor(getCellColor());
 
-        for (int y = 0; y <= gamePanel.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
-            for (int x = 0; x <= gamePanel.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
+        for (int y = 0; y <= gameDisplay.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
+            for (int x = 0; x <= gameDisplay.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
                 Index index = camera.getCellIndexFromPosition(new Position(x, y));
                 if (index == null) {
                     continue;
@@ -143,7 +143,7 @@ public class Renderer {
 
     public void setGridVisibility(EGridVisibility gridVisibility) {
         this.gridVisibility = gridVisibility;
-        gamePanel.getGame().render();
+        gameDisplay.getGame().render();
     }
 
     private Color getBackgroundColor() {

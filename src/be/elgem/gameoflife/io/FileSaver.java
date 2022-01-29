@@ -1,7 +1,7 @@
 package be.elgem.gameoflife.io;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
 
 import javax.swing.*;
@@ -14,13 +14,13 @@ import java.io.PrintWriter;
 public class FileSaver extends JFileChooser {
     private CellGrid cellGrid;
     private Camera camera;
-    private GamePanel gamePanel;
+    private GameDisplay gameDisplay;
 
-    public FileSaver(GamePanel gamePanel) {
+    public FileSaver(GameDisplay gameDisplay) {
         super();
-        this.cellGrid = gamePanel.getGame().getCellGrid();
-        this.camera = gamePanel.getCamera();
-        this.gamePanel = gamePanel;
+        this.cellGrid = gameDisplay.getGame().getCellGrid();
+        this.camera = gameDisplay.getCamera();
+        this.gameDisplay = gameDisplay;
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
 
@@ -29,7 +29,7 @@ public class FileSaver extends JFileChooser {
     }
 
     public void saveFile(ActionEvent ignoredEvent) {
-        gamePanel.getGame().stop();
+        gameDisplay.getGame().stop();
 
         if(showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             byte[][] byteGrid = cellGrid.getCellMatrix();
