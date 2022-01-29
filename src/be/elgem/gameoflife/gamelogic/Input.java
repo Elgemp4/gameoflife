@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
-import be.elgem.gameoflife.gui.GamePanel;
+import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
 import be.elgem.gameoflife.render.Index;
 import be.elgem.gameoflife.render.Position;
@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class Input implements MouseMotionListener, MouseListener, MouseWheelListener, KeyListener {
     //https://stackoverflow.com/questions/5344823/how-can-i-listen-for-key-presses-within-java-swing-across-all-components
 
-    private GamePanel gamePanel;
+    private GameDisplay gameDisplay;
     private Camera camera;
     private Game game;
     private Renderer renderer;
@@ -23,14 +23,14 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Position lastMousePosition = null;
     private boolean isHovering = false;
 
-    public Input(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public Input(GameDisplay gameDisplay) {
+        this.gameDisplay = gameDisplay;
         
-        this.camera = gamePanel.getCamera();
+        this.camera = this.gameDisplay.getCamera();
         
-        this.game = gamePanel.getGame();
+        this.game = this.gameDisplay.getGame();
         
-        this.renderer = gamePanel.getRenderer();
+        this.renderer = this.gameDisplay.getRenderer();
 
         this.drawer = new Drawer(game);
 
@@ -44,7 +44,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseDragged(MouseEvent e) {
         Position clickPosition = new Position(e.getX(), e.getY());
-        Index clickedIndex = gamePanel.getCamera().getCellIndexFromPosition(clickPosition);
+        Index clickedIndex = gameDisplay.getCamera().getCellIndexFromPosition(clickPosition);
 
         if (SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_CONTROL)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
@@ -64,7 +64,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
             }
         }
 
-        gamePanel.repaint();
+        gameDisplay.repaint();
         updateLastMousePosition(e);
     }
 
@@ -79,10 +79,10 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
             game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
     }
 
@@ -90,7 +90,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     public void mousePressed(MouseEvent e) {
         updateLastMousePosition(e);
         renderer.showGrid(true);
-        gamePanel.repaint();
+        gameDisplay.repaint();
 
     }
 
@@ -100,7 +100,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
         if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
             renderer.showGrid(false);
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         isHovering = true;
 
         renderer.showGrid(true);
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
         if(!SwingUtilities.isMiddleMouseButton(e)) {
             renderer.showGrid(false);
-            gamePanel.repaint();
+            gameDisplay.repaint();
         }
 
     }
@@ -126,7 +126,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     public void mouseWheelMoved(MouseWheelEvent e) {
         camera.zoom(-1 * e.getWheelRotation());
 
-        gamePanel.repaint();
+        gameDisplay.repaint();
     }
 
     @Override
