@@ -16,6 +16,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Camera camera;
     private Game game;
     private Renderer renderer;
+    private Drawer drawer;
 
     private boolean[] pressedKey;
 
@@ -31,6 +32,8 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         
         this.renderer = gamePanel.getRenderer();
 
+        this.drawer = new Drawer(game);
+
         pressedKey = new boolean[256];
     }
 
@@ -43,35 +46,26 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         Position clickPosition = new Position(e.getX(), e.getY());
         Index clickedIndex = gamePanel.getCamera().getCellIndexFromPosition(clickPosition);
 
-//        System.out.println(SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_SPACE));
-        System.out.println(isPressed(KeyEvent.VK_CONTROL));
-//        System.out.println(SwingUtilities.isMiddleMouseButton(e));
-
         if (SwingUtilities.isMiddleMouseButton(e) || isPressed(KeyEvent.VK_CONTROL)) {
             int deltaX = lastMousePosition.getXPos() - e.getX();
             int deltaY = lastMousePosition.getYPos() - e.getY();
 
             camera.setX(camera.getX() + deltaX);
             camera.setY(camera.getY() + deltaY);
-
-            updateLastMousePosition(e);
-            gamePanel.repaint();
         }
 
-        else if(clickedIndex == null) {
-            return;
+        else if(clickedIndex != null) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                drawer.drawLine(camera.getCellIndexFromPosition(lastMousePosition), clickedIndex);
+            }
+            else if (SwingUtilities.isRightMouseButton(e)) {
+                game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+
+            }
         }
 
-        else if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
-        }
-
-        else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
-            gamePanel.repaint();
-        }
-
+        gamePanel.repaint();
+        updateLastMousePosition(e);
     }
 
     @Override
@@ -158,4 +152,5 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private void updateLastMousePosition(MouseEvent e) {
         lastMousePosition = new Position(e.getX(), e.getY());
     }
+
 }
