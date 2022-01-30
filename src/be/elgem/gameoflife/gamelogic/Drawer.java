@@ -24,14 +24,12 @@ public class Drawer {
             } else {
                 drawLineHorizontal(endIndex, startIndex);
             }
-        } else if (deltaX < deltaY) {
+        } else {
             if (startIndex.getYIndex() < endIndex.getYIndex()) {
                 drawLineVertically(startIndex, endIndex);
             } else {
                 drawLineVertically(endIndex, startIndex);
             }
-        } else {
-            drawLineDiagonally(startIndex, endIndex);
         }
     }
 
@@ -39,17 +37,23 @@ public class Drawer {
         int deltaX = endIndex.getXIndex() - startIndex.getXIndex();
         int deltaY = endIndex.getYIndex() - startIndex.getYIndex();
 
+        int positiveDeltaX = Math.abs(deltaX);
+        int positiveDeltaY = Math.abs(deltaY);
+
         int movingX = startIndex.getXIndex();
         int movingY = startIndex.getYIndex();
 
-        int slope = 2 * deltaY - deltaX;
+        int slope = 2 * positiveDeltaY - positiveDeltaX;
 
-        for (int x = 0; x < deltaX; x++) {
+        for (int x = 0; x < positiveDeltaX; x++) {
             if (slope < 0) {
-                slope += 2 * deltaY;
+                slope += 2 * positiveDeltaY;
             } else {
-                slope += 2 * deltaY - 2 * deltaX;
-                movingY++;
+                slope += 2 * positiveDeltaY - 2 * positiveDeltaX;
+                if ((deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0))
+                    movingY++;
+                else
+                    movingY--;
             }
             movingX++;
 
@@ -61,17 +65,26 @@ public class Drawer {
         int deltaX = endIndex.getXIndex() - startIndex.getXIndex();
         int deltaY = endIndex.getYIndex() - startIndex.getYIndex();
 
+        int positiveDeltaX = Math.abs(deltaX);
+        int positiveDeltaY = Math.abs(deltaY);
+
         int movingX = startIndex.getXIndex();
         int movingY = startIndex.getYIndex();
 
-        int slope = 2 * deltaX - deltaY;
+        int slope = 2 * positiveDeltaX - positiveDeltaY;
 
-        for (int y = 0; y < deltaY; y++) {
+        for (int y = 0; y < positiveDeltaY; y++) {
             if (slope < 0) {
-                slope += 2 * deltaX;
+                slope += 2 * positiveDeltaX;
             } else {
-                slope += 2 * deltaX - 2 * deltaY;
-                movingX++;
+                slope += 2 * positiveDeltaX - 2 * positiveDeltaY;
+                if ((deltaX > 0 && deltaY > 0) || (deltaX < 0 && deltaY < 0)) {
+                    movingX++;
+                }
+                else {
+                    movingX--;
+                }
+
             }
             movingY++;
 
@@ -79,19 +92,4 @@ public class Drawer {
         }
     }
 
-    private void drawLineDiagonally(Index startIndex, Index endIndex) {
-        int movingX = startIndex.getXIndex();
-        int movingY = startIndex.getYIndex();
-
-        int appendX = (startIndex.getXIndex() < endIndex.getXIndex()) ? +1 : -1;
-        int appendY = (startIndex.getYIndex() < endIndex.getYIndex()) ? +1 : -1;
-
-
-        for (int x = startIndex.getXIndex(); x < endIndex.getXIndex(); x++) {
-            game.getCellGrid().putCell(movingX, movingY);
-
-            movingX += appendX;
-            movingY += appendY;
-        }
-    }
 }
