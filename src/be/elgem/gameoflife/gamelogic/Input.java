@@ -106,6 +106,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseEntered(MouseEvent e) {
         isHovering = true;
+        gameDisplay.requestFocus();
 
         renderer.showGrid(true);
         gameDisplay.repaint();
