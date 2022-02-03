@@ -24,7 +24,7 @@ public class CellGrid {
 
         byteCellGrid = new byte[NUMBER_ROW][NUMBER_COL];
 
-        chunkSize = 50;
+        chunkSize = NUMBER_ROW/50;
 
         chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
 
@@ -44,7 +44,7 @@ public class CellGrid {
     }
 
     public void recreateChunks() {
-        chunkSize = 50;
+        chunkSize = NUMBER_ROW / 50;
 
         chunkGrid = new int[NUMBER_ROW / chunkSize][NUMBER_COL / chunkSize];
 

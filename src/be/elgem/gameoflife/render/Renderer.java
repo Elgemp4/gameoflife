@@ -68,7 +68,8 @@ public class Renderer {
      * @param graphics
      */
     private void drawGrid(Graphics graphics) {
-        if(!canGridBeDisplayed()){
+        System.out.println(!canGridBeDisplayed() && camera.getCellSize()!=Camera.getMinZoom());
+        if(!canGridBeDisplayed() || camera.getCellSize()==Camera.getMinZoom()){
             return;
         }
 

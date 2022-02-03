@@ -73,7 +73,7 @@ public class FileLoader extends JFileChooser {
 
         this.camera.setX(Integer.parseInt(cameraSettings[0]));
         this.camera.setY(Integer.parseInt(cameraSettings[1]));
-        this.camera.setCellSize(Double.parseDouble(cameraSettings[2]));
+        this.camera.setCellSize(Integer.parseInt(cameraSettings[2]));
         this.camera.actualizeDisplayedCells();
 
     }

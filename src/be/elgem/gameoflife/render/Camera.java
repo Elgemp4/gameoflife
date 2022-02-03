@@ -11,12 +11,12 @@ public class Camera {
 
     private GameDisplay canvas;
 
-    private double cellSize;
+    private int cellSize;
 
     private double numberDisplayedCellsY;
     private double numberDisplayedCellsX;
 
-    final private static int MIN_ZOOM = 2;
+    final private static int MIN_ZOOM = 1;
     final private static int MAX_ZOOM = 60;
 
     public Camera(int x, int y, int cellSize, GameDisplay canvas) {
@@ -156,12 +156,10 @@ public class Camera {
         if (cellSize + zoomFactor <= MAX_ZOOM && cellSize + zoomFactor >= MIN_ZOOM) {
             fixCameraPositionAfterZoom(zoomFactor);
 
-            cellSize = Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
+            cellSize = (int)Math.max(Math.min(cellSize + zoomFactor, MAX_ZOOM), MIN_ZOOM);
 
             actualizeDisplayedCells();
         }
-
-
     }
 
     private void fixCameraPositionAfterZoom(double zoomFactor) {
@@ -179,10 +177,13 @@ public class Camera {
      *
      * @return
      */
-    public double getCellSize() {
+    public int getCellSize() {
         return cellSize;
     }
 
+    public void setCellSize(int cellSize) {
+        this.cellSize = cellSize;
+    }
     /**
      * Renvoie le nombre de cellule affichées en y
      *
@@ -201,9 +202,10 @@ public class Camera {
         return numberDisplayedCellsX;
     }
 
-    public void setCellSize(double cellSize) {
-        this.cellSize = cellSize;
+    public static int getMinZoom() {
+        return Camera.MIN_ZOOM;
     }
+
 
     public static int clamp(int min, int max, int nb) {
         return Math.min(Math.max(min, nb), max);

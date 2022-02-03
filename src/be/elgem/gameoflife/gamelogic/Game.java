@@ -20,7 +20,7 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        this.cellGrid = new CellGrid(2000, 2000);
+        this.cellGrid = new CellGrid(4000, 4000);
     }
 
     /**
