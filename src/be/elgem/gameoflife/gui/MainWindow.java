@@ -1,5 +1,7 @@
 package be.elgem.gameoflife.gui;
 
+import be.elgem.gameoflife.gui.prefab.PrefabSelector;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +12,8 @@ public class MainWindow extends JFrame {
     private ControlsPanel toolPanel;
 
     private GameDisplay gameDisplay;
+
+    private PrefabSelector prefabSelector;
 
     private MenuBar menuBar;
 
@@ -35,7 +39,7 @@ public class MainWindow extends JFrame {
         super("Conway's GameLogic.Game Of Life");
 
         try {
-            this.icon = ImageIO.read(new File("src/be/elgem/gameoflife/images/icon.png"));
+            this.icon = ImageIO.read(new File("src/be/elgem/gameoflife/resources/images/icon.png"));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -56,8 +60,12 @@ public class MainWindow extends JFrame {
         gameDisplay = new GameDisplay(this, width, height);
         add(gameDisplay, BorderLayout.EAST);
 
-        toolPanel = new ControlsPanel(this, gameDisplay.getGame());
+        prefabSelector = new PrefabSelector(this);
+
+        toolPanel = new ControlsPanel(this, gameDisplay.getGame(), prefabSelector);
         add(toolPanel, BorderLayout.SOUTH);
+
+
 
         setJMenuBar(new MenuBar(gameDisplay));
 
@@ -82,4 +90,7 @@ public class MainWindow extends JFrame {
         return gameDisplay;
     }
 
+    public PrefabSelector getPrefabSelector() {
+        return prefabSelector;
+    }
 }

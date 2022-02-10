@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 
 import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.externallibrary.WrapLayout;
+import be.elgem.gameoflife.gui.prefab.PrefabSelector;
 
 /**
  * ToolPanel est une class JPanel qui contient tous les composants "paramètres" du jeu de la vie"
  */
 public class ControlsPanel extends JPanel {
     final private Game game;
+    final private PrefabSelector prefabSelector;
+
     final private MainWindow window;
 
     final private GameDisplay gameDisplay;
@@ -19,7 +22,7 @@ public class ControlsPanel extends JPanel {
     private JButton start, step, reset, prefab;
     private JPanel speedSection;
 
-    public ControlsPanel(MainWindow window, Game game) {
+    public ControlsPanel(MainWindow window, Game game, PrefabSelector prefabSelector) {
         super();
 
         this.window = window;
@@ -27,6 +30,8 @@ public class ControlsPanel extends JPanel {
         this.game = game;
 
         this.gameDisplay = window.getGameCanvas();
+
+        this.prefabSelector = prefabSelector;
 
         initializePanel();
 
@@ -49,7 +54,7 @@ public class ControlsPanel extends JPanel {
 
         reset = createButton( "Reset", game::reset);
 
-        prefab = createButton("Prefab", null);
+        prefab = createButton("Prefab", prefabSelector::setVisible);
 
         speedSection = createSpeedSection();
     }

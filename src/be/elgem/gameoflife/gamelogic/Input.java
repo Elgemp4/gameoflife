@@ -137,7 +137,6 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
         pressedKey[e.getKeyCode()] = true;
     }
 

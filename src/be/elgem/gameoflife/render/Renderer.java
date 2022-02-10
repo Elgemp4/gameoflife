@@ -19,6 +19,10 @@ public class Renderer {
 
     private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
 
+    private long maxRenderRate = (long) (1.0 / 60.0) * 1000;
+
+    private long nextRenderTime;
+
     public Renderer(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
 
@@ -27,6 +31,8 @@ public class Renderer {
         this.gameLoop = gameDisplay.getGame().getGameLoop();
 
         lightBackground = new Color(230,230,230);
+
+        nextRenderTime = System.currentTimeMillis() + maxRenderRate;
     }
 
     /**
@@ -34,20 +40,24 @@ public class Renderer {
      *
      */
     public void render(Graphics graphics) {
-        try {
-            Toolkit.getDefaultToolkit().sync();
+        if(System.currentTimeMillis()>=nextRenderTime) {
+            nextRenderTime = System.currentTimeMillis() + maxRenderRate;
 
-            drawBackground(graphics);
+            try {
+                Toolkit.getDefaultToolkit().sync();
 
-            drawCells(graphics);
+                drawBackground(graphics);
 
-            drawGrid(graphics);
+                drawCells(graphics);
 
-            drawFPSCount(graphics);
+                drawGrid(graphics);
 
-            graphics.dispose();
+                drawFPSCount(graphics);
+
+                graphics.dispose();
+            } catch (Exception e) {
+            }
         }
-        catch (Exception e) {}
 
     }
 
@@ -68,7 +78,6 @@ public class Renderer {
      * @param graphics
      */
     private void drawGrid(Graphics graphics) {
-        System.out.println(!canGridBeDisplayed() && camera.getCellSize()!=Camera.getMinZoom());
         if(!canGridBeDisplayed() || camera.getCellSize()==Camera.getMinZoom()){
             return;
         }
