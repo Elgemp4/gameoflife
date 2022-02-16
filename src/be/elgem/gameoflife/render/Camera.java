@@ -1,6 +1,7 @@
 package be.elgem.gameoflife.render;
 
 import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.gui.GameDisplay;
 
 import java.awt.*;
@@ -9,7 +10,7 @@ public class Camera {
     private double x;
     private double y;
 
-    private GameDisplay canvas;
+    private GameDisplay gameDisplay;
 
     private int cellSize;
 
@@ -19,12 +20,12 @@ public class Camera {
     final private static int MIN_ZOOM = 1;
     final private static int MAX_ZOOM = 60;
 
-    public Camera(int x, int y, int cellSize, GameDisplay canvas) {
+    public Camera(int x, int y, int cellSize, GameDisplay gameDisplay) {
         this.x = x;
 
         this.y = y;
 
-        this.canvas = canvas;
+        this.gameDisplay = gameDisplay;
 
         this.cellSize = cellSize;
 
@@ -35,7 +36,7 @@ public class Camera {
      * Mets à jour les données pratiques de la caméra
      */
     public void actualizeDisplayedCells() {
-        Dimension gameCanvasSize = canvas.getPreferredSize();
+        Dimension gameCanvasSize = gameDisplay.getPreferredSize();
 
         numberDisplayedCellsX = gameCanvasSize.getWidth() / cellSize;
 
@@ -67,6 +68,14 @@ public class Camera {
             return (int) ((cellSize - Math.abs(y % cellSize))%cellSize);
     }
 
+    public int getMaxX() {
+        return cellSize * Game.getNumberCellsX();
+    }
+
+    public int getMaxY() {
+        return cellSize * Game.getNumberCellsY();
+    }
+
     /**
      * Renvoie l'index d'une cellule depuis une position sur l'écran
      *
@@ -92,8 +101,8 @@ public class Camera {
     }
 
     public Position getScreenPositionFromGamePosition(Position gamePosition) {
-        int posX = clamp(0, canvas.getWidth(), (int) (gamePosition.getXPos() - x));
-        int posY= clamp(0, canvas.getHeight(), (int) (gamePosition.getYPos() - y));
+        int posX = clamp(0, gameDisplay.getWidth(), (int) (gamePosition.getXPos() - x));
+        int posY= clamp(0, gameDisplay.getHeight(), (int) (gamePosition.getYPos() - y));
 
         return new Position(posX, posY);
     }

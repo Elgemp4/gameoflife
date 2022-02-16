@@ -11,6 +11,10 @@ public class Game {
 
     final private GameDisplay gameDisplay;
 
+    final static private int NUMBER_CELLS_X = 2000;
+
+    final static private int NUMBER_CELLS_Y = 2000;
+
     private CellGrid cellGrid;
 
     private int gameSpeed = 10;
@@ -20,7 +24,7 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        this.cellGrid = new CellGrid(2000, 2000);
+        this.cellGrid = new CellGrid(NUMBER_CELLS_X, NUMBER_CELLS_Y);
     }
 
     /**
@@ -114,5 +118,13 @@ public class Game {
 
     public GameLoop getGameLoop() {
         return gameLoop;
+    }
+
+    public static int getNumberCellsX() {
+        return Game.NUMBER_CELLS_X;
+    }
+
+    public static int getNumberCellsY() {
+        return Game.NUMBER_CELLS_Y;
     }
 }
