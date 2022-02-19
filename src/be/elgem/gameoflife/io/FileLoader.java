@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.io;
 
-import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
 
@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class FileLoader extends JFileChooser {
     private GameDisplay gameDisplay;
-    private CellGrid cellGrid;
+    private GameLogic cellGrid;
     private Camera camera;
 
     public FileLoader(GameDisplay gameDisplay) {
@@ -21,7 +21,7 @@ public class FileLoader extends JFileChooser {
 
         this.gameDisplay = gameDisplay;
 
-        this.cellGrid = gameDisplay.getGame().getCellGrid();
+        this.cellGrid = gameDisplay.getGame().getGameLogic();
 
         this.camera = gameDisplay.getCamera();
 
@@ -46,9 +46,6 @@ public class FileLoader extends JFileChooser {
                 parseCameraSettings(sc);
 
                 parseCells(sc, openedCellGrid);
-
-                cellGrid.setByteCellGrid(openedCellGrid);
-                cellGrid.recreateChunks();
 
                 gameDisplay.repaint();
             }

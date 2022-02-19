@@ -1,17 +1,13 @@
 package be.elgem.gameoflife.gui;
 
-import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.gamelogic.Input;
 import be.elgem.gameoflife.render.Camera;
-import be.elgem.gameoflife.render.Index;
-import be.elgem.gameoflife.render.Position;
 import be.elgem.gameoflife.render.Renderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferStrategy;
 
 public class GameDisplay extends JComponent{
     private Game game;
@@ -34,9 +30,7 @@ public class GameDisplay extends JComponent{
 
         this.setDoubleBuffered(true);
 
-        this.camera = new Camera(0, 0, 40, this);
-        this.camera.setX(CellGrid.getNumberCol() * camera.getCellSize() / 2);
-        this.camera.setY(CellGrid.getNumberRow() * camera.getCellSize() / 2);
+        this.camera = new Camera(2000000, 2000000, 40, this);
 
         this.renderer = new Renderer(this);
 

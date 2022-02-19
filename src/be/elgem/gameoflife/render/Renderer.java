@@ -1,7 +1,6 @@
 package be.elgem.gameoflife.render;
 
-import be.elgem.gameoflife.gamelogic.ByteCell;
-import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gamelogic.GameLoop;
 import be.elgem.gameoflife.gui.GameDisplay;
 
@@ -15,11 +14,11 @@ public class Renderer {
     private boolean isDarkTheme = true;
     private boolean isVisible = false;
 
-    private Color lightBackground, lightOutOfBound, darkBackground, darkOutOfBound;
+    private Color lightBackground, darkBackground;
 
     private EGridVisibility gridVisibility = EGridVisibility.HYBRID;
 
-    private long maxRenderRate = (long) (1.0 / 60.0) * 1000;
+    private long maxRenderRate = (long) (1.0 / 60) * 1000;
 
     private long nextRenderTime;
 
@@ -31,10 +30,8 @@ public class Renderer {
         this.gameLoop = gameDisplay.getGame().getGameLoop();
 
         lightBackground = new Color(255,255,255);
-        lightOutOfBound = new Color(217, 212, 199);
 
         darkBackground = new Color(26, 26, 26);
-        darkOutOfBound = new Color(44, 44, 44);
 
         nextRenderTime = System.currentTimeMillis() + maxRenderRate;
     }
@@ -50,13 +47,13 @@ public class Renderer {
             try {
                 Toolkit.getDefaultToolkit().sync();
 
-                drawBackground(graphics);
+                drawBackground(graphics); //Marche
 
-                drawCells(graphics);
+                drawCells(graphics); //Marche pas => d'abords régler problème de caméra et posage de cellules
 
-                drawGrid(graphics);
+                drawGrid(graphics);//Marche
 
-                drawFPSCount(graphics);
+                drawFPSCount(graphics); //Marche
 
                 graphics.dispose();
             } catch (Exception e) {
@@ -71,14 +68,8 @@ public class Renderer {
      * @param graphics
      */
     private void drawBackground(Graphics graphics) {
-        Position minPos = camera.getScreenPositionFromGamePosition(new Position(0, 0));
-        Position maxPos = camera.getScreenPositionFromGamePosition(new Position(camera.getMaxX(), camera.getMaxY()));
-
-        graphics.setColor(getOutOfBoundColor());
-        graphics.fillRect(0, 0, gameDisplay.getWidth(), gameDisplay.getHeight());
-
         graphics.setColor(getBackgroundColor());
-        graphics.fillRect(minPos.getXPos(), minPos.getYPos(), maxPos.getXPos(), maxPos.getYPos());
+        graphics.fillRect(0, 0, gameDisplay.getWidth(), gameDisplay.getHeight());
     }
 
     /**
@@ -93,23 +84,20 @@ public class Renderer {
 
         Dimension canvasSize = gameDisplay.getPreferredSize();
 
-        Position minPos = camera.getScreenPositionFromGamePosition(new Position(0, 0));
-        Position maxPos = camera.getScreenPositionFromGamePosition(new Position(camera.getCellSize() * CellGrid.getNumberCol(), camera.getCellSize() * CellGrid.getNumberRow()));
-
         graphics.setColor(Color.gray);
 
         //Horizontal lines
         for (int rows = 1; rows <= camera.getNumberDisplayedCellsY() + 1; rows++) {
-            int yPos = Camera.clamp(minPos.getYPos(), maxPos.getYPos(), camera.getCellSize() * rows - camera.getYOffset());
+            int yPos = camera.getCellSize() * rows - camera.getYOffset();
 
-            graphics.drawLine(minPos.getXPos(), yPos, maxPos.getXPos(), yPos);
+            graphics.drawLine(0, yPos, (int) canvasSize.getWidth(), yPos);
         }
 
         //Vertical lines
-        for (int columns = 0; columns <= camera.getNumberDisplayedCellsX() + 1; columns++) {
-            int xPos = Camera.clamp(minPos.getXPos(), maxPos.getXPos(), camera.getCellSize() * columns - camera.getXOffset());
+        for (int columns = 1; columns <= camera.getNumberDisplayedCellsX() + 1; columns++) {
+            int xPos = camera.getCellSize() * columns - camera.getXOffset();
 
-            graphics.drawLine(xPos, minPos.getYPos(), xPos, maxPos.getYPos());
+            graphics.drawLine(xPos, 0, xPos, (int) canvasSize.getHeight());
         }
     }
 
@@ -119,25 +107,26 @@ public class Renderer {
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
-        CellGrid cellsGrid = gameDisplay.getGame().getCellGrid();
-//        byte[][] byteCellMatrices = cellsGrid.getCellMatrix();
+        GameLogic gameLogic = gameDisplay.getGame().getGameLogic();
         graphics.setColor(getCellColor());
 
         for (int y = 0; y <= gameDisplay.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
             for (int x = 0; x <= gameDisplay.getWidth() + camera.getCellSize(); x += camera.getCellSize()) {
                 Index index = camera.getCellIndexFromPosition(new Position(x, y));
-                if (index == null) {
-                    continue;
-                }
-                if (cellsGrid.isAlive(index.getXIndex(),index.getYIndex())) {
-//                    graphics.setColor(Color.white);
-                    graphics.fillRect(x - Math.abs(camera.getXOffset()), y - Math.abs(camera.getYOffset()), (int) camera.getCellSize(), (int) camera.getCellSize());
+
+                if (gameLogic.isAlive(index.getXIndex(),index.getYIndex())) {
+                    graphics.fillRect(x - camera.getXOffset(), y - camera.getYOffset(), camera.getCellSize(), camera.getCellSize());
 
                 }
-//                graphics.setColor(Color.red);
-//                graphics.drawString(""+ ByteCell.getAdjacentCellCount(byteCellMatrices[index.getYIndex()][index.getXIndex()]), x - camera.getXOffset(), (int)(y - camera.getYOffset() + camera.getCellSize()));
+//                debugCellCount(index, graphics, x, y);
             }
         }
+    }
+
+    private void debugCellCount(Index index, Graphics graphics, int x, int y) {
+        graphics.setColor(Color.red);
+        graphics.drawString("" + gameDisplay.getGame().getGameLogic().getSurroundingCells(index.getXIndex(), index.getYIndex()), x - camera.getXOffset(), y - camera.getYOffset() + camera.getCellSize());
+        graphics.setColor(Color.white);
     }
 
     private void drawFPSCount(Graphics graphics) {
@@ -167,10 +156,6 @@ public class Renderer {
 
     private Color getBackgroundColor() {
         return (isDarkTheme) ? darkBackground : lightBackground;
-    }
-
-    private Color getOutOfBoundColor() {
-        return (isDarkTheme) ? darkOutOfBound : lightOutOfBound;
     }
 
     private Color getCellColor() {

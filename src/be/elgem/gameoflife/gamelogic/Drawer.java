@@ -1,7 +1,7 @@
 package be.elgem.gameoflife.gamelogic;
 
 import be.elgem.gameoflife.render.Index;
-import be.elgem.gameoflife.render.Position;
+import javafx.util.Pair;
 
 public class Drawer {
     private Game game;
@@ -12,7 +12,7 @@ public class Drawer {
 
     protected void drawLine(Index startIndex, Index endIndex) {
         if (startIndex.equals(endIndex)) {
-            game.getCellGrid().putCell(startIndex.getXIndex(), startIndex.getYIndex());
+            game.getGameLogic().putCell(new Pair<>(startIndex.getXIndex(), startIndex.getYIndex()));
             return;
         }
 
@@ -57,7 +57,7 @@ public class Drawer {
             }
             movingX++;
 
-            game.getCellGrid().putCell(movingX, movingY);
+            game.getGameLogic().putCell(new Pair<>(movingX, movingY));
         }
     }
 
@@ -88,7 +88,7 @@ public class Drawer {
             }
             movingY++;
 
-            game.getCellGrid().putCell(movingX, movingY);
+            game.getGameLogic().putCell(new Pair<>(movingX, movingY));
         }
     }
 

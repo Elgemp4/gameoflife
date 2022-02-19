@@ -5,6 +5,7 @@ import be.elgem.gameoflife.render.Camera;
 import be.elgem.gameoflife.render.Index;
 import be.elgem.gameoflife.render.Position;
 import be.elgem.gameoflife.render.Renderer;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -59,7 +60,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
                 drawer.drawLine(camera.getCellIndexFromPosition(lastMousePosition), clickedIndex);
             }
             else if (SwingUtilities.isRightMouseButton(e)) {
-                game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+                game.getGameLogic().removeCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
 
             }
         }
@@ -78,10 +79,10 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getCellGrid().putCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+            game.getGameLogic().putCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
             gameDisplay.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getCellGrid().removeCell(clickedIndex.getXIndex(), clickedIndex.getYIndex());
+            game.getGameLogic().removeCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
             gameDisplay.repaint();
         }
     }

@@ -74,8 +74,9 @@ public class GameLoop implements Runnable{
 
             long deltaTime = endTime - startTime;
 
+            if((updateRate - deltaTime > 0))
             try {
-                Thread.sleep((long) ((updateRate - deltaTime < 0) ? 0 : updateRate - deltaTime));
+                Thread.sleep((long) (updateRate - deltaTime));
             }
             catch (InterruptedException e) {}
         }
@@ -100,7 +101,7 @@ public class GameLoop implements Runnable{
      */
     private void debugUPS() {
         if(System.currentTimeMillis()>=timeForNextDebug) {
-//            System.out.printf("FPS : %d%n", fps);
+            System.out.printf("FPS : %d%n", ups);
 
             storedUPS = ups;
             ups = 0;

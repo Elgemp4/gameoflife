@@ -65,24 +65,28 @@ public class ControlsPanel extends JPanel {
      * Crée un JPanel contenant un label et un slider, servant à définir le taux de rafraichissement
      */
     private JPanel createSpeedSection() {
-        JPanel speedSliderPanel = new JPanel(new FlowLayout());
-        speedSliderPanel.setSize(new Dimension(getWidth(), 0));
-        speedSliderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel speedPanel = new JPanel(new FlowLayout());
+        speedPanel.setSize(new Dimension(getWidth(), 0));
+        speedPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel speedText = new JLabel("Speed : ");
 
-        SpinnerNumberModel model = new SpinnerNumberModel(10, 1,1000,10);
+        JComboBox<String> choice = new JComboBox<>();
+        choice.addItem("Très lent");
+        choice.addItem("Lent");
+        choice.addItem("Normal");
+        choice.addItem("Rapide");
+        choice.addItem("Super rapide");
+        choice.addItem("ILLIMITÉ");
+        choice.addActionListener(game::changeGameSpeed);
+        choice.setSelectedItem("Lent");
 
-        JSpinner spinnerSpeed = new JSpinner(model);
-        spinnerSpeed.setPreferredSize(new Dimension(50,20));
-        spinnerSpeed.addChangeListener(changeEvent -> game.setExecutionSpeed(changeEvent));
+        speedPanel.add(speedText);
+        speedPanel.add(choice);
 
-        speedSliderPanel.add(speedText);
-        speedSliderPanel.add(spinnerSpeed);
+        this.add(speedPanel);
 
-        this.add(speedSliderPanel);
-
-        return speedSliderPanel;
+        return speedPanel;
     }
 
     /**

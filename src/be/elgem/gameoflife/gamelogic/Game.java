@@ -11,11 +11,8 @@ public class Game {
 
     final private GameDisplay gameDisplay;
 
-    final static private int NUMBER_CELLS_X = 2000;
 
-    final static private int NUMBER_CELLS_Y = 2000;
-
-    private CellGrid cellGrid;
+    private GameLogic cellGrid;
 
     private int gameSpeed = 10;
 
@@ -24,7 +21,7 @@ public class Game {
 
         this.gameLoop = new GameLoop(gameSpeed, this);
 
-        this.cellGrid = new CellGrid(NUMBER_CELLS_X, NUMBER_CELLS_Y);
+        this.cellGrid = new GameLogic();
     }
 
     /**
@@ -79,9 +76,33 @@ public class Game {
      * Permet de redéfinir le taux d'exécution du jeu
      * @param changeEvent
      */
-    public void setExecutionSpeed(ChangeEvent changeEvent) {
+    public void changeGameSpeed(ChangeEvent changeEvent) {
         gameSpeed = (int) ((JSpinner) changeEvent.getSource()).getValue();
         gameLoop.setUpdateRate(gameSpeed);
+    }
+
+    public void changeGameSpeed(ActionEvent actionEvent) {
+        JComboBox source = (JComboBox)(actionEvent.getSource());
+        String entry = source.getSelectedItem().toString();
+
+        if(entry.equals("Super lent")) {
+            gameLoop.setUpdateRate(1);
+        }
+        else if(entry.equals("Lent")) {
+            gameLoop.setUpdateRate(10);
+        }
+        else if(entry.equals("Normal")) {
+            gameLoop.setUpdateRate(25);
+        }
+        else if(entry.equals("Rapide")) {
+            gameLoop.setUpdateRate(100);
+        }
+        else if(entry.equals("Super rapide")) {
+            gameLoop.setUpdateRate(1000);
+        }
+        else if(entry.equals("ILLIMITÉ")) {
+            gameLoop.setUpdateRate(Long.MAX_VALUE);
+        }
     }
 
     /**
@@ -112,19 +133,11 @@ public class Game {
      * Retourne la grille du jeu
      * @return
      */
-    public CellGrid getCellGrid() {
+    public GameLogic getGameLogic() {
         return cellGrid;
     }
 
     public GameLoop getGameLoop() {
         return gameLoop;
-    }
-
-    public static int getNumberCellsX() {
-        return Game.NUMBER_CELLS_X;
-    }
-
-    public static int getNumberCellsY() {
-        return Game.NUMBER_CELLS_Y;
     }
 }

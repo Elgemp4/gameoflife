@@ -1,6 +1,6 @@
 package be.elgem.gameoflife.render;
 
-import be.elgem.gameoflife.gamelogic.CellGrid;
+import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gamelogic.Game;
 import be.elgem.gameoflife.gui.GameDisplay;
 
@@ -68,14 +68,6 @@ public class Camera {
             return (int) ((cellSize - Math.abs(y % cellSize))%cellSize);
     }
 
-    public int getMaxX() {
-        return cellSize * Game.getNumberCellsX();
-    }
-
-    public int getMaxY() {
-        return cellSize * Game.getNumberCellsY();
-    }
-
     /**
      * Renvoie l'index d'une cellule depuis une position sur l'écran
      *
@@ -85,10 +77,6 @@ public class Camera {
     public Index getCellIndexFromPosition(Position screenPosition) {
         int xIndex = (int) Math.floor((screenPosition.getXPos() + x) / cellSize);
         int yIndex = (int) Math.floor((screenPosition.getYPos() + y) / cellSize);
-
-        if (!CellGrid.isInGrid(xIndex, yIndex)) {
-            return null;
-        }
 
         return new Index(xIndex, yIndex);
     }
