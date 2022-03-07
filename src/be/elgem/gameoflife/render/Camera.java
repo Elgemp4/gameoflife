@@ -49,7 +49,6 @@ public class Camera {
      * @return
      */
     public int getXOffset() {
-//        System.out.println((int) (x % cellSize));
         if(x>0)
             return (int) (x % cellSize);
         else
@@ -81,19 +80,19 @@ public class Camera {
         return new Index(xIndex, yIndex);
     }
 
-    public Position getGamePositionFromScreenPosition(Position screenPosition) {
-        int posX = (int) (screenPosition.getXPos() + x);
-        int posY = (int) (screenPosition.getYPos() + y);
-
-        return new Position(posX, posY);
-    }
-
-    public Position getScreenPositionFromGamePosition(Position gamePosition) {
-        int posX = clamp(0, gameDisplay.getWidth(), (int) (gamePosition.getXPos() - x));
-        int posY= clamp(0, gameDisplay.getHeight(), (int) (gamePosition.getYPos() - y));
-
-        return new Position(posX, posY);
-    }
+//    public Position getGamePositionFromScreenPosition(Position screenPosition) {
+//        int posX = (int) (screenPosition.getXPos() + x);
+//        int posY = (int) (screenPosition.getYPos() + y);
+//
+//        return new Position(posX, posY);
+//    }
+//
+//    public Position getScreenPositionFromGamePosition(Position gamePosition) {
+//        int posX = clamp(0, gameDisplay.getWidth(), (int) (gamePosition.getXPos() - x));
+//        int posY= clamp(0, gameDisplay.getHeight(), (int) (gamePosition.getYPos() - y));
+//
+//        return new Position(posX, posY);
+//    }
 
 
 

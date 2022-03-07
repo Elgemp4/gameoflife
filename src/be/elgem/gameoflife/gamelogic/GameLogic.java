@@ -98,20 +98,26 @@ public class GameLogic {
      * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
      */
     public void checkCells() {
-        HashMap<Pair<Integer, Integer>, Byte> activeCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) activeCellsMap.clone();
-        HashMap<Pair<Integer, Integer>, Byte> aliveCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) aliveCellsMap.clone();
+        HashMap<Pair<Integer, Integer>, Boolean> modificationMap = new HashMap<>();
 
-        System.out.println(activeCellsMapCopy.size());
-
-        for (Pair<Integer, Integer> cellIndex : activeCellsMapCopy.keySet()) {
-            Byte surroundCells = activeCellsMapCopy.get(cellIndex);
+        for (Pair<Integer, Integer> cellIndex : activeCellsMap.keySet()) {
+            Byte surroundCells = activeCellsMap.get(cellIndex);
             if (surroundCells != 2 && surroundCells != 3) {
-                this.removeCell(cellIndex);
+                modificationMap.put(cellIndex, false);
             }
             else if (surroundCells == 3) {
-                this.putCell(cellIndex);
+                modificationMap.put(cellIndex, true);
             }
 
+        }
+
+        for (Pair<Integer, Integer> modificationIndex : modificationMap.keySet()) {
+            if(modificationMap.get(modificationIndex)){
+                this.putCell(modificationIndex);
+            }
+            else {
+                this.removeCell(modificationIndex);
+            }
         }
     }
 

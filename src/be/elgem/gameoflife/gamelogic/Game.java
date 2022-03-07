@@ -98,7 +98,7 @@ public class Game {
             gameLoop.setUpdateRate(100);
         }
         else if(entry.equals("Super rapide")) {
-            gameLoop.setUpdateRate(500);
+            gameLoop.setUpdateRate(1000);
         }
     }
 
@@ -115,8 +115,6 @@ public class Game {
     public void render() {
         gameDisplay.repaint();
     }
-
-
 
     /**
      * retourne la vitesse actuelle de mise à jour du jeu
