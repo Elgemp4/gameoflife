@@ -2,7 +2,6 @@ package be.elgem.gameoflife.gamelogic;
 
 import javafx.util.Pair;
 
-import java.lang.management.MemoryUsage;
 import java.util.HashMap;
 
 /**
@@ -13,7 +12,6 @@ import java.util.HashMap;
 public class GameLogic {
     private HashMap<Pair<Integer, Integer>, Byte> activeCellsMap;
     private HashMap<Pair<Integer, Integer>, Byte> aliveCellsMap;
-
 
     public GameLogic() {
         activeCellsMap = new HashMap<>();
@@ -107,16 +105,11 @@ public class GameLogic {
 
         for (Pair<Integer, Integer> cellIndex : activeCellsMapCopy.keySet()) {
             Byte surroundCells = activeCellsMapCopy.get(cellIndex);
-
-            if (aliveCellsMapCopy.containsKey(cellIndex)) {
-                if (surroundCells != 2 && surroundCells != 3) {
-                    this.removeCell(cellIndex);
-                }
+            if (surroundCells != 2 && surroundCells != 3) {
+                this.removeCell(cellIndex);
             }
-            else {
-                if (surroundCells == 3) {
-                    this.putCell(cellIndex);
-                }
+            else if (surroundCells == 3) {
+                this.putCell(cellIndex);
             }
 
         }
@@ -151,5 +144,9 @@ public class GameLogic {
         else {
             return 0;
         }
+    }
+
+    public HashMap<Pair<Integer, Integer>, Byte> getActiveCellsMap() {
+        return activeCellsMap;
     }
 }

@@ -77,7 +77,6 @@ public class ControlsPanel extends JPanel {
         choice.addItem("Normal");
         choice.addItem("Rapide");
         choice.addItem("Super rapide");
-        choice.addItem("ILLIMITÉ");
         choice.addActionListener(game::changeGameSpeed);
         choice.setSelectedItem("Lent");
 

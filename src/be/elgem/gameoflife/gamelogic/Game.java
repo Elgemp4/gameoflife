@@ -85,7 +85,7 @@ public class Game {
         JComboBox source = (JComboBox)(actionEvent.getSource());
         String entry = source.getSelectedItem().toString();
 
-        if(entry.equals("Super lent")) {
+        if(entry.equals("Très lent")) {
             gameLoop.setUpdateRate(1);
         }
         else if(entry.equals("Lent")) {
@@ -98,10 +98,7 @@ public class Game {
             gameLoop.setUpdateRate(100);
         }
         else if(entry.equals("Super rapide")) {
-            gameLoop.setUpdateRate(1000);
-        }
-        else if(entry.equals("ILLIMITÉ")) {
-            gameLoop.setUpdateRate(Long.MAX_VALUE);
+            gameLoop.setUpdateRate(500);
         }
     }
 

@@ -35,8 +35,8 @@ public class MenuBar extends JMenuBar {
     private JMenu createFileMenu() {
         JMenu fileMenu = new JMenu("File");
 
-        JMenuItem open = createJMenuItem("Open", null/*fileLoader::openFile*/);
-        JMenuItem save = createJMenuItem("Save", null/*fileSaver::saveFile*/);
+        JMenuItem open = createJMenuItem("Open", fileLoader::openFile);
+        JMenuItem save = createJMenuItem("Save", fileSaver::saveFile);
 
         fileMenu.add(open);
         fileMenu.add(save);
