@@ -3,12 +3,14 @@ package be.elgem.gameoflife.io;
 import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class FileLoader extends JFileChooser {
@@ -32,7 +34,7 @@ public class FileLoader extends JFileChooser {
     }
 
     public void openFile(ActionEvent event) {
-        byte[][] openedCellGrid;
+
 
         gameDisplay.getGame().stop();
 
@@ -41,11 +43,10 @@ public class FileLoader extends JFileChooser {
             try {
                 Scanner sc = new Scanner(openedFile);
 
-                openedCellGrid = parseCellGridSize(sc);
-
                 parseCameraSettings(sc);
 
-                parseCells(sc, openedCellGrid);
+                parseCells(sc);
+
 
                 gameDisplay.repaint();
             }
@@ -56,14 +57,6 @@ public class FileLoader extends JFileChooser {
         }
     }
 
-    private byte[][] parseCellGridSize(Scanner sc) {
-        byte[][] returnGrid;
-
-        String[] gridSize = sc.nextLine().split(":");
-        returnGrid = new byte[Integer.parseInt(gridSize[0])][Integer.parseInt(gridSize[1])];
-        
-        return returnGrid;
-    }
 
     private void parseCameraSettings(Scanner sc) {
         String[] cameraSettings = sc.nextLine().split(":");
@@ -75,12 +68,16 @@ public class FileLoader extends JFileChooser {
 
     }
 
-    private void parseCells(Scanner sc, byte[][] openedCellGrid) {
-        for (int y = 0; y < openedCellGrid.length; y++) {
-            String[] currentLine = sc.nextLine().split(",");
-            for (int x = 0; x < openedCellGrid[0].length; x++) {
-                openedCellGrid[y][x] = Byte.parseByte(currentLine[x]);
+    private void parseCells(Scanner sc) {
+        HashMap<Pair<Integer, Integer>, Byte> openedCellMap = new HashMap<>();
+
+        for (String cellData : sc.nextLine().split(":")) {
+            if(cellData!="") {
+                String[] cellInfo = sc.nextLine().split("-");
+                openedCellMap.put(new Pair<>(Integer.parseInt(cellInfo[1]), Integer.parseInt(cellInfo[2])), Byte.parseByte(cellInfo[3]));
             }
         }
+
+//        gameDisplay.getGame().getGameLogic().set
     }
 }
