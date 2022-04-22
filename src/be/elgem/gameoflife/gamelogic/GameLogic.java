@@ -103,8 +103,6 @@ public class GameLogic {
         HashMap<Pair<Integer, Integer>, Byte> activeCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) activeCellsMap.clone();
         HashMap<Pair<Integer, Integer>, Byte> aliveCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) aliveCellsMap.clone();
 
-        System.out.println(activeCellsMapCopy.size());
-
         for (Pair<Integer, Integer> cellIndex : activeCellsMapCopy.keySet()) {
             Byte surroundCells = activeCellsMapCopy.get(cellIndex);
 
@@ -130,7 +128,6 @@ public class GameLogic {
     }
 
     private void debugAliveCells() {
-        System.out.println("oui");
         for (Pair<Integer, Integer> cell: aliveCellsMap.keySet()) {
             System.out.println(cell.getKey() + " " + cell.getValue());
         }

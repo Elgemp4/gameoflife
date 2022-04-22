@@ -11,7 +11,6 @@ public class Game {
 
     final private GameDisplay gameDisplay;
 
-
     private GameLogic cellGrid;
 
     private int gameSpeed = 10;

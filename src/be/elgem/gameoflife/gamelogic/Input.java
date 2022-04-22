@@ -20,6 +20,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Drawer drawer;
 
     private boolean[] pressedKey;
+    private boolean hasBeenStoppedByClick;
 
     private Position lastMousePosition = null;
     private boolean isHovering = false;
@@ -90,6 +91,13 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         updateLastMousePosition(e);
+        if(game.getGameLoop().isRunning()) {
+            hasBeenStoppedByClick = true;
+            game.stop();
+        }
+        else{
+            hasBeenStoppedByClick = false;
+        }
         renderer.showGrid(true);
         gameDisplay.repaint();
 
@@ -98,6 +106,9 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseReleased(MouseEvent e) {
         updateLastMousePosition(e);
+        if(hasBeenStoppedByClick){
+            game.start();
+        }
 
         if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
             renderer.showGrid(false);
@@ -116,6 +127,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseExited(MouseEvent e) {
         isHovering = false;
+
 
         if(!SwingUtilities.isMiddleMouseButton(e)) {
             renderer.showGrid(false);
