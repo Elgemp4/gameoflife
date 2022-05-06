@@ -74,7 +74,7 @@ public class GameLoop implements Runnable{
 
             long deltaTime = endTime - startTime;
 
-            if((updateRate - deltaTime > 0))
+            if(updateRate - deltaTime > 0)
             try {
                 Thread.sleep((long) (updateRate - deltaTime));
             }
@@ -82,10 +82,6 @@ public class GameLoop implements Runnable{
         }
 
     }
-
-    /**
-     * Mets à jour les variables gérant le temps s'étant passé
-     */
 
     /**
      * Mets à jour, si le moment est arrivé, le jeu

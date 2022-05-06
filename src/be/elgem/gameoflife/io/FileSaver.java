@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.StringJoiner;
 
 public class FileSaver extends JFileChooser {
     private GameLogic gameLogic;
@@ -39,17 +40,45 @@ public class FileSaver extends JFileChooser {
 
             try {
                 PrintWriter writer = new PrintWriter(file);
-                writer.println(camera.getX()+":"+camera.getY()+":"+camera.getCellSize());
-                writer.println();
 
-                for (Pair<Integer, Integer> coordinates : cells.keySet()) {
-                    Byte cellData = cells.get(coordinates);
-                    writer.print("-"+coordinates.getKey() + "-" + coordinates.getValue() + "-" + cellData + "-:");
-                }
+                writeCameraInfo(writer);
+
+                writeCells(writer, gameLogic.getActiveCellsMap());
+                writeCells(writer, gameLogic.getAliveCellsMap());
+
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void writeCameraInfo(PrintWriter writer) {
+        String coordinates = String.join(":", Integer.toString(camera.getX()),
+                Integer.toString(camera.getY()), Integer.toString(camera.getCellSize()));
+
+        writer.println(coordinates);
+    }
+
+    private void writeCells(PrintWriter writer, HashMap<Pair<Integer, Integer>, Byte> cellMap) {
+        String cellList = "";
+
+        boolean firstIteration = true; //Pour éviter d'avoir un : seul au début des coordonées
+
+        for (Pair<Integer, Integer> cell : cellMap.keySet()) {
+            Byte cellData = cellMap.get(cell);
+            String cellString = String.join("_", Integer.toString(cell.getKey()),
+                    Integer.toString(cell.getValue()), Byte.toString(cellData));
+            if(firstIteration){
+                cellList = cellString;
+                firstIteration = false;
+            }
+            else{
+                cellList = String.join(":", cellList, cellString);
+            }
+
+        }
+
+        writer.println(cellList);
     }
 }

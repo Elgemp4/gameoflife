@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class FileLoader extends JFileChooser {
     private GameDisplay gameDisplay;
-    private GameLogic cellGrid;
+    private GameLogic gameLogic;
     private Camera camera;
 
     public FileLoader(GameDisplay gameDisplay) {
@@ -23,7 +23,7 @@ public class FileLoader extends JFileChooser {
 
         this.gameDisplay = gameDisplay;
 
-        this.cellGrid = gameDisplay.getGame().getGameLogic();
+        this.gameLogic = gameDisplay.getGame().getGameLogic();
 
         this.camera = gameDisplay.getCamera();
 
@@ -45,8 +45,8 @@ public class FileLoader extends JFileChooser {
 
                 parseCameraSettings(sc);
 
-                parseCells(sc);
-
+                gameLogic.setActiveCellsMap(parseCells(sc));
+                gameLogic.setAliveCellsMap(parseCells(sc));
 
                 gameDisplay.repaint();
             }
@@ -68,16 +68,16 @@ public class FileLoader extends JFileChooser {
 
     }
 
-    private void parseCells(Scanner sc) {
+    private HashMap<Pair<Integer, Integer>, Byte> parseCells(Scanner sc) {
         HashMap<Pair<Integer, Integer>, Byte> openedCellMap = new HashMap<>();
 
         for (String cellData : sc.nextLine().split(":")) {
             if(cellData!="") {
-                String[] cellInfo = sc.nextLine().split("-");
-                openedCellMap.put(new Pair<>(Integer.parseInt(cellInfo[1]), Integer.parseInt(cellInfo[2])), Byte.parseByte(cellInfo[3]));
+                String[] cellInfo = cellData.split("_");
+                openedCellMap.put(new Pair<>(Integer.parseInt(cellInfo[0]), Integer.parseInt(cellInfo[1])), Byte.parseByte(cellInfo[2]));
             }
         }
 
-//        gameDisplay.getGame().getGameLogic().set
+        return openedCellMap;
     }
 }

@@ -149,4 +149,20 @@ public class GameLogic {
             return 0;
         }
     }
+
+    public HashMap<Pair<Integer, Integer>, Byte> getActiveCellsMap() {
+        return activeCellsMap;
+    }
+
+    public HashMap<Pair<Integer, Integer>, Byte> getAliveCellsMap() {
+        return aliveCellsMap;
+    }
+
+    public void setActiveCellsMap(HashMap<Pair<Integer, Integer>, Byte> activeCellsMap) {
+        this.activeCellsMap = activeCellsMap;
+    }
+
+    public void setAliveCellsMap(HashMap<Pair<Integer, Integer>, Byte> aliveCellsMap) {
+        this.aliveCellsMap = aliveCellsMap;
+    }
 }
