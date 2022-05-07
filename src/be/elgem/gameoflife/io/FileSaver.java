@@ -3,6 +3,7 @@ package be.elgem.gameoflife.io;
 import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
+import be.elgem.gameoflife.render.Index;
 import javafx.util.Pair;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ public class FileSaver extends JFileChooser {
         gameDisplay.getGame().stop();
 
         if(showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            HashMap<Pair<Integer, Integer>, Byte> cells = gameLogic.getActiveCellsMap();
+            HashMap<Index, Byte> cells = gameLogic.getActiveCellsMap();
             File file = new File(getSelectedFile().getPath() + ".gold");
 
             try {
@@ -60,15 +61,15 @@ public class FileSaver extends JFileChooser {
         writer.println(coordinates);
     }
 
-    private void writeCells(PrintWriter writer, HashMap<Pair<Integer, Integer>, Byte> cellMap) {
+    private void writeCells(PrintWriter writer, HashMap<Index, Byte> cellMap) {
         String cellList = "";
 
         boolean firstIteration = true; //Pour éviter d'avoir un : seul au début des coordonées
 
-        for (Pair<Integer, Integer> cell : cellMap.keySet()) {
+        for (Index cell : cellMap.keySet()) {
             Byte cellData = cellMap.get(cell);
-            String cellString = String.join("_", Integer.toString(cell.getKey()),
-                    Integer.toString(cell.getValue()), Byte.toString(cellData));
+            String cellString = String.join("_", Integer.toString(cell.getXIndex()),
+                    Integer.toString(cell.getYIndex()), Byte.toString(cellData));
             if(firstIteration){
                 cellList = cellString;
                 firstIteration = false;

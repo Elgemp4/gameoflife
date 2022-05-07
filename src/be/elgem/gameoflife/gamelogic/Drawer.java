@@ -22,7 +22,7 @@ public class Drawer {
         double slopeLength = Math.sqrt(Math.pow(xComposant, 2) + Math.pow(yComposant, 2)); //Pythagore
 
         if(slopeLength == 0.0) {
-            game.getGameLogic().putCell(new Pair<>(startIndex.getXIndex(), startIndex.getYIndex()));
+            game.getGameLogic().putCell(startIndex);
             return;
         }
 
@@ -73,7 +73,7 @@ public class Drawer {
             double x = (isHorizontal) ? mainAxis : oppositeAxis;
             double y = (isHorizontal) ? oppositeAxis : mainAxis;
 
-            Pair<Integer, Integer> index = new Pair<>((int)x, (int)y);
+            Index index = new Index((int) x, (int) y);
 
             game.getGameLogic().putCell(index);
         }

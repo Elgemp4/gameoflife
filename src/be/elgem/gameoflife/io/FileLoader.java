@@ -3,6 +3,7 @@ package be.elgem.gameoflife.io;
 import be.elgem.gameoflife.gamelogic.GameLogic;
 import be.elgem.gameoflife.gui.GameDisplay;
 import be.elgem.gameoflife.render.Camera;
+import be.elgem.gameoflife.render.Index;
 import javafx.util.Pair;
 
 import javax.swing.*;
@@ -68,13 +69,13 @@ public class FileLoader extends JFileChooser {
 
     }
 
-    private HashMap<Pair<Integer, Integer>, Byte> parseCells(Scanner sc) {
-        HashMap<Pair<Integer, Integer>, Byte> openedCellMap = new HashMap<>();
+    private HashMap<Index, Byte> parseCells(Scanner sc) {
+        HashMap<Index, Byte> openedCellMap = new HashMap<>();
 
         for (String cellData : sc.nextLine().split(":")) {
             if(cellData!="") {
                 String[] cellInfo = cellData.split("_");
-                openedCellMap.put(new Pair<>(Integer.parseInt(cellInfo[0]), Integer.parseInt(cellInfo[1])), Byte.parseByte(cellInfo[2]));
+                openedCellMap.put(new Index(Integer.parseInt(cellInfo[0]), Integer.parseInt(cellInfo[1])), Byte.parseByte(cellInfo[2]));
             }
         }
 

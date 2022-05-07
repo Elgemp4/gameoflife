@@ -1,5 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
+import be.elgem.gameoflife.render.Index;
 import javafx.util.Pair;
 
 import java.lang.management.MemoryUsage;
@@ -11,8 +12,8 @@ import java.util.HashMap;
  * le dernier encode si la cellule est vivante.
  */
 public class GameLogic {
-    private HashMap<Pair<Integer, Integer>, Byte> activeCellsMap;
-    private HashMap<Pair<Integer, Integer>, Byte> aliveCellsMap;
+    private HashMap<Index, Byte> activeCellsMap;
+    private HashMap<Index, Byte> aliveCellsMap;
 
 
     public GameLogic() {
@@ -23,7 +24,7 @@ public class GameLogic {
     /**
      * Mets une cellule en x y
      */
-    public void putCell(Pair<Integer, Integer> index) {
+    public void putCell(Index index) {
         if (!isAlive(index)) {
             if(activeCellsMap.containsKey(index)){
                 aliveCellsMap.put(index, activeCellsMap.get(index));
@@ -42,7 +43,7 @@ public class GameLogic {
     /**
      * Enlève un cellule en x y
      */
-    public void removeCell(Pair<Integer, Integer> index) {
+    public void removeCell(Index index) {
         if(isAlive(index)) {
             aliveCellsMap.remove(index);
 
@@ -50,11 +51,11 @@ public class GameLogic {
         }
     }
 
-    private void informAdditionSurroundingCells(Pair<Integer, Integer> index) {
+    private void informAdditionSurroundingCells(Index index) {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if (yOffset != 0 || xOffset != 0) {
-                    Pair<Integer, Integer> searchIndex = new Pair<>(index.getKey() + xOffset, index.getValue() + yOffset);
+                    Index searchIndex = new Index(index.getXIndex() + xOffset, index.getYIndex() + yOffset);
 
                     if (activeCellsMap.containsKey(searchIndex)) {
                         activeCellsMap.replace(searchIndex, (byte) (activeCellsMap.get(searchIndex) + 1));
@@ -66,11 +67,11 @@ public class GameLogic {
         }
     }
 
-    public void informRemovalSurroundingCells(Pair<Integer, Integer> index) {
+    public void informRemovalSurroundingCells(Index index) {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if (yOffset != 0 || xOffset != 0) {
-                    Pair<Integer, Integer> searchindex = new Pair<>(index.getKey() + xOffset, index.getValue() + yOffset);
+                    Index searchindex = new Index(index.getXIndex() + xOffset, index.getYIndex() + yOffset);
                     if(activeCellsMap.containsKey(searchindex)) {
                         if (activeCellsMap.get(searchindex) > 0) {
                             activeCellsMap.replace(searchindex, (byte) (activeCellsMap.get(searchindex) - 1));
@@ -92,7 +93,7 @@ public class GameLogic {
         activeCellsMap = new HashMap<>();
     }
 
-    public boolean isAlive(Pair<Integer, Integer> index) {
+    public boolean isAlive(Index index) {
         return aliveCellsMap.containsKey(index);
     }
 
@@ -100,10 +101,10 @@ public class GameLogic {
      * Vérifie toute les cellules du tableaux en regardant si elles doivent vivre ou mourir
      */
     public void checkCells() {
-        HashMap<Pair<Integer, Integer>, Byte> activeCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) activeCellsMap.clone();
-        HashMap<Pair<Integer, Integer>, Byte> aliveCellsMapCopy = (HashMap<Pair<Integer, Integer>, Byte>) aliveCellsMap.clone();
+        HashMap<Index, Byte> activeCellsMapCopy = (HashMap<Index, Byte>) activeCellsMap.clone();
+        HashMap<Index, Byte> aliveCellsMapCopy = (HashMap<Index, Byte>) aliveCellsMap.clone();
 
-        for (Pair<Integer, Integer> cellIndex : activeCellsMapCopy.keySet()) {
+        for (Index cellIndex : activeCellsMapCopy.keySet()) {
             Byte surroundCells = activeCellsMapCopy.get(cellIndex);
 
             if (aliveCellsMapCopy.containsKey(cellIndex)) {
@@ -124,12 +125,12 @@ public class GameLogic {
      * Renvoie vrai si jamais la cellule en x y est vivante
      */
     public boolean isAlive(int x, int y) {
-        return aliveCellsMap.containsKey(new Pair<>(x, y));
+        return aliveCellsMap.containsKey(new Index(x, y));
     }
 
     private void debugAliveCells() {
-        for (Pair<Integer, Integer> cell: aliveCellsMap.keySet()) {
-            System.out.println(cell.getKey() + " " + cell.getValue());
+        for (Index cell: aliveCellsMap.keySet()) {
+            System.out.println(cell.getXIndex() + " " + cell.getYIndex());
         }
     }
 
@@ -140,7 +141,7 @@ public class GameLogic {
      * @return
      */
     public int getSurroundingCells(int x, int y) {
-        Pair index = new Pair<>(x, y);
+        Index index = new Index(x, y);
 
         if(activeCellsMap.containsKey(index)){
             return activeCellsMap.get(index);
@@ -150,19 +151,19 @@ public class GameLogic {
         }
     }
 
-    public HashMap<Pair<Integer, Integer>, Byte> getActiveCellsMap() {
+    public HashMap<Index, Byte> getActiveCellsMap() {
         return activeCellsMap;
     }
 
-    public HashMap<Pair<Integer, Integer>, Byte> getAliveCellsMap() {
+    public HashMap<Index, Byte> getAliveCellsMap() {
         return aliveCellsMap;
     }
 
-    public void setActiveCellsMap(HashMap<Pair<Integer, Integer>, Byte> activeCellsMap) {
+    public void setActiveCellsMap(HashMap<Index, Byte> activeCellsMap) {
         this.activeCellsMap = activeCellsMap;
     }
 
-    public void setAliveCellsMap(HashMap<Pair<Integer, Integer>, Byte> aliveCellsMap) {
+    public void setAliveCellsMap(HashMap<Index, Byte> aliveCellsMap) {
         this.aliveCellsMap = aliveCellsMap;
     }
 }

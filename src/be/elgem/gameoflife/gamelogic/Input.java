@@ -61,7 +61,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
                 drawer.drawLine(camera.getCellIndexFromPosition(lastMousePosition), clickedIndex);
             }
             else if (SwingUtilities.isRightMouseButton(e)) {
-                game.getGameLogic().removeCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
+                game.getGameLogic().removeCell(clickedIndex);
 
             }
         }
@@ -80,10 +80,10 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getGameLogic().putCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
+            game.getGameLogic().putCell(clickedIndex);
             gameDisplay.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getGameLogic().removeCell(new Pair<>(clickedIndex.getXIndex(), clickedIndex.getYIndex()));
+            game.getGameLogic().removeCell(clickedIndex);
             gameDisplay.repaint();
         }
     }
