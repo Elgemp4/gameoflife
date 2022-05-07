@@ -20,11 +20,11 @@ public class FileSaver extends JFileChooser {
     private Camera camera;
     private GameDisplay gameDisplay;
 
-    public FileSaver(GameDisplay gameDisplay) {
+    public FileSaver() {
         super();
-        this.gameLogic = gameDisplay.getGame().getGameLogic();
-        this.camera = gameDisplay.getCamera();
-        this.gameDisplay = gameDisplay;
+        this.gameLogic = GameLogic.getGameLogicClass();
+        this.camera = Camera.getCameraClass();
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
 

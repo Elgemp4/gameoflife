@@ -15,13 +15,13 @@ public class MenuBar extends JMenuBar {
 
     private JMenu file, option, help;
 
-    public MenuBar(GameDisplay gameDisplay) {
+    public MenuBar() {
         super();
 
-        this.gameDisplay = gameDisplay;
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
         setFocusable(false);
-        fileSaver = new FileSaver(gameDisplay);
-        fileLoader = new FileLoader(gameDisplay);
+        fileSaver = new FileSaver();
+        fileLoader = new FileLoader();
 
         file = createFileMenu();
         option = createOptionMenu();

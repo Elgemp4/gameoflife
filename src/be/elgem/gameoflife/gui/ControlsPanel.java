@@ -22,16 +22,16 @@ public class ControlsPanel extends JPanel {
     private JButton start, step, reset, prefab;
     private JPanel speedSection;
 
-    public ControlsPanel(MainWindow window, Game game, PrefabSelector prefabSelector) {
+    public ControlsPanel() {
         super();
 
-        this.window = window;
+        this.window = MainWindow.getMainWindowClass();
 
-        this.game = game;
+        this.game = Game.getGameClass();
 
         this.gameDisplay = window.getGameCanvas();
 
-        this.prefabSelector = prefabSelector;
+        this.prefabSelector = PrefabSelector.getPrefabSelectorClass();
 
         initializePanel();
 

@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class PrefabSelector extends JDialog {
+    private static PrefabSelector prefabSelectorClass;
+
     private MainWindow mainWindow;
 
     private PreviewPanel previewPanel;
@@ -14,6 +16,8 @@ public class PrefabSelector extends JDialog {
 
     public PrefabSelector(MainWindow mainWindow) {
         super(mainWindow, "Prefabriqué");
+
+        PrefabSelector.prefabSelectorClass = this;
 
         this.createRootPane();
 
@@ -38,5 +42,9 @@ public class PrefabSelector extends JDialog {
 
     public void setVisible(ActionEvent actionEvent) {
         this.setVisible(true);
+    }
+
+    public static PrefabSelector getPrefabSelectorClass() {
+        return prefabSelectorClass;
     }
 }

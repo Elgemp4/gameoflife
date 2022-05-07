@@ -1,26 +1,31 @@
 package be.elgem.gameoflife.gamelogic;
 
 import be.elgem.gameoflife.gui.GameDisplay;
+import be.elgem.gameoflife.gui.MainWindow;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 
 public class Game {
+    private static Game gameClass;
+
     final private GameLoop gameLoop;
 
     final private GameDisplay gameDisplay;
 
-    private GameLogic cellGrid;
+    private GameLogic gameLogic;
 
     private int gameSpeed = 10;
 
-    public Game(GameDisplay gameDisplay) {
-        this.gameDisplay = gameDisplay;
+    public Game() {
+        Game.gameClass = this;
 
-        this.gameLoop = new GameLoop(gameSpeed, this);
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
 
-        this.cellGrid = new GameLogic();
+        this.gameLoop = new GameLoop(gameSpeed);
+
+        this.gameLogic = new GameLogic();
     }
 
     /**
@@ -38,14 +43,14 @@ public class Game {
     public void stop() {
         if(gameLoop.isRunning()) {
             gameLoop.stop();
-            gameDisplay.getWindow().getToolPanel().getStart().setText("Start");
+            MainWindow.getMainWindowClass().getToolPanel().getStart().setText("Start");
         }
     }
 
     public void start() {
         if(!gameLoop.isRunning()) {
             gameLoop.start();
-            gameDisplay.getWindow().getToolPanel().getStart().setText("Stop");
+            MainWindow.getMainWindowClass().getToolPanel().getStart().setText("Stop");
         }
     }
 
@@ -54,7 +59,7 @@ public class Game {
      * @param ignoredEvent
      */
     public void step(ActionEvent ignoredEvent) {
-        cellGrid.checkCells();
+        gameLogic.checkCells();
         render();
     }
 
@@ -65,7 +70,7 @@ public class Game {
     public void reset(ActionEvent ignoredEvent) {
         stop();
 
-        cellGrid.reset();
+        gameLogic.reset();
 
         gameDisplay.repaint();
 
@@ -105,7 +110,7 @@ public class Game {
      * Mets à jour tout ce qui a rapport au jeu
      */
     public void update() {
-        cellGrid.checkCells();
+        gameLogic.checkCells();
     }
 
     /**
@@ -128,14 +133,14 @@ public class Game {
      * @return
      */
     public GameLogic getGameLogic() {
-        return cellGrid;
+        return gameLogic;
     }
 
     public GameLoop getGameLoop() {
         return gameLoop;
     }
 
-    public GameDisplay getGameDisplay() {
-        return gameDisplay;
+    public static Game getGameClass() {
+        return gameClass;
     }
 }

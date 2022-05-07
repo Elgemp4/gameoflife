@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainWindow extends JFrame {
+    static private MainWindow mainWindowClass;
+
     private ControlsPanel toolPanel;
 
     private GameDisplay gameDisplay;
@@ -38,6 +40,8 @@ public class MainWindow extends JFrame {
     public MainWindow(int width, int height){
         super("Conway's GameLogic.Game Of Life");
 
+        MainWindow.mainWindowClass = this;
+
         try {
             this.icon = ImageIO.read(new File("src/be/elgem/gameoflife/resources/images/icon.png"));
         }
@@ -46,6 +50,8 @@ public class MainWindow extends JFrame {
         }
 
         initializeWindow(width, height);
+
+
     }
 
     /**
@@ -57,17 +63,17 @@ public class MainWindow extends JFrame {
         this.width = width;
         this.height = height;
 
-        gameDisplay = new GameDisplay(this, width, height);
+        gameDisplay = new GameDisplay(width, height);
         add(gameDisplay, BorderLayout.EAST);
 
         prefabSelector = new PrefabSelector(this);
 
-        toolPanel = new ControlsPanel(this, gameDisplay.getGame(), prefabSelector);
+        toolPanel = new ControlsPanel();
         add(toolPanel, BorderLayout.SOUTH);
 
 
 
-        setJMenuBar(new MenuBar(gameDisplay));
+        setJMenuBar(new MenuBar());
 
         setIconImage(this.icon);
         setSize(width, height);
@@ -92,5 +98,9 @@ public class MainWindow extends JFrame {
 
     public PrefabSelector getPrefabSelector() {
         return prefabSelector;
+    }
+
+    public static MainWindow getMainWindowClass() {
+        return mainWindowClass;
     }
 }

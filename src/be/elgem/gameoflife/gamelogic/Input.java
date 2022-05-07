@@ -25,8 +25,8 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     private Position lastMousePosition = null;
     private boolean isHovering = false;
 
-    public Input(GameDisplay gameDisplay) {
-        this.gameDisplay = gameDisplay;
+    public Input() {
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
         
         this.camera = this.gameDisplay.getCamera();
         
@@ -34,7 +34,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         
         this.renderer = this.gameDisplay.getRenderer();
 
-        this.drawer = new Drawer(game);
+        this.drawer = new Drawer();
 
         pressedKey = new boolean[256];
     }

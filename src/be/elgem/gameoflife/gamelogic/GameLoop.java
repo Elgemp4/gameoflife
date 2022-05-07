@@ -1,7 +1,6 @@
 package be.elgem.gameoflife.gamelogic;
 
 public class GameLoop implements Runnable{
-
     private boolean running;
 
     private double updateRate;
@@ -16,10 +15,10 @@ public class GameLoop implements Runnable{
 
     final private Game game;
 
-    public GameLoop(int updateRate, Game game) {
+    public GameLoop(int updateRate) {
         setUpdateRate(updateRate);
 
-        this.game = game;
+        this.game = Game.getGameClass();
     }
 
     /**

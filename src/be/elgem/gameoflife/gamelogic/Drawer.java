@@ -6,8 +6,8 @@ import javafx.util.Pair;
 public class Drawer {
     private Game game;
 
-    public Drawer(Game game) {
-        this.game = game;
+    public Drawer() {
+        this.game = Game.getGameClass();
     }
 
     /**

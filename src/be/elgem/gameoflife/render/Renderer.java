@@ -22,8 +22,8 @@ public class Renderer {
 
     private long nextRenderTime;
 
-    public Renderer(GameDisplay gameDisplay) {
-        this.gameDisplay = gameDisplay;
+    public Renderer() {
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
 
         this.camera = gameDisplay.getCamera();
 

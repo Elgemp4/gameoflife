@@ -7,6 +7,8 @@ import be.elgem.gameoflife.gui.GameDisplay;
 import java.awt.*;
 
 public class Camera {
+    private static Camera cameraClass;
+
     private double x;
     private double y;
 
@@ -20,12 +22,12 @@ public class Camera {
     final private static int MIN_ZOOM = 1;
     final private static int MAX_ZOOM = 60;
 
-    public Camera(int x, int y, int cellSize, GameDisplay gameDisplay) {
+    public Camera(int x, int y, int cellSize) {
         this.x = x;
 
         this.y = y;
 
-        this.gameDisplay = gameDisplay;
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
 
         this.cellSize = cellSize;
 
@@ -202,8 +204,11 @@ public class Camera {
         return Camera.MIN_ZOOM;
     }
 
-
     public static int clamp(int min, int max, int nb) {
         return Math.min(Math.max(min, nb), max);
+    }
+
+    public static Camera getCameraClass() {
+        return cameraClass;
     }
 }

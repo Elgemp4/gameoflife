@@ -12,6 +12,8 @@ import java.util.HashMap;
  * le dernier encode si la cellule est vivante.
  */
 public class GameLogic {
+    private static GameLogic GameLogicClass;
+
     private HashMap<Index, Byte> activeCellsMap;
     private HashMap<Index, Byte> aliveCellsMap;
 
@@ -165,5 +167,9 @@ public class GameLogic {
 
     public void setAliveCellsMap(HashMap<Index, Byte> aliveCellsMap) {
         this.aliveCellsMap = aliveCellsMap;
+    }
+
+    public static GameLogic getGameLogicClass() {
+        return GameLogicClass;
     }
 }

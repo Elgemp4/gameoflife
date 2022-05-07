@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameDisplay extends JComponent{
+    private static GameDisplay gameDisplayClass;
+
     private Game game;
     private MainWindow window;
 
@@ -17,12 +19,14 @@ public class GameDisplay extends JComponent{
     private Renderer renderer;
     private Input input;
 
-    public GameDisplay(MainWindow window, int width, int height) {
+    public GameDisplay(int width, int height) {
         super();
 
-        this.game = new Game(this);
+        GameDisplay.gameDisplayClass = this;
 
-        this.window = window;
+        this.game = new Game();
+
+        this.window = MainWindow.getMainWindowClass();
 
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
@@ -30,11 +34,11 @@ public class GameDisplay extends JComponent{
 
         this.setDoubleBuffered(true);
 
-        this.camera = new Camera(2000000, 2000000, 40, this);
+        this.camera = new Camera(2000000, 2000000, 40);
 
-        this.renderer = new Renderer(this);
+        this.renderer = new Renderer();
 
-        this.input = new Input(this);
+        this.input = new Input();
 
         addMouseWheelListener(input);
         addMouseListener(input);
@@ -75,11 +79,7 @@ public class GameDisplay extends JComponent{
         return renderer;
     }
 
-    public Input getInput() {
-        return input;
-    }
-
-    public MainWindow getWindow() {
-        return window;
+    public static GameDisplay getGameDisplayClass() {
+        return gameDisplayClass;
     }
 }

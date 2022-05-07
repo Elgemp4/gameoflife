@@ -19,14 +19,14 @@ public class FileLoader extends JFileChooser {
     private GameLogic gameLogic;
     private Camera camera;
 
-    public FileLoader(GameDisplay gameDisplay) {
+    public FileLoader() {
         super();
 
-        this.gameDisplay = gameDisplay;
+        this.gameDisplay = GameDisplay.getGameDisplayClass();
 
-        this.gameLogic = gameDisplay.getGame().getGameLogic();
+        this.gameLogic = GameLogic.getGameLogicClass();
 
-        this.camera = gameDisplay.getCamera();
+        this.camera = Camera.getCameraClass();
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Game Of Life Grid", "gold");
 
