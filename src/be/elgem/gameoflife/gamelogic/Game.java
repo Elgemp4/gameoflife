@@ -134,4 +134,8 @@ public class Game {
     public GameLoop getGameLoop() {
         return gameLoop;
     }
+
+    public GameDisplay getGameDisplay() {
+        return gameDisplay;
+    }
 }
