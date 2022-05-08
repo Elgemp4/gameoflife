@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 import be.elgem.gameoflife.gamelogic.Game;
-import be.elgem.gameoflife.externallibrary.WrapLayout;
 import be.elgem.gameoflife.gui.prefab.PrefabSelector;
 
 /**
@@ -34,21 +33,16 @@ public class ControlsPanel extends JPanel {
         this.prefabSelector = PrefabSelector.getPrefabSelectorClass();
 
         initializePanel();
-
     }
 
-//    @Override
-//    public Dimension getPreferredSize() {
-//        return new Dimension(MainWindow.OPTION_PANE_SIZE, window.getHeight());
-//    }
 
     /**
      * Créer un JPanel d'option
      */
     private void initializePanel() {
-        setLayout(new WrapLayout(FlowLayout.CENTER, 25, 10));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 25, 10));
 
-        start = createButton("Start", game::toggleExecution);
+        start = createButton("Start", event -> game.toggleExecution());
 
         step = createButton( "Step", game::step);
 
@@ -62,7 +56,7 @@ public class ControlsPanel extends JPanel {
 
 
     /**
-     * Crée un JPanel contenant un label et un slider, servant à définir le taux de rafraichissement
+     * Crée un JPanel contenant un label et un comboBox, servant à définir le taux de rafraichissement
      */
     private JPanel createSpeedSection() {
         JPanel speedPanel = new JPanel(new FlowLayout());
@@ -77,8 +71,10 @@ public class ControlsPanel extends JPanel {
         choice.addItem("Normal");
         choice.addItem("Rapide");
         choice.addItem("Super rapide");
-        choice.addActionListener(game::changeGameSpeed);
+
         choice.setSelectedItem("Lent");
+
+        choice.addActionListener(game::changeGameSpeed);
 
         speedPanel.add(speedText);
         speedPanel.add(choice);

@@ -5,7 +5,6 @@ import be.elgem.gameoflife.render.Camera;
 import be.elgem.gameoflife.render.Index;
 import be.elgem.gameoflife.render.Position;
 import be.elgem.gameoflife.render.Renderer;
-import javafx.util.Pair;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -61,7 +60,7 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
                 drawer.drawLine(camera.getCellIndexFromPosition(lastMousePosition), clickedIndex);
             }
             else if (SwingUtilities.isRightMouseButton(e)) {
-                game.getGameLogic().removeCell(clickedIndex);
+                game.getGAME_LOGIC().removeCell(clickedIndex);
 
             }
         }
@@ -80,10 +79,10 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            game.getGameLogic().putCell(clickedIndex);
+            game.getGAME_LOGIC().putCell(clickedIndex);
             gameDisplay.repaint();
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            game.getGameLogic().removeCell(clickedIndex);
+            game.getGAME_LOGIC().removeCell(clickedIndex);
             gameDisplay.repaint();
         }
     }
@@ -91,14 +90,14 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mousePressed(MouseEvent e) {
         updateLastMousePosition(e);
-        if(game.getGameLoop().isRunning()) {
+        if(game.getGAME_LOOP().isRunning() && !SwingUtilities.isMiddleMouseButton(e)) {
             hasBeenStoppedByClick = true;
             game.stop();
         }
         else{
             hasBeenStoppedByClick = false;
         }
-        renderer.showGrid(true);
+//        renderer.showGrid(true);
         gameDisplay.repaint();
 
     }
@@ -106,12 +105,12 @@ public class Input implements MouseMotionListener, MouseListener, MouseWheelList
     @Override
     public void mouseReleased(MouseEvent e) {
         updateLastMousePosition(e);
-        if(hasBeenStoppedByClick){
+        if(hasBeenStoppedByClick && !SwingUtilities.isMiddleMouseButton(e)){
             game.start();
         }
 
-        if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
-            renderer.showGrid(false);
+//        if(SwingUtilities.isMiddleMouseButton(e) == true && isHovering == false)
+//            renderer.showGrid(false);
         gameDisplay.repaint();
     }
 

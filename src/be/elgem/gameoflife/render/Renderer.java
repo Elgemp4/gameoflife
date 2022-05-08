@@ -27,7 +27,7 @@ public class Renderer {
 
         this.camera = gameDisplay.getCamera();
 
-        this.gameLoop = gameDisplay.getGame().getGameLoop();
+        this.gameLoop = gameDisplay.getGame().getGAME_LOOP();
 
         lightBackground = new Color(255,255,255);
 
@@ -107,7 +107,7 @@ public class Renderer {
      * @param graphics
      */
     private void drawCells(Graphics graphics) {
-        GameLogic gameLogic = gameDisplay.getGame().getGameLogic();
+        GameLogic gameLogic = gameDisplay.getGame().getGAME_LOGIC();
         graphics.setColor(getCellColor());
 
         for (int y = 0; y <= gameDisplay.getHeight() + camera.getCellSize(); y += camera.getCellSize()) {
@@ -125,7 +125,7 @@ public class Renderer {
 
     private void debugCellCount(Index index, Graphics graphics, int x, int y) {
         graphics.setColor(Color.red);
-        graphics.drawString("" + gameDisplay.getGame().getGameLogic().getSurroundingCells(index.getXIndex(), index.getYIndex()), x - camera.getXOffset(), y - camera.getYOffset() + camera.getCellSize());
+        graphics.drawString("" + gameDisplay.getGame().getGAME_LOGIC().getSurroundingCells(index.getXIndex(), index.getYIndex()), x - camera.getXOffset(), y - camera.getYOffset() + camera.getCellSize());
         graphics.setColor(Color.white);
     }
 

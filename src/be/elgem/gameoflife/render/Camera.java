@@ -23,6 +23,8 @@ public class Camera {
     final private static int MAX_ZOOM = 60;
 
     public Camera(int x, int y, int cellSize) {
+        cameraClass = this;
+
         this.x = x;
 
         this.y = y;

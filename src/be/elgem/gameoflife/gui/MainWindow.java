@@ -77,7 +77,7 @@ public class MainWindow extends JFrame {
 
         setIconImage(this.icon);
         setSize(width, height);
-        setMinimumSize(new Dimension(350,250));
+        setMinimumSize(new Dimension(520,250));
 
         pack();
         setLocationRelativeTo(null);

@@ -1,13 +1,12 @@
 package be.elgem.gameoflife.gamelogic;
 
 import be.elgem.gameoflife.render.Index;
-import javafx.util.Pair;
 
 public class Drawer {
-    private Game game;
+    final private Game GAME;
 
     public Drawer() {
-        this.game = Game.getGameClass();
+        this.GAME = Game.getGameClass();
     }
 
     /**
@@ -22,7 +21,7 @@ public class Drawer {
         double slopeLength = Math.sqrt(Math.pow(xComposant, 2) + Math.pow(yComposant, 2)); //Pythagore
 
         if(slopeLength == 0.0) {
-            game.getGameLogic().putCell(startIndex);
+            GAME.getGAME_LOGIC().putCell(startIndex);
             return;
         }
 
@@ -75,7 +74,7 @@ public class Drawer {
 
             Index index = new Index((int) x, (int) y);
 
-            game.getGameLogic().putCell(index);
+            GAME.getGAME_LOGIC().putCell(index);
         }
     }
 

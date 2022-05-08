@@ -12,13 +12,17 @@ import java.util.HashMap;
  * le dernier encode si la cellule est vivante.
  */
 public class GameLogic {
-    private static GameLogic GameLogicClass;
+    private static GameLogic gameLogicClass;
 
     private HashMap<Index, Byte> activeCellsMap;
     private HashMap<Index, Byte> aliveCellsMap;
 
+    private boolean hasJustBeenReset = false;
+
 
     public GameLogic() {
+        GameLogic.gameLogicClass = this;
+
         activeCellsMap = new HashMap<>();
         aliveCellsMap = new HashMap<>();
     }
@@ -73,13 +77,13 @@ public class GameLogic {
         for (int yOffset = -1; yOffset <= 1; yOffset++) {
             for (int xOffset = -1; xOffset <= 1; xOffset++) {
                 if (yOffset != 0 || xOffset != 0) {
-                    Index searchindex = new Index(index.getXIndex() + xOffset, index.getYIndex() + yOffset);
-                    if(activeCellsMap.containsKey(searchindex)) {
-                        if (activeCellsMap.get(searchindex) > 0) {
-                            activeCellsMap.replace(searchindex, (byte) (activeCellsMap.get(searchindex) - 1));
+                    Index searchIndex = new Index(index.getXIndex() + xOffset, index.getYIndex() + yOffset);
+                    if(activeCellsMap.containsKey(searchIndex)) {
+                        if (activeCellsMap.get(searchIndex) > 0) {
+                            activeCellsMap.replace(searchIndex, (byte) (activeCellsMap.get(searchIndex) - 1));
                         }
-                        if(activeCellsMap.get(searchindex) == 0 && !aliveCellsMap.containsKey(searchindex)){
-                            activeCellsMap.remove(searchindex);
+                        if(activeCellsMap.get(searchIndex) == 0 && !aliveCellsMap.containsKey(searchIndex)){
+                            activeCellsMap.remove(searchIndex);
                         }
                     }
                 }
@@ -93,6 +97,8 @@ public class GameLogic {
     public void reset() {
         aliveCellsMap = new HashMap<>();
         activeCellsMap = new HashMap<>();
+
+        hasJustBeenReset = true;
     }
 
     public boolean isAlive(Index index) {
@@ -108,6 +114,11 @@ public class GameLogic {
 
         for (Index cellIndex : activeCellsMapCopy.keySet()) {
             Byte surroundCells = activeCellsMapCopy.get(cellIndex);
+
+            if(hasJustBeenReset) { //Pour éviter qu'on ajoute des cellules après avoir réinitialisé
+                hasJustBeenReset = false;
+                return;
+            }
 
             if (aliveCellsMapCopy.containsKey(cellIndex)) {
                 if (surroundCells != 2 && surroundCells != 3) {
@@ -170,6 +181,6 @@ public class GameLogic {
     }
 
     public static GameLogic getGameLogicClass() {
-        return GameLogicClass;
+        return gameLogicClass;
     }
 }
