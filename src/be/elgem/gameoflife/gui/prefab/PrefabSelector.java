@@ -26,6 +26,7 @@ public class PrefabSelector extends JDialog {
         GridLayout layout = new GridLayout(1,2);
 
         this.setLayout(layout);
+        this.setSize(new Dimension(600,450));
 
         previewPanel = new PreviewPanel();
         this.add(previewPanel);
@@ -33,7 +34,7 @@ public class PrefabSelector extends JDialog {
         selectionPanels = new SelectionPanels();
         this.add(selectionPanels);
 
-        this.setSize(new Dimension(600,450));
+
         this.setLocationRelativeTo(mainWindow);
         this.setResizable(false);
 

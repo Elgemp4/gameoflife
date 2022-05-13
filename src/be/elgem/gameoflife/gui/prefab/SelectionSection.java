@@ -6,12 +6,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 
-public class SelectionPanel extends JScrollPane {
+public class SelectionSection extends JScrollPane {
     private JPanel selectionPanel;
 
     private ArrayList<PrefabButton> prefabButtonArrayList;
 
-    public SelectionPanel(boolean isSystem) {
+    public SelectionSection(boolean isSystem) {
         super();
 
         selectionPanel = new JPanel();
@@ -21,16 +21,14 @@ public class SelectionPanel extends JScrollPane {
 
         File[] prefabFiles = getPrefabs(true);
         for (int i = 0; i < prefabFiles.length; i++) {
-            System.out.println(prefabFiles[i]);
-            PrefabButton prefabButton = new PrefabButton(null);
+            PrefabButton prefabButton = new PrefabButton(prefabFiles[i], isSystem);
 
             prefabButtonArrayList.add(prefabButton);
 
             selectionPanel.add(prefabButton);
 
-            setViewportView(selectionPanel);
+            this.setViewportView(selectionPanel);
         }
-        selectionPanel.add(new Box.Filler(new Dimension(0,0), new Dimension(0,Short.MAX_VALUE), new Dimension(0,Short.MAX_VALUE)));
     }
 
     private File[] getPrefabs(boolean isSystem) {
