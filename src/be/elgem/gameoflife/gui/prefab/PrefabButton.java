@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class PrefabButton extends JButton{
+    private File file;
+
     private JLabel previewImage;
     private JLabel prefabName;
 
@@ -13,8 +15,11 @@ public class PrefabButton extends JButton{
 
     public PrefabButton(File file, boolean isSystem) {
         super();
+
+        this.file = file;
+
         this.isDeletable = !isSystem;
-        this.parseData(file);
+        this.parseData();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -35,7 +40,7 @@ public class PrefabButton extends JButton{
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
     }
 
-    public void parseData(File file) {
+    public void parseData() {
         this.previewImage = new JLabel(new ImageIcon(new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB)));
 
         this.prefabName = new JLabel(file.getName().replace(".prefab", ""));
